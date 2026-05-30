@@ -1,0 +1,62 @@
+================================================================================
+AMIT SHAH — Character (interior)
+================================================================================
+
+Create a cinematic hand-drawn 2D matte painting set in mid-2019 after the general election, inside a stylised Union Home Ministry conference chamber in New Delhi, India. Interior medium-wide composition inside a long-ceilinged formal conference chamber with a long polished teak table, ten leather-backed chairs arranged five per side, a plain tricolour fabric panel on a free-standing pole at the far end rendered only as horizontal saffron-white-green bands without any readable emblem, stacked olive-green file-jackets at the centre bound with cotton tape, a wall clock with numerals reduced to plain hatch texture, and a casement window with blinds drawn halfway down.
+
+Main subject: a senior Indian home minister figure, early 60s, heavyset solid build, broad rounded face, warm medium-brown skin, a smooth bald crown with a neat fringe of short grey-white hair around the sides and back, full close-cropped white-grey beard and moustache, focused dark eyes behind thin-rimmed oval silver spectacles, wearing a light cream long-sleeve kurta under a structured dark navy sleeveless Nehru jacket / bandhgala with a high collar and dark front buttons, with a tiny tricolour lapel rectangle rendered only as generic stripes and no readable emblem. Expression serious, astute, unsmiling, and resolute, with a natural downward set at the mouth corners. Show him seated at the conference table, positioned slightly left of center, both forearms resting flat on the teak edge, both hands bracketing a closed olive file-jacket, shoulders squared, gaze level and fixed toward the empty chair directly across the table. Make the face, body language, and presence strongly resemble a recognizable Indian home minister archetype without using any text labels or explicit names.
+
+Foreground: the near corner of the conference table with a closed dark leather folio, two water glasses with faint condensation rings, a wooden rubber-stamp handle beside a closed ink-pad, and the sheen of worn polish on the teak surface.
+
+Midground: the home minister figure seated at the table with both forearms flat, the closed olive file-jacket between his hands, and two civil officials seated further down the table in three-quarter rear view, their faces softly painted and clearly human, with lowered eyes toward note-pads, wearing muted wool-blend suits and Nehru jackets, no void-black silhouettes and no identifiable likenesses.
+
+Background: the casement window with half-drawn blinds casting horizontal shadow bands across the rear wall, a second tricolour fabric panel furled in one corner, a closed teak door, and the far end of the long table fading into restrained depth.
+
+Lighting: cool daylight entering through the blinds, creating soft horizontal bands across the table and rear wall, combined with a warm tungsten pool catching the home minister figure’s hands, the closed olive file-jacket, and the front edge of the centre stack of files; gentle graded shadow behind each seated figure, enough to separate collars and shoulders from the wall, with no glow effects.
+
+Materials and texture: polished teak with ring-stains and subtle wear, leather folio scuffing, matte wool-silk texture on the Nehru jacket, dry close beard texture with silver strands reading clearly, cotton tape wrapped around file-jackets, faint condensation on the water glasses.
+
+Mood: political authority after a strong mandate, administrative weight, stillness before execution, a room carrying the sense that accumulated political power has finally aligned with institutional control; the seated figure reads as deliberate, braced, quiet, and difficult to move once positioned.
+
+Style: cinematic hand-drawn 2D matte painting, clean linework, flat cel-shaded rendering, documentary realism, historically grounded Indian government interior, restrained composition, detailed but not photorealistic, elegant and controlled.
+
+Negative prompt: photorealistic, ultra realistic, 3D render, CGI, ray tracing, glossy surfaces, HDR, lens flare, blur, depth of field, dramatic action pose, smiling expression, laughing expression, exaggerated emotion, readable text, readable file titles, readable clock numerals, readable government insignia, readable party symbols, watermark, logo, modern futuristic office design, neon lighting, glass corporate boardroom look, void-black human faces, featureless silhouettes, press-photo realism
+
+
+================================================================================
+MODI — Character (interior)
+================================================================================
+
+Create a dignified elderly South Asian prime minister-like leader in a cinematic 2D animated documentary style. He is seated inside the back seat of a car, facing slightly toward the camera with a calm, serious, thoughtful expression. The mood should feel political, strategic, and statesmanlike.
+
+Character appearance: elderly South Asian man, around 65–75 years old, fair-to-medium skin tone, neatly combed short white hair, full white beard, rimless eyeglasses, sharp observant eyes, defined cheek lines, composed facial expression, mature and authoritative presence. He should look wise, disciplined, and calm.
+
+Clothing: traditional Indian formal attire — a light brown or mustard kurta beneath a brown checked Nehru jacket / sleeveless waistcoat, with a small Indian flag pin on the chest. Clothing should look neat, official, and elegant.
+
+Environment: interior of a modern car at night, visible seat and door frame, dark cabin, soft blurred city lights outside the window, subtle reflections on glass, quiet VIP-travel atmosphere. The setting should suggest the leader is traveling between important meetings or during a high-level political moment.
+
+Lighting: low-key cinematic lighting, soft warm light on the face and clothing, subtle cool blue night tones from outside the car windows, gentle contrast, clean facial visibility, calm but dramatic mood.
+
+Art style: 2D digital animated illustration, cinematic hand-drawn matte painting, clean line art, subtle cel shading, realistic documentary tone, muted colors, polished political-thriller aesthetic, detailed facial rendering, no exaggerated cartoon look.
+
+Camera: medium shot, slightly front-facing angle, centered composition, eye-level framing, character seated naturally in the car, suitable for a documentary thumbnail or political storytelling visual.
+
+Mood: serious, thoughtful, strategic, composed, leadership-focused.
+
+Negative prompt: no photorealism, no 3D render, no anime style, no childish cartoon style, no exaggerated smile, no distorted face, no extra fingers, no messy clothing, no futuristic vehicle interior, no neon cyberpunk effects, no overly dramatic fantasy lighting.
+================================================================================
+AJIT DOVAL — Character (interior) · 
+================================================================================
+Create a serious middle-aged South Asian intelligence officer character in a cinematic 2D animated documentary style. He is seated behind a desk in a dark strategic operations room, facing the camera directly with a stern, focused expression. 
+
+Character appearance: mature man, around 45–55 years old, medium brown skin tone, short receding black hair, thin rectangular eyeglasses, sharp intense eyes, thick dark mustache, slightly wrinkled forehead, strong jawline, disciplined posture. He wears a formal grey suit, white shirt, and muted red tie, giving the impression of a senior government strategist or national security official.
+
+Environment: dimly lit command room or intelligence office, large digital map screen in the background, blurred data panels, military-style monitoring displays, soft shadows, serious atmosphere. The background should feel like a secure war-room or crisis-control center.
+
+Lighting: low-key cinematic lighting, warm desk light illuminating the lower face and suit, cool blue-green screen glow from the background, dramatic shadows on the face, high-contrast but clean visibility.
+
+Art style: 2D digital animated illustration, cinematic hand-drawn matte painting, clean line art, subtle cel shading, realistic documentary tone, sharp facial features, muted color palette, serious political thriller mood.
+
+Camera: medium close-up portrait, frontal composition, character centered, eye-level angle, slight dramatic zoom feel, professional YouTube documentary thumbnail style.
+
+Negative prompt: no photorealism, no 3D render, no cartoon exaggeration, no anime style, no fantasy clothing, no smiling, no distorted face, no extra fingers, no blurry face, no modern neon cyberpunk look, no over-glossy skin, no childish style.

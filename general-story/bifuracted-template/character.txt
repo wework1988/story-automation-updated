@@ -1,0 +1,67 @@
+================================================================================
+CHAR_PM_01 — Character (senior prime-ministerial figure)
+================================================================================
+
+MATCH ALIASES — PIPELINE ONLY, NEVER COPY TO IMAGE PROMPT:
+Modi
+Narendra Modi
+prime minister
+senior prime-ministerial figure
+
+LOCKED CHARACTER ANCHOR — COPY VERBATIM EVERY TIME:
+Symbolic senior Indian prime-ministerial figure, elderly South Asian statesman, around 65–75 years old, fair-to-medium skin tone, neatly combed short white hair, full white beard, rimless eyeglasses, sharp observant eyes, defined cheek lines, calm composed expression, mature authoritative presence, wearing a light brown or mustard kurta under a brown checked sleeveless Nehru jacket, seated with statesmanlike posture, steady visionary gaze, non-identifiable face, not an exact real-person likeness.
+
+NEGATIVE IDENTITY FIREWALL:
+no heavyset home-ministerial build, no smooth bald crown with side hair fringe, no thin-rimmed oval silver spectacles, no dark navy sleeveless jacket, no broad rounded face, no exact real-person likeness.
+
+================================================================================
+CHAR_HOME_01 — Character (senior home-ministerial figure)
+================================================================================
+
+MATCH ALIASES — PIPELINE ONLY, NEVER COPY TO IMAGE PROMPT:
+Amit Shah
+Amitbhai Shah
+home minister
+senior home-ministerial figure
+senior Gujarat political strategist
+main protagonist
+
+LOCKED CHARACTER ANCHOR — COPY VERBATIM EVERY TIME:
+Symbolic senior Indian home-ministerial figure, early 60s, heavyset solid build, broad rounded face, warm medium-brown skin, smooth bald crown with short grey-white hair around the sides and back, short close-cropped salt-and-grey beard and moustache, focused dark eyes behind thin-rimmed oval silver spectacles, wearing a light cream long-sleeve kurta under a structured dark navy sleeveless Nehru jacket with high collar and dark front buttons, serious astute unsmiling expression, squared shoulders, level fixed gaze, non-identifiable face, not an exact real-person likeness.
+
+NEGATIVE IDENTITY FIREWALL:
+no senior prime-ministerial appearance, no neatly combed full white hair, no rimless eyeglasses, no mustard kurta, no brown checked sleeveless jacket, no slim statesman face, no sharp cheekbone prime-ministerial look, no long flowing white beard, no visionary smile, no exact real-person likeness.
+
+================================================================================
+CHAR_bangaldesi_01 — Character (Bangladeshi Muslim migrant)
+================================================================================
+
+MATCH ALIASES — PIPELINE ONLY, NEVER COPY TO IMAGE PROMPT:
+Bangladeshi migrant
+Bangladeshi Muslim migrant
+illegal Bangladeshi crosser
+migrant protagonist
+archetypal migrant
+lone migrant
+the migrant
+illegal migrant
+illegal तरीके से भारत में आया
+भारत में आया
+सीमा पार करके भारत में आ रहा है
+border पार करने के बाद
+कोई आदमी सीमा पार करके भारत में आ रहा है
+
+LOCKED CHARACTER ANCHOR — COPY VERBATIM EVERY TIME:
+Elderly South Asian Bangladeshi Muslim migrant, around 65–75 years old, medium build, weathered hardened face with deep forehead lines, heavy eyelids, tired dark eyes with a guarded suspicious stare, broad nose, dark under-eye shadows, tight jaw, natural skin texture, long thick bright orange henna-dyed beard with slightly uneven natural edges and grey roots near the chin and cheeks, plain white skull cap, loose light sky-blue kurta with a simple chest pocket and a small white pen tucked inside, worn rubber sandals, hard uneasy expression, furtive watchful posture, shoulders slightly hunched, body angled away from light, complicit illegal-crosser presence rather than sympathy framing, documentary realism, non-identifiable face, not an exact real-person likeness.
+
+NEGATIVE IDENTITY FIREWALL:
+no young gaunt man, no clean-shaven migrant, no patchy teenage stubble, no innocent expression, no gentle face, no warm smile, no friendly smile, no sympathetic victim framing, no soft beauty lighting, no saintly glow, no open friendly posture, no hopeful refugee look, no terrorist coding, no militant posture, no weapon, no exact real-person likeness.
+
+REFERENCE PORTRAIT PROMPT — FOR MANUAL IMAGE GENERATION ONLY:
+Create a cinematic hand-drawn 2D matte painting portrait of an elderly South Asian Muslim man, around 65–75 years old, medium build, standing front-facing in a calm serious pose. He has a long thick bright orange henna-dyed beard, slightly uneven and natural, with grey roots near the chin and cheeks. His face is weathered with deep forehead lines, heavy eyelids, tired eyes, broad nose, dark under-eye shadows, and natural skin texture. He wears a plain white skull cap and a loose light sky-blue kurta with a simple chest pocket and a small white pen tucked inside.
+
+Background: blue corrugated metal shutter with horizontal lines, slightly out of focus but still clearly visible. Lighting is natural outdoor daylight, soft but realistic, coming from the front-left, creating mild shadows on the face and beard. Composition is a vertical close portrait from chest to head, centered subject, documentary realism, street photography framing.
+
+Style: 2D digital illustration, hand-drawn matte painting, clean but realistic linework, muted documentary color palette, flat cel shading with subtle texture, realistic facial proportions, culturally accurate clothing, grounded everyday street setting.
+
+Avoid: photorealism, 3D render, cartoon exaggeration, fantasy look, glossy skin, perfect beard, modern fashion, dramatic cinematic overlighting, text, watermark, logo.
