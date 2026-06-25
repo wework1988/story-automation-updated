@@ -1,0 +1,13 @@
+# Crime-section story queue — processed top to bottom when you run:
+#   ./crime-section/run_with_params.sh
+#
+# Format:  slug|path-to-story-file
+#   slug  — folder name under crime-section/stories/
+#   path  — relative to repo root, or absolute path
+#
+# Settings (step, overwrite, model, …) come ONLY from crime-section/run_with_params.sh
+# and crime-section/deepseek.config.example.ini — not from general-story or english-story.
+
+
+#ekadasi|crime-section/story-to-run/ekadasi
+#mumbai-watermelon-case|crime-section/story-to-run/mumbai-watermelon-case.txt

@@ -1,0 +1,65 @@
+# Image ↔ prompt mapping and rename (Storymaster)
+
+When the user asks to **map images**, **rename images to match prompts**, or **align the image folder with the prompt file**, follow this workflow end-to-end without asking them to repeat the rules.
+
+## Inputs (the user will give paths or defaults)
+
+- **Image folder**: directory containing the generated images (often under `mapping/<range>/` or similar).
+- **Prompt file**: text file containing scene blocks and `IMAGE PROMPT` sections (often under `output/prompts-*.txt`).
+
+If paths are missing, infer from context (recently opened `output/prompts-*.txt`, `mapping/*`) or ask once for the two paths only.
+
+## Parse the prompt file
+
+1. Split or scan for blocks that contain the line starting with **`IMAGE PROMPT`** (or the image prompt paragraph immediately after that header).
+2. For each scene’s image prompt, the **prefix** is the substring on that same logical line **immediately before** the fixed phrase:
+
+   **`Create a cinematic hand-drawn 2D`**
+
+   (Trim whitespace; keep meaning: usually `Scene <N>. <Short title words>.`)
+
+3. From the prefix, read the **scene number** `<N>` from the pattern `Scene <N>.` at the start (e.g. `Scene 14. …` → `N = 14`).
+4. Build an ordered list of scenes **in file order** as `(N, prefix, optional_title_tail)` for every image prompt in that file.
+
+## Match each image file to exactly one scene
+
+- **If filenames already include scene numbers** (e.g. `Scene_14_…`, `scene_14`, `14_…`), parse `N` and pair directly.
+- **If filenames are short codes** (e.g. `Officials_calculate_Kashmir_202604222302.jpeg`), strip trailing **`_<12-digit timestamp>`** (or similar) to get a **stem**, then map stems to `N` using **keywords from the prefix / title** for that scene (same idea as manual pairing: Kashmir → scene 14, etc.). Prefer unambiguous keyword overlap over guessing.
+- **If the set is already in strict scene order** (user confirms or folder name matches range only), you may assign by sorted order **only** when there is no conflicting stem meaning.
+- Never leave an image unmapped or double-mapped. If two scenes compete for one file, use prompt keywords and image count (`len(scenes) == len(files)`) to resolve; if still ambiguous, list the conflict and the two best `N` candidates for the user.
+
+## Rename convention (required)
+
+Final names must be **lowercase**, **no spaces**, **one file per scene**:
+
+```text
+scene_<N>.jpeg
+```
+
+Examples: `scene_11.jpeg`, `scene_12.jpeg`, …
+
+- `<N>` is the **story scene index** from the prompt (`Scene N.` in the prefix), **not** a 1-based index within the folder unless the user explicitly asks for `scene_1` … `scene_K` renumbering.
+- Preserve the original extension if it is not `.jpeg` (use `.png`, `.webp`, etc. consistently per source file).
+- Avoid long descriptive filenames unless the user explicitly requests them.
+
+## Safe renaming on disk
+
+- On case-insensitive volumes, renaming `Scene_11_…` → `scene_11.jpeg` may require a **two-step** rename (e.g. to a temporary name, then to `scene_<N>.<ext>`) to avoid collisions.
+- If many sources must move at once, rename to unique temporaries first, then to final `scene_<N>.<ext>`.
+
+## Deliverables
+
+- Perform the renames (or clearly state why the environment blocked writes).
+- Reply with a compact table: **old filename → `scene_<N>.<ext>`** (or summarize if very long).
+- Do not edit unrelated project files; updating this instruction file is only when the user asks to change the mapping rules themselves.
+
+## Quick reference
+
+| Step | Action |
+|------|--------|
+| 1 | Read prompt file; collect each scene’s `N` from prefix before `Create a cinematic hand-drawn 2D` |
+| 2 | List images; normalize stems (strip timestamp suffixes) |
+| 3 | Map each file → `N` (by embedded scene id, or keyword match to prefix) |
+| 4 | Rename to `scene_<N>.<ext>` with two-phase rename if needed |
+
+This is the **default Storymaster convention** for mapped episode images unless the user overrides it in the same request.

@@ -1,0 +1,422 @@
+#!/usr/bin/env bash
+#
+# english-story — Story folder helper (with AUTO mode)
+# -----------------------------
+# Same behaviour as crime-section/helper/create-story-skelton-auto; paths resolve
+# relative to this script's package (english-story/).
+#
+# Same surface as create-story-skelton, plus STAGE=auto that runs
+# Stages A -> B -> C end-to-end against Claude (Anthropic SDK)
+# with prompt caching for cost optimization.
+#
+# Edit STORY_NAME and STAGE below, save, then run this script (no arguments needed).
+#
+# STAGE - which operation runs (only one at a time):
+#   empty, 1, step1, or stage1 -> create new story folder + templates
+#   2, step2, or stage2        -> inject FULL_STORY.txt into template/STORY_Config_<name>.md
+#   3, step3, or stage3        -> inject output_config + FULL_STORY into template/Story_scene_breakdown_<name>.md
+#   4, step4, or stage4        -> inject output_config + output_story_breakdown into template/<name>_stage-c-image-motion.md
+#   auto, 0, step0, or stage0  -> run Stages A+B+C automatically via Anthropic API
+#                                 (requires ANTHROPIC_API_KEY env + `pip install anthropic`)
+#
+# Optional CLI (overrides nothing unless you pass a step or story slug):
+#   ./create-story-skelton-auto                     -> use STAGE + STORY_NAME from this file
+#   ./create-story-skelton-auto other-slug          -> same STAGE as in file, but STORY_NAME=other-slug
+#   ./create-story-skelton-auto step 2 other-slug   -> force step 2 for this run (optional)
+#   ./create-story-skelton-auto auto other-slug     -> force auto mode for this run
+#
+# Creates (STAGE 1 only) under stories/<STORY_NAME>/:
+#   At the story folder root:
+#   - FULL_STORY.txt, output_config_<STORY_NAME>.md, output_story_breakdown_<STORY_NAME>.md, prompt.txt
+#   Under template/ (verbatim cp from bifuracted-template):
+#   - STORY_Config_<STORY_NAME>.md, Story_scene_breakdown_<STORY_NAME>.md, <STORY_NAME>_stage-c-image-motion.md, character.txt
+#
+# AUTO-mode env knobs (exportable; defaults below):
+#   MODEL                       (default: claude-opus-4-7)       -- Anthropic model id (Opus 4.7)
+#   STAGE_C_BATCH               (default: 8)                     -- scenes per Stage C call
+#   INCLUDE_CHARACTER_LIBRARY   (default: 1)                     -- inject template/character.txt into CHARACTER_LIBRARY: slots
+#   FORCE                       (default: 0)                     -- overwrite already-populated outputs
+#   GENRE                       (default: empty)                 -- optional genre/tone hint for Stage A
+#
+# -----------------------------
+STORY_NAME="sample-story"
+# STAGE: leave empty or 1 = new folder; 2 = fill STORY_Config; 3 = fill Story_scene_breakdown;
+#        4 = fill Stage C motion template; auto = run A+B+C via Anthropic API
+STAGE="1"
+# -----------------------------
+
+# AUTO-mode tunables (env-overridable)
+MODEL="${MODEL:-claude-opus-4-7}"
+STAGE_C_BATCH="${STAGE_C_BATCH:-8}"
+INCLUDE_CHARACTER_LIBRARY="${INCLUDE_CHARACTER_LIBRARY:-1}"
+FORCE="${FORCE:-0}"
+GENRE="${GENRE:-}"
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+STORIES_DIR="$ROOT/stories"
+TEMPLATE_DIR="$ROOT/bifuracted-template"
+
+DEFAULT_STORY_NAME="${STORY_NAME}"
+
+usage() {
+  echo "Usage:" >&2
+  echo "  Set STORY_NAME and STAGE at the top of this script, then run:  $0" >&2
+  echo "  Optional:  $0 [<story_slug>]  (override STORY_NAME; STAGE still from file)" >&2
+  echo "  Optional:  $0 [step|stage] <1|2|3|4> [<story_slug>]  (override step for this run)" >&2
+  echo "  Optional:  $0 auto [<story_slug>]  (run A+B+C end-to-end via Anthropic API)" >&2
+  echo "  STAGE empty or 1 -> new story folder; 2 -> STORY_Config; 3 -> Story_scene_breakdown;" >&2
+  echo "  4 -> stage-c-image-motion (config + breakdown slots); auto -> full pipeline." >&2
+  exit 1
+}
+
+mode_from_file() {
+  local s
+  s="$(printf '%s' "${STAGE:-}" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')"
+  case "$s" in
+    "" | 1 | step1 | stage1)
+      MODE=step1
+      ;;
+    2 | step2 | stage2)
+      MODE=step2
+      ;;
+    3 | step3 | stage3)
+      MODE=step3
+      ;;
+    4 | step4 | stage4)
+      MODE=step4
+      ;;
+    0 | step0 | stage0 | auto)
+      MODE=auto
+      ;;
+    *)
+      echo "Error: invalid STAGE=${STAGE:-} (use empty, 1, 2, 3, 4, or auto)." >&2
+      exit 1
+      ;;
+  esac
+}
+
+parse_cmdline() {
+  MODE=""
+  local -a rest=("$@")
+
+  if [[ ${#rest[@]} -ge 2 ]]; then
+    local a="${rest[0]}" b="${rest[1]}"
+    if [[ ( "$a" == "step" || "$a" == "stage" ) && "$b" =~ ^[1234]$ ]]; then
+      MODE="step$b"
+      rest=("${rest[@]:2}")
+      if [[ ${#rest[@]} -ge 1 ]]; then
+        STORY_NAME="${rest[0]}"
+      fi
+      return
+    fi
+    if [[ "$a" == "auto" || "$a" == "step0" || "$a" == "stage0" || "$a" == "0" ]]; then
+      MODE="auto"
+      STORY_NAME="${rest[1]}"
+      return
+    fi
+    usage
+  fi
+
+  if [[ ${#rest[@]} -eq 1 ]]; then
+    local f="${rest[0]}"
+    case "$f" in
+      step1 | stage1)
+        MODE=step1
+        return
+        ;;
+      step2 | stage2)
+        MODE=step2
+        return
+        ;;
+      step3 | stage3)
+        MODE=step3
+        return
+        ;;
+      step4 | stage4)
+        MODE=step4
+        return
+        ;;
+      auto | step0 | stage0 | 0)
+        MODE=auto
+        return
+        ;;
+      1)
+        MODE=step1
+        return
+        ;;
+      2)
+        MODE=step2
+        return
+        ;;
+      3)
+        MODE=step3
+        return
+        ;;
+      4)
+        MODE=step4
+        return
+        ;;
+      *)
+        mode_from_file
+        STORY_NAME="$f"
+        return
+        ;;
+    esac
+  fi
+
+  mode_from_file
+}
+
+require_story_name() {
+  if [[ -z "${STORY_NAME}" ]]; then
+    STORY_NAME="${DEFAULT_STORY_NAME}"
+  fi
+  if [[ -z "${STORY_NAME}" ]]; then
+    echo "Error: set STORY_NAME in $0 or pass <story_name> on the command line." >&2
+    exit 1
+  fi
+  if [[ "$STORY_NAME" == *"/"* || "$STORY_NAME" == *..* ]]; then
+    echo "Error: story name must be a single path segment (no slashes or '..')." >&2
+    exit 1
+  fi
+}
+
+sanitize_dest() {
+  DEST="$STORIES_DIR/$STORY_NAME"
+}
+
+step1_create() {
+  sanitize_dest
+  if [[ -e "$DEST" ]]; then
+    echo "Error: already exists: $DEST" >&2
+    exit 1
+  fi
+
+  if [[ ! -d "$TEMPLATE_DIR" ]]; then
+    echo "Error: template directory not found: $TEMPLATE_DIR" >&2
+    exit 1
+  fi
+
+  mkdir -p "$DEST"
+  local STORY_TMPL_SUB="$DEST/template"
+  mkdir -p "$STORY_TMPL_SUB"
+
+  : > "$DEST/FULL_STORY.txt"
+  : > "$DEST/output_config_${STORY_NAME}.md"
+  : > "$DEST/output_story_breakdown_${STORY_NAME}.md"
+  : > "$DEST/prompt.txt"
+
+  shopt -s nullglob
+  local src base base_lc
+  for src in "$TEMPLATE_DIR"/*; do
+    base="$(basename "$src")"
+    base_lc="$(printf '%s' "$base" | tr '[:upper:]' '[:lower:]')"
+    if [[ ! -f "$src" || "$base_lc" == "readme.md" ]]; then
+      continue
+    fi
+    case "$base" in
+      stage-a-story-config.md)
+        cp "$src" "$STORY_TMPL_SUB/STORY_Config_${STORY_NAME}.md"
+        ;;
+      stage-b-scene-breakdown.md)
+        cp "$src" "$STORY_TMPL_SUB/Story_scene_breakdown_${STORY_NAME}.md"
+        ;;
+      character.txt)
+        cp "$src" "$STORY_TMPL_SUB/character.txt"
+        ;;
+      *)
+        cp "$src" "$STORY_TMPL_SUB/${STORY_NAME}_${base}"
+        ;;
+    esac
+  done
+  shopt -u nullglob
+
+  echo "Created story skeleton at $DEST"
+  echo "  (root)"
+  echo "  - FULL_STORY.txt"
+  echo "  - output_config_${STORY_NAME}.md"
+  echo "  - output_story_breakdown_${STORY_NAME}.md"
+  echo "  - prompt.txt"
+  echo "  template/"
+  echo "  - STORY_Config_${STORY_NAME}.md"
+  echo "  - Story_scene_breakdown_${STORY_NAME}.md"
+  echo "  - ${STORY_NAME}_stage-c-image-motion.md"
+  echo "  - character.txt"
+}
+
+step2_fill_story_config() {
+  sanitize_dest
+  local s_conf="$DEST/template/STORY_Config_${STORY_NAME}.md"
+  local full="$DEST/FULL_STORY.txt"
+
+  if [[ ! -f "$s_conf" ]]; then
+    echo "Error: missing $s_conf (run step 1 first)." >&2
+    exit 1
+  fi
+  if [[ ! -f "$full" ]]; then
+    echo "Error: missing $full" >&2
+    exit 1
+  fi
+
+  python3 - "$s_conf" "$full" <<'PY'
+import pathlib, sys
+story_md = pathlib.Path(sys.argv[1])
+full_path = pathlib.Path(sys.argv[2])
+full = full_path.read_text(encoding="utf-8")
+t = story_md.read_text(encoding="utf-8")
+old = "{Paste the full Hindi / Hinglish / English story here.}"
+if old not in t:
+    sys.exit("error: placeholder not found in STORY_Config (file already filled or wrong version?): " + old)
+story_md.write_text(t.replace(old, full, 1), encoding="utf-8")
+PY
+
+  echo "Updated $s_conf with text from $full"
+}
+
+step3_fill_scene_breakdown() {
+  sanitize_dest
+  local b_md="$DEST/template/Story_scene_breakdown_${STORY_NAME}.md"
+  local full="$DEST/FULL_STORY.txt"
+  local cfg="$DEST/output_config_${STORY_NAME}.md"
+
+  if [[ ! -f "$b_md" ]]; then
+    echo "Error: missing $b_md (run step 1 first)." >&2
+    exit 1
+  fi
+  if [[ ! -f "$full" ]]; then
+    echo "Error: missing $full" >&2
+    exit 1
+  fi
+  if [[ ! -f "$cfg" ]]; then
+    echo "Error: missing $cfg" >&2
+    exit 1
+  fi
+
+  python3 - "$b_md" "$full" "$cfg" <<'PY'
+import pathlib, sys
+scene_md = pathlib.Path(sys.argv[1])
+full = pathlib.Path(sys.argv[2]).read_text(encoding="utf-8")
+ocfg = pathlib.Path(sys.argv[3]).read_text(encoding="utf-8")
+t = scene_md.read_text(encoding="utf-8")
+p_cfg = "{Paste the STORY CONFIG BLOCK output from Stage A here.}"
+p_full = "{Paste the full Hindi / Hinglish / English story here — same as used in Stage A.}"
+if p_cfg not in t:
+    sys.exit("error: missing placeholder: " + p_cfg)
+if p_full not in t:
+    sys.exit("error: missing placeholder: " + p_full)
+t = t.replace(p_cfg, ocfg, 1).replace(p_full, full, 1)
+scene_md.write_text(t, encoding="utf-8")
+PY
+
+  echo "Updated $b_md with $cfg and $full"
+}
+
+step4_fill_stage_c() {
+  sanitize_dest
+  local c_md="$DEST/template/${STORY_NAME}_stage-c-image-motion.md"
+  local cfg="$DEST/output_config_${STORY_NAME}.md"
+  local brk="$DEST/output_story_breakdown_${STORY_NAME}.md"
+
+  if [[ ! -f "$c_md" ]]; then
+    echo "Error: missing $c_md (run step 1 first)." >&2
+    exit 1
+  fi
+  if [[ ! -f "$cfg" ]]; then
+    echo "Error: missing $cfg" >&2
+    exit 1
+  fi
+  if [[ ! -f "$brk" ]]; then
+    echo "Error: missing $brk" >&2
+    exit 1
+  fi
+
+  python3 - "$c_md" "$cfg" "$brk" <<'PY'
+import pathlib, sys
+stage_c = pathlib.Path(sys.argv[1])
+ocfg = pathlib.Path(sys.argv[2]).read_text(encoding="utf-8")
+obrk = pathlib.Path(sys.argv[3]).read_text(encoding="utf-8")
+t = stage_c.read_text(encoding="utf-8")
+p_cfg = "{Paste the STORY CONFIG BLOCK output from Stage A here.}"
+p_brk = "{Paste the LOCKED SCENE BREAKDOWN output from Stage B here.}"
+if p_cfg not in t:
+    sys.exit("error: missing placeholder: " + p_cfg)
+if p_brk not in t:
+    sys.exit("error: missing placeholder: " + p_brk)
+t = t.replace(p_cfg, ocfg, 1).replace(p_brk, obrk, 1)
+stage_c.write_text(t, encoding="utf-8")
+PY
+
+  echo "Updated $c_md with $cfg and $brk"
+}
+
+auto_run() {
+  sanitize_dest
+  if [[ ! -d "$DEST" ]]; then
+    echo "Error: story folder not found: $DEST" >&2
+    echo "Run '$0 step1 $STORY_NAME' first." >&2
+    exit 1
+  fi
+
+  local full="$DEST/FULL_STORY.txt"
+  if [[ ! -f "$full" ]]; then
+    echo "Error: missing $full (populate it before running auto)." >&2
+    exit 1
+  fi
+  if [[ ! -s "$full" ]]; then
+    echo "Error: $full is empty (paste the story before running auto)." >&2
+    exit 1
+  fi
+
+  if [[ -z "${ANTHROPIC_API_KEY:-}" ]]; then
+    echo "Error: ANTHROPIC_API_KEY is not set in env." >&2
+    echo "  export ANTHROPIC_API_KEY=sk-ant-..." >&2
+    exit 1
+  fi
+
+  if ! python3 -c 'import anthropic' >/dev/null 2>&1; then
+    echo "Error: Python package 'anthropic' is not installed." >&2
+    echo "  pip install anthropic" >&2
+    exit 1
+  fi
+
+  local pyscript="$SCRIPT_DIR/auto_pipeline.py"
+  if [[ ! -f "$pyscript" ]]; then
+    echo "Error: missing $pyscript" >&2
+    exit 1
+  fi
+
+  local -a args=(
+    --story "$STORY_NAME"
+    --root "$ROOT"
+    --model "$MODEL"
+    --batch "$STAGE_C_BATCH"
+  )
+  if [[ "$FORCE" == "1" ]]; then
+    args+=(--force)
+  fi
+  if [[ "$INCLUDE_CHARACTER_LIBRARY" == "1" ]]; then
+    args+=(--use-character-lib)
+  fi
+  if [[ -n "$GENRE" ]]; then
+    args+=(--genre "$GENRE")
+  fi
+
+  exec python3 "$pyscript" "${args[@]}"
+}
+
+# --- main ---
+
+parse_cmdline "$@"
+require_story_name
+
+case "$MODE" in
+  step1) step1_create ;;
+  step2) step2_fill_story_config ;;
+  step3) step3_fill_scene_breakdown ;;
+  step4) step4_fill_stage_c ;;
+  auto)  auto_run ;;
+  *) usage ;;
+esac

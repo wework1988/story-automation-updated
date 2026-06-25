@@ -1,0 +1,12 @@
+# English-story queue — processed top to bottom when you run:
+#   ./english-story/run_with_params.sh
+#
+# Format:  slug|path-to-story-file
+#   slug  — folder name under english-story/stories/
+#   path  — repo-relative (english-story/story-to-run/...) or package-relative (story-to-run/...)
+#
+# Settings come ONLY from english-story/run_with_params.sh
+# and english-story/deepseek.config.example.ini — not from crime-section or general-story.
+
+maduro-full|english-story/story-to-run/full-story
+# maduro|english-story/story-to-run/story.txt

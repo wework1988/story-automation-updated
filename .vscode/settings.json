@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "**/bangladesh-migration/scene": "plaintext",
+    "**/stories/*/scene": "plaintext"
+  }
+}

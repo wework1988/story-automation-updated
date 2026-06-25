@@ -1,0 +1,14 @@
+# Story queue — one story per line
+# Run: ./story-agent/run.sh
+#
+# Format:  URL,related_count,story_type[,folder_name]
+#
+#   story_type: crime | general | english | god
+#
+# Examples:
+#   https://www.youtube.com/watch?v=TUvVM05QXOE,25,crime
+#   https://www.youtube.com/watch?v=ABC123,5,general
+#   https://www.youtube.com/watch?v=XYZ789,10,english
+#   https://www.youtube.com/watch?v=GOD123,3,god,my-custom-folder
+
+https://www.youtube.com/watch?v=_rZLnotPd5Y,22,crime

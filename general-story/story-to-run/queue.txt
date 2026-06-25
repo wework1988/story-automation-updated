@@ -1,0 +1,20 @@
+# Story queue — one story per line, processed top to bottom when you run:
+#   ./general-story/run_with_params.sh
+#
+# Format:  slug|path-to-story-file
+#   slug  — folder name under stories/ (no spaces, no slashes)
+#   path  — relative to repo root, or absolute path
+#
+# Lines starting with # and blank lines are ignored.
+# Comment out a line (prefix with #) to skip that story.
+#
+# Pipeline settings (step, overwrite, model, etc.) come from the
+# *** EDIT HERE *** block in run_with_params.sh — same for every story.
+
+
+
+ekadasi|general-story/story-to-run/ekadasi
+
+#pojk|general-story/story-to-run/pojk
+
+# bangladesh-migration|general-story/story-to-run/bangla

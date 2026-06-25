@@ -1,0 +1,2 @@
+# Optional: Claude API path (create-story-skelton-auto / auto_pipeline.py)
+anthropic>=0.40.0
