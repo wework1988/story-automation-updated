@@ -1,4 +1,28 @@
 # ---------------------------------------------------------------------------
+# Story agent — local research & generated output (do not commit)
+# ---------------------------------------------------------------------------
+research-storage-stories/**
+!research-storage-stories/.gitkeep
+
+story-agent/output/**
+!story-agent/output/.gitkeep
+
+# ---------------------------------------------------------------------------
+# Raw story scripts & inputs (local only — keep queue.txt)
+# ---------------------------------------------------------------------------
+general-story/story-to-run/*
+!general-story/story-to-run/queue.txt
+crime-section/story-to-run/*
+!crime-section/story-to-run/queue.txt
+english-story/story-to-run/*
+!english-story/story-to-run/queue.txt
+english-story/general-story/story-to-run/*
+english-story/general-story/stories/
+
+elevenlabs-audio/input/*
+!elevenlabs-audio/input/.gitkeep
+
+# ---------------------------------------------------------------------------
 # CMS pipeline outputs (prompts, scenes, audio from Drupal worker)
 # ---------------------------------------------------------------------------
 cms-generate-stories/**

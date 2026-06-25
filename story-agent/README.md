@@ -145,6 +145,19 @@ story-agent/output/{type}/{slug}/
 
 Processed jobs are tracked in `story-agent/output/processed.json`. Already-done jobs are skipped unless you pass `--force`.
 
+## Git — what not to commit
+
+Story **data** stays local (see `.gitignore`):
+
+| Ignored | Contents |
+|---------|----------|
+| `research-storage-stories/` | Downloaded YouTube transcripts |
+| `story-agent/output/` | Generated scripts, prompts, raw Claude output |
+| `*/story-to-run/*` (except `queue.txt`) | Raw story scripts |
+| `*/stories/` | Pipeline-generated scene/prompt outputs |
+
+Only **code, prompts, and queue config** belong in git.
+
 ## Project layout
 
 ```
