@@ -30,14 +30,22 @@ PROMPTS = {
     "crime": REPO_ROOT / "story-making-prompts/crime-story-claude-19th-june-with-characters",
     "general": REPO_ROOT / "story-making-prompts/v1-claude-latest-19june-with-charaacters",
     "english": REPO_ROOT / "story-making-prompts/english-story-master",
-    "god": REPO_ROOT / "story-making-prompts/v1-claude-latest-19june-with-charaacters",
+    "god": REPO_ROOT / "story-making-prompts/god story",
 }
 
-GOD_NOTES = (
-    "Story type: Hindu mythology / puranic devotional (god story). "
-    "Tone: reverent, cinematic, third-person narrator. "
-    "Focus on dharma, divine leela, and moral payoff — not sensationalized."
-)
+
+def load_prompt_template(prompt_path: Path, story_type: str) -> str:
+    if not prompt_path.is_file():
+        raise FileNotFoundError(
+            f"No prompt file for story type {story_type!r}: {prompt_path}"
+        )
+    template = prompt_path.read_text(encoding="utf-8").strip()
+    if not template:
+        raise ValueError(
+            f"Prompt file for {story_type!r} is empty: {prompt_path}. "
+            "Add your master prompt text before running."
+        )
+    return template
 
 
 def log(msg: str) -> None:
@@ -84,13 +92,14 @@ def build_prompt_for_type(
     prompt_path: Path,
     source: str,
     target_chars: int,
+    *,
+    duration_minutes: int | None = None,
 ) -> str:
-    template = prompt_path.read_text(encoding="utf-8")
-    source_len = len(source)
-    length_line = (
-        f"{target_chars:,} characters "
-        f"(combined source transcripts: {source_len:,} chars + extra buffer)"
-    )
+    template = load_prompt_template(prompt_path, story_type)
+    if duration_minutes is not None:
+        length_line = format_length_line(story_type, duration_minutes, target_chars)
+    else:
+        length_line = f"{target_chars:,} characters"
 
     if story_type == "english":
         prompt = template.replace("[PASTE RAW STORY HERE]", source, 1)
@@ -100,10 +109,16 @@ def build_prompt_for_type(
             1,
         )
         words_approx = max(target_chars // 6, 800)
+        if duration_minutes is not None:
+            words_low = duration_minutes * 130
+            words_high = duration_minutes * 150
+            word_range = f"{words_low:,}–{words_high:,} words"
+        else:
+            word_range = f"approximately {words_approx:,} words"
         prompt = prompt.replace("[INSERT TARGET LENGTH]", length_line, 1)
         prompt = prompt.replace(
             "[INSERT RANGE FROM TIME → WORD COUNT MAPPING]",
-            f"approximately {words_approx:,} words",
+            word_range,
             1,
         )
         return prompt
@@ -118,17 +133,6 @@ def build_prompt_for_type(
         f"REQUESTED LENGTH:\n{length_line}",
         1,
     )
-
-    if story_type == "god":
-        notes_marker = "ADDITIONAL NOTES:\n[optional"
-        if notes_marker in prompt:
-            prompt = prompt.replace(
-                notes_marker,
-                f"ADDITIONAL NOTES:\n{GOD_NOTES}\n\n[optional",
-                1,
-            )
-        else:
-            prompt += f"\n\nADDITIONAL NOTES:\n{GOD_NOTES}\n"
 
     return prompt
 
@@ -150,6 +154,57 @@ def normalize_story_type(raw: str) -> str:
     return value
 
 
+STORY_TARGET_CHARS = {
+    "crime": 14_000,
+    "general": 14_000,
+    "english": 12_000,
+    "god": 14_000,
+}
+
+CHARS_PER_MINUTE = 1000
+LENGTH_TOLERANCE = 500
+
+
+def target_chars_from_minutes(minutes: int) -> int:
+    """Crime/general prompts: 1 minute = 1,000 Hindi characters."""
+    return minutes * CHARS_PER_MINUTE
+
+
+def format_length_line(story_type: str, duration_minutes: int, target_chars: int) -> str:
+    if story_type == "english":
+        words_low = duration_minutes * 130
+        words_high = duration_minutes * 150
+        return (
+            f"{duration_minutes} min → approximately {words_low:,}–{words_high:,} words "
+            f"(~{target_chars:,} characters at narration pace)"
+        )
+    low = target_chars - LENGTH_TOLERANCE
+    high = target_chars + LENGTH_TOLERANCE
+    return (
+        f"{duration_minutes} min → {target_chars:,} characters "
+        f"(acceptable range: {low:,} – {high:,})"
+    )
+
+
+def compute_target_chars(
+    story_type: str,
+    source_chars: int,
+    video_count: int,
+    *,
+    duration_minutes: int | None = None,
+    extra_chars: int = 0,
+    target_override: int | None = None,
+) -> int:
+    """Output length for the script — NOT the combined research source size."""
+    if target_override is not None:
+        return target_override
+    if duration_minutes is not None:
+        return target_chars_from_minutes(duration_minutes) + extra_chars
+    if video_count <= 1:
+        return source_chars + extra_chars
+    return STORY_TARGET_CHARS.get(story_type, 14_000) + extra_chars
+
+
 def extract_full_script(text: str) -> str:
     """Prefer FULL SCRIPT section; fall back to full Claude output."""
     match = re.search(
@@ -158,7 +213,17 @@ def extract_full_script(text: str) -> str:
         flags=re.DOTALL | re.IGNORECASE,
     )
     if match:
-        return match.group(1).strip()
+        body = match.group(1).strip()
+        if body:
+            return body
+    if re.search(r"PRE-WRITE VALIDATOR", text, flags=re.I) and not re.search(
+        r"FULL SCRIPT", text, flags=re.I
+    ):
+        raise RuntimeError(
+            "Claude returned PRE-WRITE VALIDATOR only — no FULL SCRIPT section. "
+            "This usually means the target length in the prompt was invalid (too large). "
+            "Re-run after fixing target length, or check raw.md."
+        )
     return text.strip()
 
 
@@ -237,12 +302,19 @@ def call_claude_browser(
     with sync_playwright() as p:
         if cdp_url:
             log(f"Connecting to Chrome over CDP: {cdp_url}")
-            browser = p.chromium.connect_over_cdp(cdp_url)
+            try:
+                browser = p.chromium.connect_over_cdp(cdp_url)
+            except Exception as exc:
+                raise RuntimeError(
+                    "Could not connect to Chrome for claude.ai. "
+                    "Quit Chrome completely, then in another terminal run:\n"
+                    "  ./story-agent/start-debug-browser.sh\n"
+                    "Log into https://claude.ai/new if needed, then re-run the agent."
+                ) from exc
             context = browser.contexts[0] if browser.contexts else browser.new_context()
             page = context.new_page()
         else:
-            log(f"Launching Chrome profile: {chrome_user_data} ({profile_directory})")
-            log("Tip: close other Chrome windows using this profile, or pass --cdp-url.")
+            log("Launching Chrome with your profile (quit other Chrome windows first)")
             context = p.chromium.launch_persistent_context(
                 user_data_dir=str(chrome_user_data),
                 channel="chrome",
@@ -379,6 +451,7 @@ def save_pipeline_outputs(
     raw_response: str,
     story_text: str,
     video_count: int,
+    duration_minutes: int | None = None,
 ) -> Path:
     output_dir.mkdir(parents=True, exist_ok=True)
     story_path = output_dir / "FULL_STORY.txt"
@@ -395,6 +468,7 @@ def save_pipeline_outputs(
         "source_characters": source_chars,
         "target_characters": target_chars,
         "output_characters": len(story_text),
+        "duration_minutes": duration_minutes,
         "prompt_file": str(PROMPTS[story_type]),
         "generated_at": datetime.now(timezone.utc).isoformat(),
     }
@@ -425,9 +499,10 @@ def call_llm(
     if mode == "api":
         return call_claude_api(prompt, model=model, max_tokens=max_tokens)
     if mode == "browser":
+        use_cdp = browser == "cdp"
         return call_claude_browser(
             prompt,
-            cdp_url=cdp_url if browser == "cdp" else None,
+            cdp_url=cdp_url if use_cdp else None,
             chrome_user_data=DEFAULT_CHROME_USER_DATA,
             profile_directory=firefox_profile or DEFAULT_FIREFOX_PROFILE,
             timeout_seconds=timeout,

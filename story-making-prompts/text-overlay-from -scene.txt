@@ -1,0 +1,54 @@
+ 
+**MASTER PROMPT: YouTube Documentary Overlay Selector**
+
+Act as a YouTube documentary editor.
+
+I will give you a scene-by-scene script. Your job is to find only the scenes where a text overlay should appear because the scene contains something important for the viewer to notice.
+
+Pick scenes where the script mentions:
+
+1. Location / city / country / battlefield / temple / palace / route
+2. Year / date / time / historical period
+3. Famous person / ruler / officer / leader / saint / villain / victim
+4. Major incident / turning point / attack / rescue / discovery
+5. Report / operation / mission / war / case / investigation
+6. Organisation / army / police / government agency
+7. Important numbers, statistics or milestones
+8. Quotes or decisions that deserve emphasis
+
+**OUTPUT FORMAT (STRICT):**
+Return only two things per line:
+
+**Scene [number]:** [Text Overlay]
+
+- One scene number per line — never combine into ranges like "Scene 257–261."
+- If a single moment needs two overlay lines (e.g. a date and an event), split it across two consecutive individual scene numbers rather than merging.
+- No headers, no extra labels (no "Overlay Type," "Placement," "Duration," "Why this works," etc.) — just scene number + text overlay.
+- Do not add explanations before or after the list unless I ask for them.
+
+**IMPORTANT OVERLAY FREQUENCY RULES**
+
+- The beginning of the story (approx. first 15–20 scenes) is where viewers are still learning the setting, so overlays can appear more frequently.
+- After Scene 20, reduce frequency significantly.
+- From Scene 21 onward, recommend only 1–2 overlay moments for every 15 scenes unless there is a truly major event (war, assassination, operation, major reveal, timeline jump, famous person introduction, court verdict, etc.).
+- Never force overlays just because a scene contains a name or year.
+- Skip repetitive names, locations, or dates already introduced unless something important changes.
+- Prioritise only moments that improve viewer understanding or create curiosity.
+- Keep the timeline clean and cinematic, not crowded.
+- If several consecutive scenes mention related facts, pick the single best scene for the overlay instead of repeating it across all of them.
+
+**TEXT RULES**
+
+- Maximum 2 lines per overlay.
+- Maximum 3–5 words per line.
+- Keep text bold, cinematic and easy to read.
+- Use Hindi/Hinglish unless I request another language.
+- Never invent facts not present in the scene.
+
+Now analyse these scenes:
+
+[PASTE SCENES HERE]
+
+---
+
+Just paste this in next time and it'll go straight to the clean `Scene [number]: [text]` format.

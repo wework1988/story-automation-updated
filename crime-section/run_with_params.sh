@@ -4,6 +4,11 @@
 # crime-section/run_with_params.sh — DeepSeek automation (Steps 1 to 4)
 # ---------------------------------------------------------------------------
 #
+# After Step 4 (every run, even when Stage C is skipped because prompt.txt exists):
+#   stories/<slug>/scene.txt               — scene headings + narration lines
+#   stories/<slug>/image-prompts-only.txt  — one IMAGE PROMPT per line
+#   stories/<slug>/overlay_hints.txt       — per-scene highlight hints (date, location, …)
+#
 # SIMPLE GUIDE (no coding skills needed)
 #
 #   • Put your Hindi/English episode text in THIS file:

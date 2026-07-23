@@ -54,7 +54,7 @@ Convention for --max-step:
   2 → + Stage A LLM → output_config_<slug>.md
   3 → + Stage B LLM → output_story_breakdown_<slug>.md
   4 → + Stage C batched LLM → prompt.txt
-     → then derive scene.txt + image-prompts-only.txt from prompt.txt
+     → then derive scene.txt + image-prompts-only.txt + overlay_hints.txt from prompt.txt
 
   Stage B truncation:
   Set ``token_budget.stage_b_story_segments`` > 1 (or ``--stage-b-story-segments``), e.g. **4–8** on long drafts,
@@ -96,8 +96,9 @@ CHAR_LIB_RE = re.compile(
 )
 
 # Line-start Scene N … (Stage B locked breakdown); ignores inline "Reason: Scene 1".
+# Also matches letter-suffixed splits (10a, 71B) from ceiling-repair — renumbered later.
 STAGE_B_SCENE_HEADING_LINE = re.compile(
-    r"(?m)^\s*(?:---\s*)?(?:#{1,6}\s+)?Scene\s+\d+\b",
+    r"(?m)^\s*--- Scene [^\n]+ ---\s*$",
 )
 
 PART3_MARKER = "PART 3 — INPUT SLOTS"
@@ -477,8 +478,54 @@ def replace_char_lib(haystack: str, replacement: str) -> str:
 
 
 def parse_scene_count(stage_b_output: str) -> int:
+    parsed = split_stage_b_by_scene_headings(stage_b_output)
+    if parsed:
+        return len(parsed[1])
     nums = [int(m.group(1)) for m in re.finditer(r"\bScene\s+(\d+)\b", stage_b_output)]
     return max(nums) if nums else 0
+
+
+def renumber_stage_b_scenes(breakdown: str) -> str:
+    """
+    Renumber all Stage B scene blocks sequentially (1..N).
+
+    Ceiling-repair sometimes emits letter suffixes (Scene 10a, Scene 10b) which
+    collide when parsers read only the leading digits — Stage C then cannot find
+    a clean Scene 10 block.
+    """
+    parsed = split_stage_b_by_scene_headings(breakdown)
+    if not parsed:
+        return breakdown
+    preamble, scenes = parsed
+    if not scenes:
+        return breakdown
+
+    renumbered: list[str] = []
+    letter_suffixes = 0
+    for i, block in enumerate(scenes, 1):
+        lines = block.strip().splitlines()
+        if not lines:
+            continue
+        first = lines[0]
+        if re.search(r"Scene\s+\d+[a-zA-Z]", first):
+            letter_suffixes += 1
+        approx_m = re.search(r"/\s*~(\d+)", first)
+        timing = approx_m.group(1) if approx_m else "?"
+        lines[0] = f"--- Scene {i} / ~{timing} ---"
+        renumbered.append("\n".join(lines))
+
+    if letter_suffixes:
+        log(
+            f"Stage B: renumbered {letter_suffixes} letter-suffixed scene(s) "
+            f"(e.g. 10a/10b) → sequential integers 1–{len(renumbered)}"
+        )
+    elif len(renumbered) != len(scenes):
+        log(f"Stage B: renumbered {len(renumbered)} scene blocks sequentially (1–{len(renumbered)})")
+
+    body = "\n\n".join(renumbered) + "\n"
+    if preamble.strip():
+        return preamble.rstrip() + "\n\n" + body
+    return body
 
 
 _STAGE_C_DASHES = r"[\-\u2013\u2014]"  # -, – (en), — (em)
@@ -542,8 +589,13 @@ def merge_stage_c_prompt_blocks(blocks: Mapping[int, str], total: int) -> str:
     return "".join(blocks[n] for n in range(1, total + 1))
 
 
-def run_prompt_derivative_export(prompt_path: pathlib.Path) -> None:
-    """Default Step 4 post-pass: scene.txt + image-prompts-only.txt from prompt.txt."""
+def run_prompt_derivative_export(
+    prompt_path: pathlib.Path,
+    *,
+    client_kwargs: Mapping[str, Any] | None = None,
+    force: bool = False,
+) -> None:
+    """Default Step 4 post-pass: scene.txt, image-prompts-only.txt, overlay_hints.txt."""
     if not prompt_path.is_file() or prompt_path.stat().st_size == 0:
         log(f"WARN: derivative export skipped — {prompt_path.name} missing or empty")
         return
@@ -553,6 +605,9 @@ def run_prompt_derivative_export(prompt_path: pathlib.Path) -> None:
         export_prompt_derivatives(
             prompt_path,
             split_blocks=split_stage_c_prompt_blocks,
+            client_kwargs=client_kwargs,
+            call_llm=call_deepseek,
+            force=force,
             log=log,
         )
     except (FileNotFoundError, ValueError) as exc:
@@ -812,11 +867,138 @@ def stage_b_pipeline_split_banner(seg_idx: int, seg_total: int, scenes_locked_th
     lines.extend(
         [
             "",
+            "HARD CEILING — pipeline enforced on every slice:",
+            "- Every Hindi line MUST be ≤25 spoken words AND ≤100 visible characters.",
+            "- If a line exceeds either limit, split into multiple Scene blocks.",
+            "- Split order: । ? ! close-quote → em-dash (—) → clause markers → comma (last resort).",
+            '- NEVER write "Length exception accepted". No exception path exists.',
+            "",
             "Output ONLY the LOCKED SCENE BREAKDOWN body using the normal Stage B format from this template.",
             "=" * 72,
         ]
     )
     return "\n".join(lines)
+
+
+STAGE_B_HARD_CEILING_BANNER = """
+================================================================================
+PIPELINE HARD CEILING — NON-NEGOTIABLE
+================================================================================
+Every Hindi line MUST be ≤25 spoken words AND ≤100 visible characters.
+If a line exceeds either limit, split it into multiple Scene blocks.
+Split order: । ? ! close-quote → em-dash (—) → clause markers (कि, जब, लेकिन, और) → comma (last resort).
+Preserve exact source Hindi wording — do not paraphrase.
+NEVER write "Length exception accepted". There is no exception path.
+================================================================================
+""".strip()
+
+STAGE_B_MAX_HINDI_WORDS = 25
+STAGE_B_MAX_HINDI_CHARS = 100
+
+
+def _hindi_line_metrics(line: str) -> tuple[int, int]:
+    text = line.strip()
+    return len(text.split()), len(text)
+
+
+def _extract_hindi_from_scene_block(block: str) -> str:
+    inline = re.search(r"(?m)^Hindi line:\s+(\S.+)$", block)
+    if inline:
+        return inline.group(1).strip()
+    m = re.search(r"(?m)^Hindi line:\s*\n(.+?)(?=\n\n)", block, re.DOTALL)
+    return m.group(1).strip() if m else ""
+
+
+def find_stage_b_hindi_violations(breakdown: str) -> list[tuple[int, str, int, int]]:
+    """Return (scene_num, hindi_line, word_count, char_count) for lines above the hard ceiling."""
+    parsed = split_stage_b_by_scene_headings(breakdown)
+    if not parsed:
+        return []
+    _, scenes = parsed
+    violations: list[tuple[int, str, int, int]] = []
+    for block in scenes:
+        first_line = block.strip().splitlines()[0] if block.strip() else ""
+        scene_num = _scene_num_from_heading_line(first_line)
+        if scene_num is None:
+            continue
+        hindi = _extract_hindi_from_scene_block(block)
+        if not hindi:
+            continue
+        words, chars = _hindi_line_metrics(hindi)
+        if words > STAGE_B_MAX_HINDI_WORDS or chars > STAGE_B_MAX_HINDI_CHARS:
+            violations.append((scene_num, hindi, words, chars))
+    return violations
+
+
+def repair_stage_b_hindi_ceiling(
+    breakdown: str,
+    *,
+    client_kwargs: Mapping[str, Any],
+    terminal: Optional[TerminalUi] = None,
+    max_tokens: int,
+) -> str:
+    """
+    If any Hindi line exceeds the hard ceiling, ask DeepSeek to return a corrected
+    full breakdown with those lines split into shorter scenes.
+    """
+    violations = find_stage_b_hindi_violations(breakdown)
+    if not violations:
+        return breakdown
+
+    summary = "\n".join(
+        f"- Scene {n}: {wc} words, {cc} chars"
+        for n, _hindi, wc, cc in violations
+    )
+    log(
+        f"Stage B: {len(violations)} Hindi line(s) exceed hard ceiling "
+        f"({STAGE_B_MAX_HINDI_WORDS} words / {STAGE_B_MAX_HINDI_CHARS} chars) — repair pass"
+    )
+
+    system_prompt = (
+        "You fix Stage B LOCKED SCENE BREAKDOWN output. "
+        "Split only Hindi lines that violate the hard ceiling; keep all other scenes unchanged."
+    )
+    user_prompt = f"""{STAGE_B_HARD_CEILING_BANNER}
+
+These scenes violate the hard ceiling:
+{summary}
+
+Return the COMPLETE corrected LOCKED SCENE BREAKDOWN with ALL scenes.
+Split each violating Hindi line into multiple Scene blocks until every Hindi line is
+≤{STAGE_B_MAX_HINDI_WORDS} words AND ≤{STAGE_B_MAX_HINDI_CHARS} characters.
+Preserve exact source Hindi wording. Duplicate metadata for each new scene block.
+Renumber ALL scenes with plain integers only (Scene 1, Scene 2, …) — NEVER use
+letter suffixes such as Scene 10a or Scene 10b.
+Do NOT write "Length exception accepted".
+
+ORIGINAL BREAKDOWN:
+{breakdown.strip()}
+"""
+
+    text, finish = call_deepseek(
+        system_prompt=system_prompt,
+        user_prompt=user_prompt,
+        max_tokens=max_tokens,
+        label="stage-b-ceiling-repair",
+        terminal=terminal,
+        **client_kwargs,
+    )
+    abort_if_truncated(finish, "stage-b-ceiling-repair", "DEEPSEEK_MAX_TOKENS_B")
+    repaired, _junk = strip_stage_b_slice_scaffolding(text.strip())
+    repaired = repaired.strip()
+    if parse_scene_count(repaired) <= 0:
+        log("WARN: Stage B ceiling repair returned no scenes — keeping original breakdown")
+        return breakdown
+
+    remaining = find_stage_b_hindi_violations(repaired)
+    if remaining:
+        log(
+            f"WARN: Stage B ceiling repair still has {len(remaining)} long Hindi line(s) "
+            f"— using repaired output anyway"
+        )
+    else:
+        log("Stage B: ceiling repair succeeded — all Hindi lines within limits")
+    return repaired + "\n"
 
 
 def parse_next_range_start(text: str) -> Optional[int]:
@@ -1438,6 +1620,22 @@ def run_stage_a_deepseek(
     return text
 
 
+def normalise_story_paragraphs(text: str) -> str:
+    """
+    Insert paragraph breaks after Hindi/Hinglish sentence-ending punctuation
+    (। ? !) so the segment splitter always cuts at sentence boundaries rather
+    than at arbitrary character positions inside words.
+
+    Without this, a story delivered as one long line causes _split_even_chars
+    to produce fragments like 'ें बैठे दो लोग…' at the start of a segment.
+    """
+    # Insert \n\n after । ? ! whether or not a space follows the punctuation.
+    text = re.sub(r"([।?!])\s*(?=\S)", r"\1\n\n", text)
+    # Collapse any run of 3+ blank lines to a single paragraph break.
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
+
+
 def run_stage_b_deepseek(
     *,
     config_block: str,
@@ -1464,6 +1662,7 @@ def run_stage_b_deepseek(
     template = read(tmpl_b)
     static_prefix, variable_suffix = split_at_part3(template)
     max_b = int(os.environ.get("DEEPSEEK_MAX_TOKENS_B", "65536"))
+    full_story = normalise_story_paragraphs(full_story)
     n_seg = resolve_stage_b_segment_count(full_story=full_story, requested=int(story_segments))
 
     def build_body(story_slot: str) -> str:
@@ -1471,7 +1670,7 @@ def run_stage_b_deepseek(
         body = replace_one(body, PH_CONFIG, config_block, "STORY_CONFIG_BLOCK (B)")
         body = replace_one(body, PH_FULL_STORY_B, story_slot, "FULL_STORY (B)")
         body = replace_char_lib(body, character_lib)
-        return body
+        return body + "\n\n" + STAGE_B_HARD_CEILING_BANNER
 
     if n_seg <= 1:
         body = build_body(full_story.strip())
@@ -1493,6 +1692,13 @@ def run_stage_b_deepseek(
         abort_if_truncated(finish_b, "stage-b", "DEEPSEEK_MAX_TOKENS_B")
         single, _junk = strip_stage_b_slice_scaffolding(text.strip())
         text = single.strip() + "\n"
+        text = repair_stage_b_hindi_ceiling(
+            text,
+            client_kwargs=client_kwargs,
+            terminal=terminal,
+            max_tokens=max_b,
+        )
+        text = renumber_stage_b_scenes(text)
         write(out_path, text)
         if progress and progress.enabled:
             progress.stage_b_finished_write(outfile_name=out_path.name)
@@ -1575,6 +1781,14 @@ def run_stage_b_deepseek(
             "try adjusting stage_b_story_segments or DEEPSEEK_MAX_TOKENS_B"
         )
     write(out_path, merged)
+    merged = repair_stage_b_hindi_ceiling(
+        merged,
+        client_kwargs=client_kwargs,
+        terminal=terminal,
+        max_tokens=max_b,
+    )
+    merged = renumber_stage_b_scenes(merged)
+    write(out_path, merged)
     if progress and progress.enabled:
         progress.stage_b_finished_write(outfile_name=out_path.name)
     else:
@@ -1610,11 +1824,67 @@ def _build_stage_c_request_parts(
     return static_prefix, cached_context, scene_range_tail
 
 
+def _extract_stage_b_scene_block_by_index(breakdown: str, scene_num: int) -> str:
+    """Return the Nth scene block (1-based) from a Stage B breakdown."""
+    parsed = split_stage_b_by_scene_headings(breakdown)
+    if not parsed:
+        return ""
+    _, scenes = parsed
+    if 1 <= scene_num <= len(scenes):
+        return scenes[scene_num - 1].strip()
+    return ""
+
+
+def _fetch_stage_c_single_scene_fallback(
+    *,
+    scene_num: int,
+    breakdown: str,
+    static_prefix: str,
+    cached_context: str,
+    scene_range_tail: str,
+    max_tokens: int,
+    label: str,
+    out_path: pathlib.Path,
+    client_kwargs: Mapping[str, Any],
+    terminal: Optional[TerminalUi],
+) -> Optional[str]:
+    """Last-resort: ask DeepSeek for one missing scene using its breakdown excerpt."""
+    scene_block = _extract_stage_b_scene_block_by_index(breakdown, scene_num)
+    if not scene_block:
+        return None
+
+    scene_range = f"Scene {scene_num} ONLY"
+    user_text = scene_range_tail.replace(PH_SCENE_RANGE, scene_range, 1)
+    extra = (
+        f"\n\nPIPELINE SINGLE-SCENE FALLBACK:\n"
+        f"You MUST output exactly one scene block: --- Scene {scene_num} / ~M ---\n"
+        f"Do NOT skip this scene. Do NOT use letter suffixes (no 10a/10b).\n"
+        f"LOCKED SCENE BREAKDOWN excerpt for this scene:\n{scene_block}\n"
+    )
+    combined_user = cached_context + user_text + extra
+    attempt_label = f"{label} (Scene {scene_num} fallback)"
+
+    text, finish_c = call_deepseek(
+        system_prompt=static_prefix,
+        user_prompt=combined_user,
+        max_tokens=max_tokens,
+        label=attempt_label,
+        terminal=terminal,
+        artifact_path=out_path,
+        **client_kwargs,
+    )
+    abort_if_truncated(finish_c, attempt_label, "DEEPSEEK_MAX_TOKENS_C")
+    clean = strip_trailing_next_range(text).rstrip() + "\n\n"
+    blocks = split_stage_c_prompt_blocks(clean)
+    return blocks.get(scene_num)
+
+
 def _fetch_stage_c_scene_blocks(
     *,
     static_prefix: str,
     cached_context: str,
     scene_range_tail: str,
+    breakdown: str,
     range_start: int,
     range_end: int,
     max_tokens: int,
@@ -1676,6 +1946,26 @@ def _fetch_stage_c_scene_blocks(
             needed = set(still)
             continue
         needed = set()
+
+    if needed:
+        missing = sorted(needed)
+        for scene_n in missing:
+            block = _fetch_stage_c_single_scene_fallback(
+                scene_num=scene_n,
+                breakdown=breakdown,
+                static_prefix=static_prefix,
+                cached_context=cached_context,
+                scene_range_tail=scene_range_tail,
+                max_tokens=max_tokens,
+                label=label,
+                out_path=out_path,
+                client_kwargs=client_kwargs,
+                terminal=terminal,
+            )
+            if block:
+                collected[scene_n] = block
+                needed.discard(scene_n)
+                log(f"Stage C: single-scene fallback recovered Scene {scene_n}")
 
     if needed:
         missing = sorted(needed)
@@ -1756,6 +2046,7 @@ def run_stage_c_deepseek(
             static_prefix=static_prefix,
             cached_context=cached_context,
             scene_range_tail=scene_range_tail,
+            breakdown=breakdown,
             range_start=cur,
             range_end=end,
             max_tokens=max_c,
@@ -1864,6 +2155,7 @@ def run_stage_c_fill_prompt_gaps(
                 static_prefix=static_prefix,
                 cached_context=cached_context,
                 scene_range_tail=scene_range_tail,
+                breakdown=breakdown,
                 range_start=sub,
                 range_end=sub_end,
                 max_tokens=max_c,
@@ -1940,6 +2232,8 @@ def main() -> int:
     here = pathlib.Path(__file__).resolve().parent
     crime_root_default = here.parent
     repo_root = crime_root_default.parent
+    if str(repo_root) not in sys.path:
+        sys.path.insert(0, str(repo_root))
     load_repo_dotenv(repo_root)
 
     skip_ini_argv = "--skip-ini" in sys.argv
@@ -2298,6 +2592,12 @@ def main() -> int:
         else:
             log(f"Stage B: skipped ({breakdown_path} already populated; use --force to redo)")
         breakdown = read(breakdown_path).strip()
+        # Resume loads cached Stage B without the post-merge renumber pass; letter
+        # suffixes (Scene 20a/20b) make Stage C ask for a scene N that does not exist.
+        normalized = renumber_stage_b_scenes(breakdown)
+        if normalized != breakdown:
+            write(breakdown_path, normalized)
+            breakdown = normalized
     else:
         breakdown = run_stage_b_deepseek(
             config_block=config_block,
@@ -2367,7 +2667,11 @@ def main() -> int:
     else:
         log("DONE")
 
-    run_prompt_derivative_export(prompt_path)
+    run_prompt_derivative_export(
+        prompt_path,
+        client_kwargs=ck,
+        force=bool(args.force),
+    )
 
     return 0
 

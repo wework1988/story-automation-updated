@@ -13,8 +13,8 @@
 
 
 
-ekadasi|general-story/story-to-run/ekadasi
+#ekadasi|general-story/story-to-run/ekadasi
 
-#pojk|general-story/story-to-run/pojk
+pojk|general-story/story-to-run/pojk
 
 # bangladesh-migration|general-story/story-to-run/bangla

@@ -7,6 +7,7 @@
 # After Step 4 (every run, even when Stage C is skipped because prompt.txt exists):
 #   stories/<slug>/image-prompts-only.txt  — one IMAGE PROMPT per line
 #   stories/<slug>/scene.txt               — scene headings + English lines only
+#   stories/<slug>/overlay_hints.txt       — per-scene highlight hints (date, location, …)
 #
 # SIMPLE GUIDE — see english-story/README.md (sample: stories/yasin/)
 #

@@ -1,0 +1,87 @@
+Act as a professional YouTube documentary editor.
+
+I will provide a scene-by-scene documentary script. Your task is to identify only the most important scenes where a short text overlay will help viewers understand the date, time, location, famous person, organisation, operation, major event, statistic, weapon, or historical context.
+
+## Select overlays for
+
+Choose a scene only when it contains:
+
+1. Important date, year, time, or historical period
+2. City, country, battlefield, airport, route, or major location
+3. Famous person, ruler, scientist, officer, leader, agent, or victim
+4. Major attack, assassination, rescue, war, discovery, or turning point
+5. Intelligence operation, military mission, investigation, or secret project
+6. Intelligence agency, army, government body, or militant organisation
+7. Important number, distance, casualty count, duration, or milestone
+8. Important quote, order, demand, warning, or decision
+9. Important weapon, aircraft, technology, or technical system
+
+## Overlay frequency
+
+### Scenes 1–50
+
+The opening section may contain more overlays because viewers are still learning the setting, people, dates, and organisations.
+
+* Select approximately 8–12 overlays.
+* Do not select every scene.
+* Avoid unnecessary overlays in consecutive scenes.
+* Keep at least 2–3 scenes between normal overlays whenever possible.
+
+### After Scene 50
+
+* Select approximately one overlay in every 15-scene block.
+* Select a maximum of two only when the block contains two very important events.
+* Skip a block if there is nothing important.
+* Do not add weak overlays just to complete the frequency.
+* Do not repeat the same name, location, date, or operation unnecessarily.
+
+## Text overlay rules
+
+* Keep every overlay short and easy to read.
+* Prefer 2–7 words.
+* Maximum 10 words.
+* Do not copy the full narration.
+* Use exact dates, names, locations, and numbers where important.
+* Combine date, time, and location when they appear in the same scene.
+* Add a short designation after a famous name when necessary.
+* Do not reveal information before the narration introduces it.
+* Avoid vague or generic overlays such as:
+
+  * A Dangerous Mission
+  * The Story Begins
+  * Something Shocking Happened
+  * What Happened Next?
+
+## Required output format
+
+Return only a simple list.
+
+Use exactly this format:
+
+Scene Number: Text Overlay
+
+Example:
+
+Scene 1: 27 नवंबर 2020 | अबसर्द, ईरान | 3:24 PM
+Scene 5: Mohsen Fakhrizadeh | Nuclear Scientist
+Scene 19: Nissan Truck Destroyed
+Scene 30: Operation Diamond
+
+Do not include:
+
+* Overlay type
+* Screen location or placement
+* Reason or explanation
+* Scene-block headings
+* Additional editing advice
+* Script summary
+
+Before giving the final output, check that:
+
+* The first 50 scenes contain only the strongest 8–12 overlays.
+* After Scene 50, there is approximately one overlay per 15 scenes.
+* Repeated or unnecessary overlays are removed.
+* Scene numbers exactly match the supplied script.
+* All selected scenes are arranged in chronological order.
+
+Now analyse the complete script and provide only the final overlay list.

@@ -7,6 +7,7 @@
 # After Step 4 (every run, even when Stage C is skipped because prompt.txt exists):
 #   stories/<slug>/image-prompts-only.txt  — one IMAGE PROMPT per line
 #   stories/<slug>/scene.txt               — scene headings + Hindi lines only
+#   stories/<slug>/overlay_hints.txt       — per-scene highlight hints (date, location, …)
 #   stories/<slug>/eleven-labs/            — narration MP3s (if MY_RUN_ELEVENLABS="1")
 #
 # SIMPLE GUIDE — see general-story/README.md (sample: stories/yasin/)
@@ -47,7 +48,11 @@ fi
 
 # Folder name for this episode (letters, digits, dashes OK — no spaces, no slashes).
 # Example: my-doc-series-01
-MY_FOLDER_NAME="cockroach"
+MY_FOLDER_NAME="pojk"
+
+# CMS mirror — story type subfolder under cms-generate-stories/ (general / crime / english / god_story).
+# Set to "" to disable live mirroring.
+MY_CMS_STORY_TYPE="general"
 
 # One number only: 1, 2, 3, or 4 — how far automation should run
 #
@@ -65,7 +70,7 @@ MY_OVERWRITE="0"
 
 # If your script file is NOT story-to-run/story.txt — path from project root, or full path.
 # Used for single-story runs only (when queue.txt is missing or has no active lines).
-MY_CUSTOM_STORY_PATH="general-story/story-to-run/story.txt"
+MY_CUSTOM_STORY_PATH="general-story/story-to-run/pojk"
 
 # Batch queue: slug|story-path per line. Empty or missing file → single-story mode above.
 MY_QUEUE_FILE="general-story/story-to-run/queue.txt"
@@ -216,12 +221,76 @@ run_elevenlabs_audio() {
   "${python}" "${eleven_py}" "${full_story}" --output-dir "${audio_out}"
 }
 
+# ---------------------------------------------------------------------------
+# CMS live mirror — copies pipeline outputs to cms-generate-stories/<type>/<slug>/
+# every 10 seconds while the pipeline runs so you can see progress in real time.
+# ---------------------------------------------------------------------------
+
+_cms_sync_once() {
+  local story="$1"
+  local story_type="${MY_CMS_STORY_TYPE:-}"
+  [[ -z "${story_type}" ]] && return 0
+
+  local src="${ROOT}/stories/${story}"
+  local dst="${REPO_ROOT}/cms-generate-stories/${story_type}/${story}"
+
+  mkdir -p \
+    "${dst}/scenes" \
+    "${dst}/prompts" \
+    "${dst}/image-prompts" \
+    "${dst}/script"
+
+  # Stage B breakdown — appended incrementally slice by slice
+  [[ -f "${src}/output_story_breakdown_${story}.md" ]] && \
+    cp -u "${src}/output_story_breakdown_${story}.md" "${dst}/scenes/"
+
+  # Stage A config
+  [[ -f "${src}/output_config_${story}.md" ]] && \
+    cp -u "${src}/output_config_${story}.md" "${dst}/prompts/"
+
+  # Stage C prompt
+  [[ -f "${src}/prompt.txt" ]] && \
+    cp -u "${src}/prompt.txt" "${dst}/prompts/"
+
+  # Derivative outputs (scene.txt, image-prompts-only.txt, overlay_hints.txt)
+  [[ -f "${src}/scene.txt" ]] && \
+    cp -u "${src}/scene.txt" "${dst}/scenes/"
+  [[ -f "${src}/image-prompts-only.txt" ]] && \
+    cp -u "${src}/image-prompts-only.txt" "${dst}/image-prompts/"
+  [[ -f "${src}/overlay_hints.txt" ]] && \
+    cp -u "${src}/overlay_hints.txt" "${dst}/scenes/"
+
+  # Full story script
+  [[ -f "${src}/FULL_STORY.txt" ]] && \
+    cp -u "${src}/FULL_STORY.txt" "${dst}/script/"
+}
+
+_start_cms_sync() {
+  local story="$1"
+  [[ -z "${MY_CMS_STORY_TYPE:-}" ]] && { echo 0; return; }
+  (
+    while true; do
+      _cms_sync_once "${story}"
+      sleep 10
+    done
+  ) &
+  echo $!
+}
+
+_stop_cms_sync() {
+  local pid="$1"
+  [[ "${pid}" -gt 0 ]] && kill "${pid}" 2>/dev/null || true
+}
+
 run_one_story() {
   local story="$1"
   local story_source="$2"
 
   validate_story_slug "${story}"
   build_pipeline_args "${story}" "${story_source}"
+
+  local cms_type="${MY_CMS_STORY_TYPE:-}"
+  local cms_dst="${REPO_ROOT}/cms-generate-stories/${cms_type}/${story}"
 
   echo ""
   echo "  Package:        general-story/"
@@ -236,10 +305,24 @@ run_one_story() {
   else
     echo "  Story script:   general-story/story-to-run/story.txt (default)"
   fi
+  if [[ -n "${cms_type}" ]]; then
+    echo "  CMS mirror:     cms-generate-stories/${cms_type}/${story}/ (every 10s)"
+  fi
   echo ""
+
+  # Start background CMS mirror
+  local sync_pid
+  sync_pid=$(_start_cms_sync "${story}")
 
   python3 "${PIPELINE_PY}" "${PIPELINE_ARGS[@]}"
   run_elevenlabs_audio "${story}"
+
+  # Stop mirror loop and do one final full sync
+  _stop_cms_sync "${sync_pid}"
+  _cms_sync_once "${story}"
+  if [[ -n "${cms_type}" ]]; then
+    echo "  [cms-mirror] Final sync complete → ${cms_dst}"
+  fi
 }
 
 load_queue_entries() {

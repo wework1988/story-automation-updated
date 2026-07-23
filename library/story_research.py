@@ -17,6 +17,7 @@ from library.fetch_youtube_transcript import (
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_RESEARCH_DIR = REPO_ROOT / "research-storage-stories"
+OUTPUTFINAL_DIRNAME = "outputfinal"
 
 
 def folder_slug_from_title(title: str) -> str:
@@ -34,6 +35,11 @@ def folder_slug_from_title(title: str) -> str:
 def research_folder_slug(research_dir: Path) -> str:
     name = research_dir.name
     return name.removesuffix("-research") if name.endswith("-research") else name
+
+
+def story_output_dir(research_dir: Path) -> Path:
+    """Generated story lives next to transcripts: .../{case}-research/outputfinal/"""
+    return research_dir / OUTPUTFINAL_DIRNAME
 
 
 def search_query_from_title(title: str) -> str:
@@ -124,12 +130,43 @@ def download_video_transcript(
     *,
     role: str,
     languages: list[str],
+    force: bool = False,
+    entries: list[dict] | None = None,
 ) -> dict | None:
+    if entries and not force:
+        for existing in entries:
+            if existing.get("video_id") != video_id:
+                continue
+            filename = existing.get("filename")
+            if not filename:
+                break
+            path = output_dir / filename
+            if path.exists() and path.stat().st_size > 100:
+                print(
+                    f"[research] reusing existing {filename} "
+                    f"({path.stat().st_size:,} bytes, skip download)"
+                )
+                return existing
+
     yt_meta = fetch_yt_metadata(video_id)
     try:
         result, plain = fetch_transcript(video_id, languages)
     except Exception as exc:
         print(f"[research] transcript FAILED ({video_id}): {exc}", file=sys.stderr)
+        if entries:
+            for existing in entries:
+                if existing.get("video_id") != video_id:
+                    continue
+                filename = existing.get("filename")
+                if not filename:
+                    break
+                path = output_dir / filename
+                if path.exists() and path.stat().st_size > 100:
+                    print(
+                        f"[research] using existing file after fetch failure: {filename}",
+                        file=sys.stderr,
+                    )
+                    return existing
         return None
 
     title = yt_meta.get("title") or video_id
@@ -192,10 +229,14 @@ def run_research(
 
     if force or not any(e.get("video_id") == seed_id for e in entries):
         print(f"[research] Downloading seed ({seed_id})")
-        entry = download_video_transcript(seed_id, output_dir, role="seed", languages=languages)
+        entry = download_video_transcript(
+            seed_id, output_dir, role="seed", languages=languages, force=force, entries=entries
+        )
         if entry:
             entries = upsert_entry(entries, entry)
             save_videos_json(videos_json, entries)
+        elif any(e.get("video_id") == seed_id for e in entries):
+            print("[research] Seed download failed — continuing with existing seed transcript on disk")
     else:
         print("[research] Seed already downloaded (use --force to redo)")
 
@@ -223,7 +264,9 @@ def run_research(
         if downloaded >= need_related:
             break
         print(f"[research] Related: {title} ({views:,} views)")
-        entry = download_video_transcript(vid, output_dir, role="related", languages=languages)
+        entry = download_video_transcript(
+            vid, output_dir, role="related", languages=languages, force=force, entries=entries
+        )
         if entry:
             entries = upsert_entry(entries, entry)
             save_videos_json(videos_json, entries)
@@ -252,7 +295,9 @@ def run_research(
     return output_dir
 
 
-def combine_transcripts(research_dir: Path) -> tuple[str, int, list[dict]]:
+def combine_transcripts(
+    research_dir: Path, *, max_related: int | None = None
+) -> tuple[str, int, list[dict]]:
     videos_json = research_dir / "videos.json"
     if not videos_json.exists():
         raise FileNotFoundError(f"No videos.json in {research_dir}")
@@ -264,10 +309,16 @@ def combine_transcripts(research_dir: Path) -> tuple[str, int, list[dict]]:
     blocks: list[str] = []
     total_chars = 0
     used: list[dict] = []
+    related_used = 0
 
     for entry in sorted(
         videos, key=lambda v: (v.get("role") != "seed", -(v.get("view_count") or 0))
     ):
+        role = entry.get("role") or "video"
+        if role != "seed":
+            if max_related is not None and max_related >= 0 and related_used >= max_related:
+                continue
+            related_used += 1
         filename = entry.get("filename")
         if not filename:
             continue
@@ -279,7 +330,6 @@ def combine_transcripts(research_dir: Path) -> tuple[str, int, list[dict]]:
         if not text:
             continue
         title = entry.get("title") or filename
-        role = entry.get("role") or "video"
         header = f"=== {title} ({role}) ===\n{entry.get('youtube_url', '')}"
         blocks.append(f"{header}\n\n{text}")
         total_chars += len(text)

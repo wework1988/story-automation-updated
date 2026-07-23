@@ -3,10 +3,10 @@
 Unified story agent: research YouTube transcripts + generate story by type.
 
 Queue file (default queue.txt):
-  URL,related_count,story_type[,folder_name]
+  URL,duration_minutes,story_type[,folder_name]
 
 Or single video:
-  --video-url URL --type crime --related 25
+  --video-url URL --type crime --duration 5
 """
 
 from __future__ import annotations
@@ -38,7 +38,7 @@ def log(msg: str) -> None:
 @dataclass
 class StoryJob:
     url: str
-    related: int
+    duration_minutes: int
     story_type: str
     folder_name: str | None = None
 
@@ -51,7 +51,7 @@ def parse_queue_line(line: str, line_no: int) -> StoryJob | None:
     parts = [p.strip() for p in stripped.split(",")]
     if len(parts) < 3:
         raise ValueError(
-            f"Line {line_no}: expected URL,related_count,story_type — got: {line!r}"
+            f"Line {line_no}: expected URL,duration_minutes,story_type — got: {line!r}"
         )
 
     url = parts[0]
@@ -59,15 +59,20 @@ def parse_queue_line(line: str, line_no: int) -> StoryJob | None:
         raise ValueError(f"Line {line_no}: invalid YouTube URL: {url!r}")
 
     try:
-        related = int(parts[1])
+        duration_minutes = int(parts[1])
     except ValueError as exc:
-        raise ValueError(f"Line {line_no}: related_count must be an integer") from exc
-    if related < 0:
-        raise ValueError(f"Line {line_no}: related_count must be >= 0")
+        raise ValueError(f"Line {line_no}: duration_minutes must be an integer") from exc
+    if duration_minutes < 1:
+        raise ValueError(f"Line {line_no}: duration_minutes must be >= 1")
 
     story_type = gen.normalize_story_type(parts[2])
     folder_name = parts[3] if len(parts) > 3 else None
-    return StoryJob(url=url, related=related, story_type=story_type, folder_name=folder_name)
+    return StoryJob(
+        url=url,
+        duration_minutes=duration_minutes,
+        story_type=story_type,
+        folder_name=folder_name,
+    )
 
 
 def load_queue(path: Path) -> list[StoryJob]:
@@ -124,7 +129,11 @@ def process_job(job: StoryJob, *, args, state: dict) -> None:
     seed_title = seed_meta.get("title") or video_id
 
     log(f"=== {seed_title}")
-    log(f"Type: {job.story_type} | Related videos: {job.related}")
+    log(
+        f"Type: {job.story_type} | Duration: {job.duration_minutes} min "
+        f"({gen.target_chars_from_minutes(job.duration_minutes):,} chars) | "
+        f"Related videos: {args.related}"
+    )
 
     if args.generate_only:
         log("Generate-only — using existing research")
@@ -135,8 +144,8 @@ def process_job(job: StoryJob, *, args, state: dict) -> None:
             job.url,
             output_base=args.research_dir_base,
             folder_name=job.folder_name,
-            related_count=job.related,
-            search_limit=max(job.related * 2, 25),
+            related_count=args.related,
+            search_limit=max(args.related * 2, 25),
             min_views=args.min_views,
             languages=args.lang,
             force=args.force,
@@ -146,16 +155,31 @@ def process_job(job: StoryJob, *, args, state: dict) -> None:
         log(f"Research complete: {research_dir}")
         return
 
-    combined, source_chars, used_videos = research.combine_transcripts(research_dir)
-    target_chars = source_chars + args.extra_chars
+    combined, source_chars, used_videos = research.combine_transcripts(
+        research_dir, max_related=args.related
+    )
+    target_chars = gen.compute_target_chars(
+        job.story_type,
+        source_chars,
+        len(used_videos),
+        duration_minutes=job.duration_minutes,
+        extra_chars=args.extra_chars,
+        target_override=args.target_chars,
+    )
     slug = gen.story_slug(seed_title)
     prompt_path = Path(args.prompt) if args.prompt else gen.PROMPTS[job.story_type]
 
     log(f"Combined source: {source_chars:,} chars from {len(used_videos)} transcript(s)")
-    log(f"Target length: {target_chars:,} chars (+{args.extra_chars:,})")
+    log(f"Target story length: {job.duration_minutes} min → {target_chars:,} chars")
 
-    prompt = gen.build_prompt_for_type(job.story_type, prompt_path, combined, target_chars)
-    story_dir = args.output_dir / job.story_type / research.research_folder_slug(research_dir)
+    prompt = gen.build_prompt_for_type(
+        job.story_type,
+        prompt_path,
+        combined,
+        target_chars,
+        duration_minutes=job.duration_minutes,
+    )
+    story_dir = research.story_output_dir(research_dir)
 
     if args.prepare_only:
         story_dir.mkdir(parents=True, exist_ok=True)
@@ -165,6 +189,8 @@ def process_job(job: StoryJob, *, args, state: dict) -> None:
         return
 
     log("Step 2/2 — generating story")
+    if args.mode == "browser":
+        log("Using claude.ai in your browser (https://claude.ai/new) — not Cursor CLI")
     raw_response = gen.call_llm(
         prompt,
         provider=args.provider,
@@ -193,6 +219,7 @@ def process_job(job: StoryJob, *, args, state: dict) -> None:
         raw_response=raw_response,
         story_text=story_text,
         video_count=len(used_videos),
+        duration_minutes=job.duration_minutes,
     )
 
     state["processed"][state_key] = {
@@ -201,6 +228,7 @@ def process_job(job: StoryJob, *, args, state: dict) -> None:
         "title": seed_title,
         "research_dir": str(research_dir),
         "output_dir": str(story_dir),
+        "duration_minutes": job.duration_minutes,
         "source_characters": source_chars,
         "output_characters": len(story_text),
         "processed_at": datetime.now(timezone.utc).isoformat(),
@@ -209,6 +237,7 @@ def process_job(job: StoryJob, *, args, state: dict) -> None:
 
     log(f"Story saved ({len(story_text):,} chars): {story_path}")
     log(f"Research: {research_dir}")
+    log(f"Output folder: {story_dir}")
 
 
 def show_status(output_dir: Path) -> int:
@@ -233,20 +262,38 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--queue", default=str(DEFAULT_QUEUE), help="Queue file path")
     parser.add_argument("--video-url", help="Single video URL (instead of queue)")
     parser.add_argument("--type", dest="story_type", help="Story type for --video-url")
-    parser.add_argument("--related", type=int, default=5, help="Related videos for --video-url")
+    parser.add_argument(
+        "--duration",
+        type=int,
+        default=12,
+        help="Story duration in minutes for --video-url (default: 12)",
+    )
+    parser.add_argument(
+        "--related",
+        type=int,
+        default=5,
+        help="How many related YouTube videos to download for research (default: 5)",
+    )
     parser.add_argument("--folder", help="Research folder name override")
     parser.add_argument("--research-dir-base", type=Path, default=research.DEFAULT_RESEARCH_DIR)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--research-dir", type=Path, help="Existing research (with --generate-only)")
-    parser.add_argument("--extra-chars", type=int, default=1000)
+    parser.add_argument("--extra-chars", type=int, default=1000,
+                        help="Added to default target when using multiple transcripts (default: 1000)")
+    parser.add_argument("--target-chars", type=int,
+                        help="Override output script length in characters")
     parser.add_argument("--prompt", help="Override master prompt file")
     parser.add_argument("--lang", nargs="+", default=["hi", "en"])
     parser.add_argument("--min-views", type=int, default=10_000)
     parser.add_argument("--provider", choices=("claude", "chatgpt"), default="claude")
-    parser.add_argument("--mode", choices=("claude-code", "browser", "api"), default="claude-code")
-    parser.add_argument("--browser", choices=("firefox", "cdp"), default="firefox")
-    parser.add_argument("--firefox-profile", default=gen.DEFAULT_FIREFOX_PROFILE)
-    parser.add_argument("--cdp-url")
+    parser.add_argument("--mode", choices=("claude-code", "browser", "api"), default="browser",
+                        help="browser = claude.ai in Chrome (default); claude-code = Cursor CLI")
+    parser.add_argument("--browser", choices=("chrome", "cdp"), default="cdp",
+                        help="cdp = attach to Chrome from start-debug-browser.sh (default)")
+    parser.add_argument("--firefox-profile", default=gen.DEFAULT_FIREFOX_PROFILE,
+                        help="Chrome profile directory name (Default, Profile 1, …)")
+    parser.add_argument("--cdp-url", default="http://127.0.0.1:9222",
+                        help="Chrome remote debugging URL (with --browser cdp)")
     parser.add_argument("--timeout", type=int, default=3600)
     parser.add_argument("--claude-code-model", default=None)
     parser.add_argument("--model", default=None)
@@ -280,7 +327,7 @@ def main() -> int:
         jobs = [
             StoryJob(
                 url=args.video_url,
-                related=args.related,
+                duration_minutes=args.duration,
                 story_type=gen.normalize_story_type(args.story_type),
                 folder_name=args.folder,
             )

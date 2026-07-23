@@ -12,10 +12,10 @@ For each job in your queue:
 2. **Combine** — merges all transcripts into one source block
 3. **Prompt** — injects the source into the correct master prompt for the story type
 4. **Generate** — sends the prompt to Claude (default: Claude Code CLI)
-5. **Save** — writes the final story and metadata to `story-agent/output/`
+5. **Save** — writes the final story and metadata to `research-storage-stories/{case}-research/outputfinal/`
 
 ```
-YouTube URL  →  research-storage-stories/  →  Claude  →  story-agent/output/{type}/{slug}/
+YouTube URL  →  research-storage-stories/{case}-research/  →  Claude  →  .../outputfinal/
 ```
 
 ## Setup
@@ -24,11 +24,23 @@ From the repo root:
 
 ```bash
 pip install -r story-agent/requirements.txt
-claude auth login          # one-time; uses your claude.ai Pro login
-claude auth status         # should show loggedIn: true
+playwright install chromium
 ```
 
-Optional: add `ANTHROPIC_API_KEY` to the repo `.env` if you want `--mode api` instead of Claude Code CLI.
+**Browser mode (default):** uses your logged-in session at [claude.ai/new](https://claude.ai/new) — not Cursor.
+
+```bash
+# Terminal 1 — quit Chrome first, then:
+./story-agent/start-debug-browser.sh
+
+# Terminal 2
+./story-agent/run.sh
+```
+
+Pick **Sonnet** in the claude.ai UI if prompted. The agent pastes the prompt and waits for the full response.
+
+Optional: `claude auth login` only if you use `--mode claude-code` (Cursor CLI).
+Optional: add `ANTHROPIC_API_KEY` to `.env` for `--mode api`.
 
 ## Quick start
 
@@ -49,25 +61,27 @@ python3 story-agent/story_agent.py --status
 One story per line in `story-agent/queue.txt`:
 
 ```
-URL,related_count,story_type[,folder_name]
+URL,duration_minutes,story_type[,folder_name]
 ```
 
 | Field | Example | Description |
 |-------|---------|-------------|
 | URL | `https://www.youtube.com/watch?v=VIDEO_ID` | Seed YouTube video |
-| related_count | `25` | How many related videos to download (0 = seed only) |
+| duration_minutes | `5` | Target story length in minutes (crime/general: 1 min = 1,000 Hindi chars) |
 | story_type | `crime` | `crime` \| `general` \| `english` \| `god` |
 | folder_name | `my-case-research` | Optional research folder name under `research-storage-stories/` |
+
+Related videos for research default to **5** (override with `--related 3` on the command line).
 
 Lines starting with `#` and blank lines are ignored.
 
 **Examples:**
 
 ```
-https://www.youtube.com/watch?v=_rZLnotPd5Y,22,crime
-https://www.youtube.com/watch?v=ABC123,5,general
-https://www.youtube.com/watch?v=XYZ789,10,english
-https://www.youtube.com/watch?v=GOD123,3,god,my-ekadashi-research
+https://www.youtube.com/watch?v=_rZLnotPd5Y,5,crime
+https://www.youtube.com/watch?v=ABC123,12,general
+https://www.youtube.com/watch?v=XYZ789,15,english
+https://www.youtube.com/watch?v=GOD123,10,god,my-ekadashi-research
 ```
 
 ### Single video (no queue file)
@@ -76,7 +90,8 @@ https://www.youtube.com/watch?v=GOD123,3,god,my-ekadashi-research
 ./story-agent/run.sh \
   --video-url "https://www.youtube.com/watch?v=VIDEO_ID" \
   --type crime \
-  --related 25
+  --duration 5 \
+  --related 5
 ```
 
 ## Story types
@@ -86,7 +101,7 @@ https://www.youtube.com/watch?v=GOD123,3,god,my-ekadashi-research
 | `crime` | `story-making-prompts/crime-story-claude-19th-june-with-characters` | Hindi |
 | `general` | `story-making-prompts/v1-claude-latest-19june-with-charaacters` | Hindi |
 | `english` | `story-making-prompts/english-story-master` | English |
-| `god` | Same as general + mythology/devotional notes | Hindi |
+| `god` | `story-making-prompts/god story` | Hindi |
 
 Target story length = combined transcript length **+ 1,000 characters** (override with `--extra-chars`).
 
@@ -114,12 +129,15 @@ Target story length = combined transcript length **+ 1,000 characters** (overrid
 # Lower view threshold for related videos
 ./story-agent/run.sh --min-views 5000
 
-# Use Anthropic API instead of Claude Code CLI
-./story-agent/run.sh --mode api
+# Browser mode (default — claude.ai in Chrome)
+./story-agent/start-debug-browser.sh   # terminal 1
+./story-agent/run.sh                   # terminal 2
 
-# Browser mode (logged-in Chrome on claude.ai)
-./story-agent/start-debug-browser.sh   # in a separate terminal, if needed
-./story-agent/run.sh --mode browser
+# Cursor / Claude Code CLI instead of browser
+./story-agent/run.sh --mode claude-code
+
+# Anthropic API
+./story-agent/run.sh --mode api
 ```
 
 ## Output locations
@@ -133,14 +151,24 @@ research-storage-stories/{topic}-research/
 └── research-meta.json      # seed URL, search query, counts
 ```
 
-### Generated stories
+### Generated stories (same research folder)
 
 ```
-story-agent/output/{type}/{slug}/
-├── FULL_STORY.txt          # final script (extract FULL SCRIPT section)
-├── prompt.txt              # prompt sent to Claude
-├── raw.md                  # full Claude response
-└── meta.json               # char counts, video URL, timestamps
+research-storage-stories/{topic}-research/
+├── {Video Title}.txt       # transcripts (step 1)
+├── videos.json
+├── research-meta.json
+└── outputfinal/            # generated story (step 2)
+    ├── FULL_STORY.txt      # final script — main file
+    ├── prompt.txt
+    ├── raw.md
+    └── meta.json
+```
+
+**Example:**
+
+```
+research-storage-stories/ketan-agarwal-case-research/outputfinal/FULL_STORY.txt
 ```
 
 Processed jobs are tracked in `story-agent/output/processed.json`. Already-done jobs are skipped unless you pass `--force`.
@@ -151,8 +179,8 @@ Story **data** stays local (see `.gitignore`):
 
 | Ignored | Contents |
 |---------|----------|
-| `research-storage-stories/` | Downloaded YouTube transcripts |
-| `story-agent/output/` | Generated scripts, prompts, raw Claude output |
+| `research-storage-stories/**/outputfinal/` | Generated scripts, prompts, raw Claude output |
+| `story-agent/output/processed.json` | Job dedup state only |
 | `*/story-to-run/*` (except `queue.txt`) | Raw story scripts |
 | `*/stories/` | Pipeline-generated scene/prompt outputs |
 

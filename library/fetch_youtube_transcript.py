@@ -85,12 +85,85 @@ def fetch_yt_metadata(video_id: str) -> dict:
         }
 
 
-def fetch_transcript(video_id: str, languages: list[str] | None = None) -> tuple[list, str]:
-    api = YouTubeTranscriptApi()
+def _parse_vtt_to_plain(vtt_text: str) -> str:
+    lines: list[str] = []
+    for line in vtt_text.splitlines():
+        line = line.strip()
+        if not line or line.startswith("WEBVTT") or line.startswith("Kind:") or line.startswith("Language:"):
+            continue
+        if re.match(r"^\d+$", line):
+            continue
+        if "-->" in line:
+            continue
+        if line.startswith("NOTE"):
+            continue
+        lines.append(line)
+    # de-dupe consecutive identical lines (common in auto-captions)
+    deduped: list[str] = []
+    for line in lines:
+        if not deduped or deduped[-1] != line:
+            deduped.append(line)
+    return " ".join(deduped)
+
+
+def fetch_transcript_ytdlp(video_id: str, languages: list[str] | None = None) -> tuple[list, str]:
+    """Fallback when youtube-transcript-api is IP-blocked."""
+    import tempfile
+
     langs = languages or ["hi", "en"]
-    result = api.fetch(video_id, languages=langs)
-    plain = " ".join(segment.text for segment in result)
-    return result, plain
+    sub_langs = ",".join([*langs, "en", "hi", "en-orig"])
+    url = f"https://www.youtube.com/watch?v={video_id}"
+
+    with tempfile.TemporaryDirectory(prefix="yt-subs-") as tmp:
+        out_base = str(Path(tmp) / "sub")
+        cmd = [
+            sys.executable,
+            "-m",
+            "yt_dlp",
+            "--skip-download",
+            "--write-auto-sub",
+            "--write-sub",
+            "--sub-langs",
+            sub_langs,
+            "--convert-subs",
+            "vtt",
+            "--no-playlist",
+            "-o",
+            out_base,
+            url,
+        ]
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+        if proc.returncode != 0:
+            err = (proc.stderr or proc.stdout or "").strip()
+            raise RuntimeError(f"yt-dlp subtitle fetch failed: {err[:500]}")
+
+        vtt_files = sorted(Path(tmp).glob("*.vtt"), key=lambda p: p.stat().st_size, reverse=True)
+        if not vtt_files:
+            raise RuntimeError("yt-dlp did not produce any subtitle file")
+
+        plain = _parse_vtt_to_plain(vtt_files[0].read_text(encoding="utf-8", errors="replace"))
+        if len(plain) < 50:
+            raise RuntimeError("yt-dlp subtitle file was too short or empty")
+        return [], plain
+
+
+def fetch_transcript(video_id: str, languages: list[str] | None = None) -> tuple[list, str]:
+    langs = languages or ["hi", "en"]
+    try:
+        api = YouTubeTranscriptApi()
+        result = api.fetch(video_id, languages=langs)
+        plain = " ".join(segment.text for segment in result)
+        return result, plain
+    except Exception as api_exc:
+        try:
+            result, plain = fetch_transcript_ytdlp(video_id, langs)
+            print(f"[transcript] youtube-transcript-api blocked — used yt-dlp for {video_id}", file=sys.stderr)
+            return result, plain
+        except Exception as ytdlp_exc:
+            raise RuntimeError(
+                f"Transcript fetch failed for {video_id}. "
+                f"API error: {api_exc}. yt-dlp fallback: {ytdlp_exc}"
+            ) from ytdlp_exc
 
 
 def load_metadata(metadata_file: Path) -> list[dict]:

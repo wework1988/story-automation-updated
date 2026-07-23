@@ -1,0 +1,13 @@
+Words to avoid (high flag-risk, especially near a real name)
+Crime/accusation labels
+perpetrator, criminal, war criminal, murderer, killer
+Character/moral judgment labels
+tyrant, monster, villain, madman, despot (as a descriptor of the person, not just "dictator" used descriptively)
+Violence-intent / emotional-violence words
+rage, fury, wrath, cruelty, cruel, brutal, brutality, savage, savagery, menacing, sadistic, bloodthirsty
+Explicit/graphic words (even inside "no ___" negatives)
+gore, gory, mutilation, corpse, massacre, slaughter, torture, execution (these get keyword-matched regardless of "no" in front)
+Direct threat/harm framing
+violent betrayal, violent act, act of violence, imminent violence
+Safe substitutes that carry the same emotional weight
+Instead ofUsetyrant / tyrant's ragepowerful man / powerful man's fury (or just "intensity," "displeasure")perpetratora figure, someone, a presencecruelty / sudden crueltyintensity, sudden sharpness, unpredictabilitymenacingcommanding, looming, imposingviolent betrayalbitter falling-out, sudden ruptureraw gesture of violenceraw gesture of forcerage / furyintense demand, sharp displeasure, mounting pressuremassacre / slaughterconflict, clash, confrontationno explicit goredrop this line entirely — don't include the word at all

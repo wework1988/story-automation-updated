@@ -590,22 +590,28 @@ moment with one primary subject, one camera setup, and one emotional or
 narrative purpose.
 
 SAFE 5-SECOND AUDIO FIT TARGET — spoken rhythm is authoritative:
+
+HARD CEILING — NON-NEGOTIABLE:
+A Hindi line MUST NOT exceed 25 spoken words OR 100 visible characters,
+whichever limit is reached first. If a proposed line exceeds either limit,
+it MUST be split. There are no exceptions, no "length exception accepted"
+workarounds, and no Breakdown note overrides for this ceiling.
+Split at the nearest valid sentence-level marker: । ? ! close quote or
+a strong full-clause em-dash (—).
+
 - IDEAL RANGE: 8–14 spoken Hindi/Hinglish words. This is the cleanest range
   for 5-second clips and should be the default target.
 - FLEX RANGE: 15–18 spoken words. Allow this only when the line is smooth,
   grammatically complete, visually indivisible, and still sounds natural in
   one 5-second narration beat.
-- MUST-SPLIT REVIEW: 19+ spoken words. Re-check for a safe complete-unit split.
-  Most 19–21 word lines need more than 5 seconds unless spoken very fast.
-- ALMOST ALWAYS INVALID: 22+ spoken words. Split unless the source sentence is
-  truly indivisible and any split would create a broken fragment, comma-stub,
-  or false visual beat.
-- READABILITY WARNING: 96+ visible characters. Character count is not the main
-  pacing rule, but 96+ visible characters often signals overloaded narration
-  and must trigger a split review.
-- TRUE FAILURE: any line above 18 spoken words is invalid whenever a safe split
-  exists that preserves source wording, sentence integrity, and the one-visual-
-  beat mandate.
+- MUST-SPLIT: 19–24 spoken words OR 96–99 visible characters. You MUST split
+  unless the entire source clause has no internal punctuation at all (no comma,
+  no em-dash, no semicolon). If any internal punctuation exists, split there.
+- HARD STOP: 25+ spoken words OR 100+ visible characters. ALWAYS split.
+  No exceptions whatsoever. Find the nearest clean split point — never emit
+  a line that exceeds this ceiling under any circumstances.
+- TRUE FAILURE: any line above the HARD CEILING is invalid output regardless
+  of story type, sentence complexity, or narrative context.
 
 5-SECOND AUDIO FIT TEST:
 Before finalizing any Hindi line, silently ask:
@@ -613,7 +619,9 @@ Before finalizing any Hindi line, silently ask:
 one 5-second clip?”
 - If YES, keep it only if it also satisfies the one-visual-beat mandate.
 - If NO and a safe split exists, split it.
-- If NO but no safe split exists, keep it only as a rare length exception.
+- If NO and no preferred split exists, split at a comma as a last resort — a
+  comma split is always better than emitting a line above the HARD CEILING.
+  A line above the HARD CEILING is never acceptable under any circumstances.
 
 WORD COUNT METHOD:
 Count spoken tokens separated by spaces in the Hindi line, including English
@@ -633,8 +641,10 @@ Acceptable short lines:
 
 Acceptable longer lines:
 - 15–18 words only when smooth, indivisible, and still natural in 5 seconds.
-- 19+ words only after split review.
-- 22+ words only as a rare exception with a clear Breakdown note.
+- 19–24 words only after confirming no valid split point exists (no comma,
+  no em-dash, no sentence stop inside the clause).
+- 25+ words: NEVER ACCEPTABLE. Always split.
+- 100+ visible characters: NEVER ACCEPTABLE. Always split.
 
 Do not default to one sentence = one scene.
 
@@ -657,7 +667,8 @@ MERGE LIMIT UNDER 5-SECOND AUDIO FIT TARGET:
 Mandatory merge patterns still apply, but do NOT merge two complete short
 sentences if the combined Hindi line becomes too long for one natural 5-second
 beat. If the merged line reaches 19+ words, review for split. If it reaches
-22+ words, split unless it is truly one indivisible beat.
+25+ words OR 100+ visible characters, split unconditionally — the HARD CEILING
+applies to merged lines too, with no exceptions.
 
 MINIMUM-LENGTH MERGE:
 Before emitting any scene below ~5–6 words, check:
@@ -699,7 +710,10 @@ If no, split.
 But split only at valid sentence-level markers:
 ।  ?  !  close quote  or a strong full-clause dash.
 
-Never split on an internal comma.
+Prefer not to split on an internal comma. However, when all options above
+(।  ?  !  close quote  em-dash  clause marker) are exhausted AND the line
+exceeds 25 spoken words or 100 visible characters, a comma split is required.
+A line above the HARD CEILING cannot be kept intact — comma split it.
 
 SAFE COMPLETE-UNIT SPLIT LADDER:
 When a scene line is above 18 spoken words, above 22 spoken words, or above 95
@@ -722,11 +736,16 @@ visible characters, try to split in this exact order:
    `मगर`, `और`, `क्योंकि`, `जहाँ`, `वहाँ` ONLY when both resulting parts remain
    understandable complete units and preserve exact source wording.
 
-5. NO SAFE SPLIT:
-   Keep the sentence intact and write:
-   Breakdown note: Length exception accepted because source sentence has no
-   safe complete-unit split, even though it may exceed the 5-second audio-fit
-   target.
+5. COMMA BOUNDARY (last resort):
+   When all options 1–4 are exhausted and the line still exceeds 25 spoken
+   words or 100 visible characters, split at the strongest comma boundary
+   where both sides have at least 4 words and neither side ends mid-clause
+   with a trailing comma. Write:
+   Breakdown note: Comma-boundary split — no sentence terminator or clause
+   marker available; split at comma to respect the HARD CEILING.
+
+   There is no "Length exception accepted" path. A line above the HARD
+   CEILING is invalid output. Always find a split point.
 
 NO-BROKEN-SCENE RULE:
 Never split just to satisfy length if the result ends with a comma, trailing

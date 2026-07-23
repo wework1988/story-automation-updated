@@ -1,14 +1,23 @@
 #!/usr/bin/env bash
 # Unified story agent: research transcripts + generate story by type.
 #
-#   ./story-agent/run.sh                              # run queue.txt
-#   ./story-agent/run.sh --video-url URL --type crime --related 25
-#   ./story-agent/run.sh --research-only              # transcripts only
-#   ./story-agent/run.sh --prepare-only               # prompt only
+# Default: opens claude.ai in YOUR browser (not Cursor CLI).
+#
+#   Terminal 1 — start Chrome with claude.ai (keep open):
+#     ./story-agent/start-debug-browser.sh
+#
+#   Terminal 2 — run the agent:
+#     ./story-agent/run.sh
+#
+# Other modes:
+#   ./story-agent/run.sh --mode claude-code    # Cursor / Claude Code CLI
+#   ./story-agent/run.sh --mode api            # ANTHROPIC_API_KEY
+#   ./story-agent/run.sh --research-only
+#   ./story-agent/run.sh --generate-only --research-dir research-storage-stories/FOLDER
 #
 # Setup:
 #   pip install -r story-agent/requirements.txt
-#   claude auth login
+#   playwright install chromium
 
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"

@@ -1,14 +1,17 @@
 # Story queue — one story per line
 # Run: ./story-agent/run.sh
 #
-# Format:  URL,related_count,story_type[,folder_name]
+# Format:  URL,duration_minutes,story_type[,folder_name]
 #
+#   duration_minutes — target story length (1 min = 1,000 Hindi chars in crime prompt)
 #   story_type: crime | general | english | god
 #
+# Related YouTube videos for research: default 5 (override with --related 3)
+#
 # Examples:
-#   https://www.youtube.com/watch?v=TUvVM05QXOE,25,crime
-#   https://www.youtube.com/watch?v=ABC123,5,general
-#   https://www.youtube.com/watch?v=XYZ789,10,english
-#   https://www.youtube.com/watch?v=GOD123,3,god,my-custom-folder
+#   https://www.youtube.com/watch?v=TUvVM05QXOE,12,crime
+#   https://www.youtube.com/watch?v=ABC123,8,general
+#   https://www.youtube.com/watch?v=XYZ789,15,english
+#   https://www.youtube.com/watch?v=GOD123,10,god,my-custom-folder
 
-https://www.youtube.com/watch?v=_rZLnotPd5Y,22,crime
+https://www.youtube.com/watch?v=_rZLnotPd5Y,25,crime
