@@ -69,6 +69,7 @@ from __future__ import annotations
 
 import argparse
 import atexit
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import configparser
 import dataclasses
 import os
@@ -1140,6 +1141,8 @@ def bootstrap_deepseek_ini(path: pathlib.Path) -> bool:
     int_env("STAGE_B_SEGMENT_OVERLAP_CHARS", "token_budget", "stage_b_segment_overlap_chars")
     int_env("STAGE_B_MIN_CHARS_PER_SEGMENT", "token_budget", "stage_b_min_chars_per_segment")
     bool_env("STAGE_B_CAP_SEGMENTS_BY_STORY_LENGTH", "token_budget", "stage_b_cap_segments_by_story_length")
+    int_env("STAGE_B_PARALLEL_CALLS", "token_budget", "stage_b_parallel_calls")
+    int_env("STAGE_C_PARALLEL_BATCHES", "token_budget", "stage_c_parallel_batches")
 
     set_env("DEEPSEEK_GENRE", trimmed("genre_hint", "mood_hint"))
 
@@ -1649,6 +1652,7 @@ def run_stage_b_deepseek(
     progress: Optional[PipelineProgressTracker] = None,
     story_segments: int = 1,
     segment_overlap_chars: int = 0,
+    parallel_calls: int = 1,
 ) -> str:
     """
     Stage B scene breakdown.
@@ -1658,6 +1662,7 @@ def run_stage_b_deepseek(
     once at the end with normalized spacing (helps avoid ``finish_reason=length`` and shows progress on disk).
 
     ``story_segments <= 0`` selects **auto** slice count from story length (see ``resolve_stage_b_segment_count``).
+    ``parallel_calls`` controls concurrent Stage B slice requests (safe default: 4).
     """
     template = read(tmpl_b)
     static_prefix, variable_suffix = split_at_part3(template)
@@ -1710,8 +1715,10 @@ def run_stage_b_deepseek(
     overlap_use = max(0, int(segment_overlap_chars))
     slices = apply_story_segment_overlap(raw_slices, overlap_use)
     seg_total = len(slices)
+    parallel_workers = max(1, min(seg_total, int(parallel_calls)))
     log(
-        f"Stage B: multi-call mode — {seg_total} story slice(s); overlap≈{overlap_use} chars · "
+        f"Stage B: multi-call mode — {seg_total} story slice(s); overlap≈{overlap_use} chars; "
+        f"parallel={parallel_workers} · "
         f"merge → {out_path.name}"
     )
 
@@ -1721,33 +1728,8 @@ def run_stage_b_deepseek(
     # Truncate so reruns start clean; each successful slice is appended right away (watch file grow mid-run).
     write(out_path, "")
 
-    for i, slice_text in enumerate(slices):
-        banner = stage_b_pipeline_split_banner(i, seg_total, scenes_through)
-        story_payload = slice_text.strip() + "\n\n" + banner
-        body = build_body(story_payload)
-        write(mirror, static_prefix + body)
-
-        label = f"stage-b slice {i + 1}/{seg_total}"
-        note = f"story slice {i + 1}/{seg_total}"
-        if progress and progress.enabled:
-            progress.stage_b_waiting_api(outfile_name=out_path.name, segment_note=note)
-        else:
-            log(f"Stage B: slice {i + 1}/{seg_total} — calling DeepSeek...")
-
-        text, finish_b = call_deepseek(
-            system_prompt=static_prefix,
-            user_prompt=body,
-            max_tokens=max_b,
-            label=label,
-            terminal=terminal,
-            artifact_path=out_path,
-            **client_kwargs,
-        )
-        abort_if_truncated(finish_b, label, "DEEPSEEK_MAX_TOKENS_B")
-        chunk_raw = text.strip()
-        chunk, scaffold_dropped = strip_stage_b_slice_scaffolding(chunk_raw)
-        if chunk_raw and scaffold_dropped:
-            scaffold_total += scaffold_dropped
+    def append_slice_chunk(slice_idx: int, chunk: str) -> None:
+        nonlocal scenes_through
         if chunk:
             merged_chunks.append(chunk)
             cumulative = "\n\n".join(merged_chunks)
@@ -1762,11 +1744,87 @@ def run_stage_b_deepseek(
             except OSError:
                 sz = 0
             log(
-                f"Stage B: slice {i + 1}/{seg_total} appended to {out_path.name} "
+                f"Stage B: slice {slice_idx + 1}/{seg_total} appended to {out_path.name} "
                 f"(~{len(chunk)} chars this call · file ≈{sz} bytes · cumulative Scene≈{scenes_through})"
             )
         else:
-            log(f"WARN: Stage B slice {i + 1}/{seg_total} returned empty text; skipping append")
+            log(f"WARN: Stage B slice {slice_idx + 1}/{seg_total} returned empty text; skipping append")
+
+    if parallel_workers <= 1:
+        for i, slice_text in enumerate(slices):
+            banner = stage_b_pipeline_split_banner(i, seg_total, scenes_through)
+            story_payload = slice_text.strip() + "\n\n" + banner
+            body = build_body(story_payload)
+            write(mirror, static_prefix + body)
+
+            label = f"stage-b slice {i + 1}/{seg_total}"
+            note = f"story slice {i + 1}/{seg_total}"
+            if progress and progress.enabled:
+                progress.stage_b_waiting_api(outfile_name=out_path.name, segment_note=note)
+            else:
+                log(f"Stage B: slice {i + 1}/{seg_total} — calling DeepSeek...")
+
+            text, finish_b = call_deepseek(
+                system_prompt=static_prefix,
+                user_prompt=body,
+                max_tokens=max_b,
+                label=label,
+                terminal=terminal,
+                artifact_path=out_path,
+                **client_kwargs,
+            )
+            abort_if_truncated(finish_b, label, "DEEPSEEK_MAX_TOKENS_B")
+            chunk_raw = text.strip()
+            chunk, scaffold_dropped = strip_stage_b_slice_scaffolding(chunk_raw)
+            if chunk_raw and scaffold_dropped:
+                scaffold_total += scaffold_dropped
+            append_slice_chunk(i, chunk)
+    else:
+        # Keep output order stable while running DeepSeek calls concurrently.
+        queued_chunks: dict[int, str] = {}
+        next_to_append = 0
+
+        def run_slice(idx: int, slice_text: str) -> tuple[int, str, Optional[str]]:
+            banner = stage_b_pipeline_split_banner(idx, seg_total, 0)
+            story_payload = slice_text.strip() + "\n\n" + banner
+            body = build_body(story_payload)
+            label = f"stage-b slice {idx + 1}/{seg_total}"
+            text, finish_b = call_deepseek(
+                system_prompt=static_prefix,
+                user_prompt=body,
+                max_tokens=max_b,
+                label=label,
+                terminal=terminal,
+                artifact_path=out_path,
+                **client_kwargs,
+            )
+            return idx, text, finish_b
+
+        with ThreadPoolExecutor(max_workers=parallel_workers) as ex:
+            fut_to_idx = {}
+            for i, slice_text in enumerate(slices):
+                note = f"story slice {i + 1}/{seg_total}"
+                if progress and progress.enabled:
+                    progress.stage_b_waiting_api(outfile_name=out_path.name, segment_note=note)
+                else:
+                    log(f"Stage B: slice {i + 1}/{seg_total} — queued for DeepSeek...")
+                fut = ex.submit(run_slice, i, slice_text)
+                fut_to_idx[fut] = i
+
+            for fut in as_completed(fut_to_idx):
+                i = fut_to_idx[fut]
+                label = f"stage-b slice {i + 1}/{seg_total}"
+                idx, text, finish_b = fut.result()
+                abort_if_truncated(finish_b, label, "DEEPSEEK_MAX_TOKENS_B")
+                chunk_raw = text.strip()
+                chunk, scaffold_dropped = strip_stage_b_slice_scaffolding(chunk_raw)
+                if chunk_raw and scaffold_dropped:
+                    scaffold_total += scaffold_dropped
+                queued_chunks[idx] = chunk
+
+                while next_to_append in queued_chunks:
+                    append_slice_chunk(next_to_append, queued_chunks.pop(next_to_append))
+                    next_to_append += 1
 
     merged_flat = "\n\n".join(merged_chunks).strip()
     merged, final_drop = strip_stage_b_slice_scaffolding(merged_flat)
@@ -1989,6 +2047,7 @@ def run_stage_c_deepseek(
     client_kwargs: Mapping[str, Any],
     terminal: Optional[TerminalUi] = None,
     progress: Optional[PipelineProgressTracker] = None,
+    parallel_batches: int = 1,
 ) -> None:
     total = parse_scene_count(breakdown)
     if total <= 0:
@@ -2013,41 +2072,34 @@ def run_stage_c_deepseek(
     )
 
     max_c = int(os.environ.get("DEEPSEEK_MAX_TOKENS_C", "65536"))
-    batch_idx = 0
-    cur = 1
     write(out_path, "")
     saved_max = 0
 
+    windows: list[tuple[int, int, int, str]] = []
+    cur = 1
+    idx = 0
     while cur <= total:
-        batch_idx += 1
+        idx += 1
         end = min(cur + batch_size - 1, total)
-        scene_range = f"Scenes {cur}-{end}"
-        label = f"stage-c batch {batch_idx}/{estimated_batches}"
-        if progress and progress.enabled:
-            progress.stage_c_batch_waiting_api(
-                batch_idx=batch_idx,
-                batches=estimated_batches,
-                cur_scene=cur,
-                total_scenes=total,
-                range_label=scene_range,
-            )
-        else:
-            log_stage_c_progress(
-                scenes_done_through=saved_max,
-                total_scenes=total,
-                batch_idx=batch_idx,
-                estimated_batches=estimated_batches,
-                cur_scene=cur,
-                batch_end_scene=end,
-                phase=f"calling DeepSeek for {scene_range}",
-            )
+        windows.append((idx, cur, end, f"Scenes {cur}-{end}"))
+        cur = end + 1
 
+    parallel_workers = max(1, min(int(parallel_batches), len(windows)))
+    if parallel_workers > 1:
+        log(
+            f"Stage C: parallel mode enabled — windows={len(windows)}, "
+            f"workers={parallel_workers}, batch_size={batch_size}"
+        )
+
+    def fetch_window(window: tuple[int, int, int, str]) -> tuple[int, int, int, dict[int, str], int]:
+        batch_idx, start, end, _scene_range = window
+        label = f"stage-c batch {batch_idx}/{estimated_batches}"
         collected = _fetch_stage_c_scene_blocks(
             static_prefix=static_prefix,
             cached_context=cached_context,
             scene_range_tail=scene_range_tail,
             breakdown=breakdown,
-            range_start=cur,
+            range_start=start,
             range_end=end,
             max_tokens=max_c,
             label=label,
@@ -2056,33 +2108,117 @@ def run_stage_c_deepseek(
             terminal=terminal,
         )
         chars_written = sum(len(b) for b in collected.values())
-        with out_path.open("a", encoding="utf-8") as f:
-            for n in range(cur, end + 1):
-                f.write(collected[n])
+        return batch_idx, start, end, collected, chars_written
 
-        saved_max = max(collected)
-        nr_extra = ""
-        cur = end + 1
+    if parallel_workers <= 1:
+        for batch_idx, start, end, scene_range in windows:
+            if progress and progress.enabled:
+                progress.stage_c_batch_waiting_api(
+                    batch_idx=batch_idx,
+                    batches=estimated_batches,
+                    cur_scene=start,
+                    total_scenes=total,
+                    range_label=scene_range,
+                )
+            else:
+                log_stage_c_progress(
+                    scenes_done_through=saved_max,
+                    total_scenes=total,
+                    batch_idx=batch_idx,
+                    estimated_batches=estimated_batches,
+                    cur_scene=start,
+                    batch_end_scene=end,
+                    phase=f"calling DeepSeek for {scene_range}",
+                )
 
-        if progress and progress.enabled:
-            progress.stage_c_batch_appended(
-                batch_idx=batch_idx,
-                batches=estimated_batches,
-                scenes_saved_through=saved_max,
-                total_scenes=total,
-                chars_written=chars_written,
-                extra_note=nr_extra,
-            )
-        else:
-            log_stage_c_progress(
-                scenes_done_through=saved_max,
-                total_scenes=total,
-                batch_idx=batch_idx,
-                estimated_batches=estimated_batches,
-                cur_scene=min(cur, total + 1),
-                batch_end_scene=end,
-                phase=f"appended ≈{chars_written} chars ({len(collected)} scenes){(' · '+nr_extra) if nr_extra else ''}",
-            )
+            _idx, _start, _end, collected, chars_written = fetch_window((batch_idx, start, end, scene_range))
+            with out_path.open("a", encoding="utf-8") as f:
+                for n in range(start, end + 1):
+                    f.write(collected[n])
+
+            saved_max = max(saved_max, max(collected))
+            if progress and progress.enabled:
+                progress.stage_c_batch_appended(
+                    batch_idx=batch_idx,
+                    batches=estimated_batches,
+                    scenes_saved_through=saved_max,
+                    total_scenes=total,
+                    chars_written=chars_written,
+                    extra_note="",
+                )
+            else:
+                log_stage_c_progress(
+                    scenes_done_through=saved_max,
+                    total_scenes=total,
+                    batch_idx=batch_idx,
+                    estimated_batches=estimated_batches,
+                    cur_scene=min(end + 1, total + 1),
+                    batch_end_scene=end,
+                    phase=f"appended ≈{chars_written} chars ({len(collected)} scenes)",
+                )
+    else:
+        pending_results: dict[int, tuple[int, int, dict[int, str], int]] = {}
+        next_batch_to_flush = 1
+        completed = 0
+        with ThreadPoolExecutor(max_workers=parallel_workers) as ex:
+            fut_to_window = {}
+            for window in windows:
+                batch_idx, start, end, scene_range = window
+                if progress and progress.enabled:
+                    progress.stage_c_batch_waiting_api(
+                        batch_idx=batch_idx,
+                        batches=estimated_batches,
+                        cur_scene=start,
+                        total_scenes=total,
+                        range_label=scene_range,
+                    )
+                else:
+                    log_stage_c_progress(
+                        scenes_done_through=saved_max,
+                        total_scenes=total,
+                        batch_idx=batch_idx,
+                        estimated_batches=estimated_batches,
+                        cur_scene=start,
+                        batch_end_scene=end,
+                        phase=f"queued DeepSeek call for {scene_range}",
+                    )
+                fut = ex.submit(fetch_window, window)
+                fut_to_window[fut] = window
+
+            for fut in as_completed(fut_to_window):
+                batch_idx, start, end, collected, chars_written = fut.result()
+                pending_results[batch_idx] = (start, end, collected, chars_written)
+                completed += 1
+
+                while next_batch_to_flush in pending_results:
+                    flush_start, flush_end, flush_collected, flush_chars = pending_results.pop(next_batch_to_flush)
+                    with out_path.open("a", encoding="utf-8") as f:
+                        for n in range(flush_start, flush_end + 1):
+                            f.write(flush_collected[n])
+                    saved_max = max(saved_max, max(flush_collected))
+                    extra = f"parallel complete {completed}/{estimated_batches}"
+                    if progress and progress.enabled:
+                        progress.stage_c_batch_appended(
+                            batch_idx=next_batch_to_flush,
+                            batches=estimated_batches,
+                            scenes_saved_through=saved_max,
+                            total_scenes=total,
+                            chars_written=flush_chars,
+                            extra_note=extra,
+                        )
+                    else:
+                        log_stage_c_progress(
+                            scenes_done_through=saved_max,
+                            total_scenes=total,
+                            batch_idx=next_batch_to_flush,
+                            estimated_batches=estimated_batches,
+                            cur_scene=min(flush_end + 1, total + 1),
+                            batch_end_scene=flush_end,
+                            phase=(
+                                f"appended ≈{flush_chars} chars ({len(flush_collected)} scenes) · {extra}"
+                            ),
+                        )
+                    next_batch_to_flush += 1
 
     on_disk = parse_stage_c_scene_numbers(read(out_path))
     still_missing = find_missing_prompt_scenes(read(out_path), total)
@@ -2446,6 +2582,26 @@ def main() -> int:
             "INI token_budget.stage_b_segment_overlap_chars. Ignored when segments=1."
         ),
     )
+    parser.add_argument(
+        "--stage-b-parallel-calls",
+        type=int,
+        default=getenv_int("STAGE_B_PARALLEL_CALLS", default=4),
+        metavar="N",
+        help=(
+            "Stage B: run up to N slice calls in parallel (preserves merged scene order). "
+            "INI token_budget.stage_b_parallel_calls / STAGE_B_PARALLEL_CALLS."
+        ),
+    )
+    parser.add_argument(
+        "--stage-c-parallel-batches",
+        type=int,
+        default=getenv_int("STAGE_C_PARALLEL_BATCHES", default=4),
+        metavar="N",
+        help=(
+            "Stage C: run up to N scene windows in parallel (preserves prompt.txt scene order). "
+            "INI token_budget.stage_c_parallel_batches / STAGE_C_PARALLEL_BATCHES."
+        ),
+    )
 
     parser.add_argument(
         "--progress-bar/--no-progress-bar",
@@ -2611,6 +2767,7 @@ def main() -> int:
             progress=progress,
             story_segments=int(args.stage_b_story_segments),
             segment_overlap_chars=max(0, int(args.stage_b_segment_overlap)),
+            parallel_calls=max(1, int(args.stage_b_parallel_calls)),
         ).strip()
 
     if args.max_step <= 3:
@@ -2660,6 +2817,7 @@ def main() -> int:
             client_kwargs=ck,
             terminal=terminal_ui,
             progress=progress,
+            parallel_batches=max(1, int(args.stage_c_parallel_batches)),
         )
 
     if progress.enabled:
