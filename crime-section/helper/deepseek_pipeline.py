@@ -2005,7 +2005,11 @@ def _fetch_stage_c_scene_blocks(
             continue
         needed = set()
 
-    if needed:
+    disable_single_scene_fallback = os.environ.get(
+        "STAGE_C_DISABLE_SINGLE_SCENE_FALLBACK", ""
+    ).strip().lower() in ("1", "true", "yes")
+
+    if needed and not disable_single_scene_fallback:
         missing = sorted(needed)
         for scene_n in missing:
             block = _fetch_stage_c_single_scene_fallback(
@@ -2027,6 +2031,11 @@ def _fetch_stage_c_scene_blocks(
 
     if needed:
         missing = sorted(needed)
+        if disable_single_scene_fallback:
+            log(
+                "WARN: STAGE_C_DISABLE_SINGLE_SCENE_FALLBACK=1, "
+                "skipping per-scene recovery."
+            )
         sys.exit(
             f"error: Stage C could not produce scene(s) {missing} for {label} "
             f"after {max_retries} attempt(s). "
@@ -2354,9 +2363,34 @@ def main() -> int:
         f"{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(pipeline_wall_start))} (local)"
     )
 
+    stage_elapsed_sec: dict[str, float] = {}
+    stage_mode: dict[str, str] = {
+        "stage_a": "not-run",
+        "stage_b": "not-run",
+        "stage_c": "not-run",
+        "derivatives": "not-run",
+    }
+
+    def _mark_stage_timing(stage_key: str, stage_t0: float, mode: str) -> None:
+        stage_elapsed_sec[stage_key] = max(0.0, time.monotonic() - stage_t0)
+        stage_mode[stage_key] = mode
+
     def _log_pipeline_timing_footer() -> None:
         wall_end = time.time()
         dt = time.monotonic() - pipeline_t0
+        log("TIMING stage summary:")
+        for key, label in (
+            ("stage_a", "Stage A"),
+            ("stage_b", "Stage B"),
+            ("stage_c", "Stage C"),
+            ("derivatives", "Derivatives"),
+        ):
+            mode = stage_mode.get(key, "not-run")
+            sec = stage_elapsed_sec.get(key)
+            if sec is None:
+                log(f"TIMING {label}: not run ({mode})")
+            else:
+                log(f"TIMING {label}: {sec:.1f}s ({sec / 60.0:.2f} min) [{mode}]")
         log(
             "TIMING pipeline end "
             f"{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(wall_end))} (local) · "
@@ -2712,12 +2746,14 @@ def main() -> int:
 
     # -------- Stage A --------
     config_block = ""
+    stage_a_t0 = time.monotonic()
     if config_path.is_file() and config_path.stat().st_size > 0 and not args.force:
         if progress.enabled:
             progress.stage_a_using_cache(outfile_name=config_path.name)
         else:
             log(f"Stage A: skipped ({config_path} already populated; use --force to redo)")
         config_block = read(config_path).strip()
+        _mark_stage_timing("stage_a", stage_a_t0, "cache-hit")
     else:
         config_block = run_stage_a_deepseek(
             full_story=full_story,
@@ -2730,6 +2766,7 @@ def main() -> int:
             terminal=terminal_ui,
             progress=progress,
         ).strip()
+        _mark_stage_timing("stage_a", stage_a_t0, "api")
 
     if args.max_step <= 2:
         if progress.enabled:
@@ -2742,6 +2779,7 @@ def main() -> int:
 
     # -------- Stage B --------
     breakdown = ""
+    stage_b_t0 = time.monotonic()
     if breakdown_path.is_file() and breakdown_path.stat().st_size > 0 and not args.force:
         if progress.enabled:
             progress.stage_b_using_cache(outfile_name=breakdown_path.name)
@@ -2754,6 +2792,7 @@ def main() -> int:
         if normalized != breakdown:
             write(breakdown_path, normalized)
             breakdown = normalized
+        _mark_stage_timing("stage_b", stage_b_t0, "cache-hit")
     else:
         breakdown = run_stage_b_deepseek(
             config_block=config_block,
@@ -2769,6 +2808,7 @@ def main() -> int:
             segment_overlap_chars=max(0, int(args.stage_b_segment_overlap)),
             parallel_calls=max(1, int(args.stage_b_parallel_calls)),
         ).strip()
+        _mark_stage_timing("stage_b", stage_b_t0, "api")
 
     if args.max_step <= 3:
         if progress.enabled:
@@ -2781,6 +2821,7 @@ def main() -> int:
 
     # -------- Stage C --------
     fill_gaps = bool(getattr(args, "fill_prompt_gaps", False))
+    stage_c_t0 = time.monotonic()
     if fill_gaps:
         if args.force:
             log("WARN: --fill-prompt-gaps ignores --force (existing scenes are kept)")
@@ -2800,11 +2841,13 @@ def main() -> int:
             terminal=terminal_ui,
             progress=progress,
         )
+        _mark_stage_timing("stage_c", stage_c_t0, "fill-gaps")
     elif prompt_path.is_file() and prompt_path.stat().st_size > 0 and not args.force:
         log(
             f"Stage C: skipped ({prompt_path} already populated; "
             "use --force to redo, or --fill-prompt-gaps for missing scenes only)"
         )
+        _mark_stage_timing("stage_c", stage_c_t0, "cache-hit")
     else:
         run_stage_c_deepseek(
             tmpl_c=tmpl_c,
@@ -2819,17 +2862,20 @@ def main() -> int:
             progress=progress,
             parallel_batches=max(1, int(args.stage_c_parallel_batches)),
         )
+        _mark_stage_timing("stage_c", stage_c_t0, "api")
 
     if progress.enabled:
         progress.pipeline_complete(hint=str(prompt_path))
     else:
         log("DONE")
 
+    derivatives_t0 = time.monotonic()
     run_prompt_derivative_export(
         prompt_path,
         client_kwargs=ck,
         force=bool(args.force),
     )
+    _mark_stage_timing("derivatives", derivatives_t0, "export")
 
     return 0
 
