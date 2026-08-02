@@ -535,12 +535,12 @@ _STAGE_C_DASHES = r"[\-\u2013\u2014]"  # -, – (en), — (em)
 # (missing trailing dashes, different dash glyphs, extra whitespace). We normalize those
 # variants before splitting, so we don't falsely treat a scene as "missing".
 STAGE_C_PROMPT_HEADING_RE = re.compile(
-    rf"^{_STAGE_C_DASHES}{{3,}}\s*Scene\s+(\d+)\s*/\s*~?(\d+)\s*{_STAGE_C_DASHES}{{0,}}\s*$",
+    rf"^{_STAGE_C_DASHES}{{3,}}\s*Scene\s+(\d+)\s*/\s*~?(\d+|\?)\s*{_STAGE_C_DASHES}{{0,}}\s*$",
     re.MULTILINE | re.IGNORECASE,
 )
 
 STAGE_C_PROMPT_HEADING_LOOSE_RE = re.compile(
-    rf"^\s*{_STAGE_C_DASHES}{{0,}}\s*Scene\s+(\d+)\s*/\s*~?(\d+)\s*{_STAGE_C_DASHES}{{0,}}\s*(?:#.*)?$",
+    rf"^\s*{_STAGE_C_DASHES}{{0,}}\s*Scene\s+(\d+)\s*/\s*~?(\d+|\?)\s*{_STAGE_C_DASHES}{{0,}}\s*(?:#.*)?$",
     re.MULTILINE | re.IGNORECASE,
 )
 
@@ -555,6 +555,8 @@ def normalize_stage_c_headings(text: str) -> str:
     def repl(m: re.Match[str]) -> str:
         n = m.group(1)
         total = m.group(2)
+        if total == "?":
+            total = "0"
         return f"--- Scene {n} / ~{total} ---"
 
     return STAGE_C_PROMPT_HEADING_LOOSE_RE.sub(repl, text)
