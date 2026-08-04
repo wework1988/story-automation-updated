@@ -53,9 +53,16 @@ https://www.youtube.com/watch?v=tsAimcI66bo|https://www.youtube.com/watch?v=RiFA
 Use `--mode claude-code` for Cursor CLI, or `--mode api` with `ANTHROPIC_API_KEY`.
 
 **Code layout:**
-- `story-agent/story_agent.py` — CLI + orchestration
+- `story-agent/story_agent.py` — CLI + orchestration (local terminal)
+- `drupal-worker/generate_story.py` — CMS “Write story from YouTube” worker
+- `library/story_pipeline.py` — shared bullet-pointer pipeline
 - `library/story_research.py` — transcript download
 - `library/bullet_pointers.py` — DeepSeek pointer extraction + ledger merge
 - `library/deepseek_client.py` — DeepSeek API client
 - `library/story_generate.py` — prompts + LLM calls
+
+**CMS worker:**
+```bash
+./drupal-worker/run_generate_story.sh --node-id 127
+```
 
