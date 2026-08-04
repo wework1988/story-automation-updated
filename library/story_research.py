@@ -206,12 +206,16 @@ def run_research(
     *,
     output_base: Path = DEFAULT_RESEARCH_DIR,
     folder_name: str | None = None,
-    related_count: int = 5,
-    search_limit: int = 25,
-    min_views: int = 10_000,
     languages: list[str] | None = None,
     force: bool = False,
+    explicit_related_urls: list[str],
 ) -> Path:
+    """Download seed + user-provided source URLs. No automatic YouTube search."""
+    if not explicit_related_urls:
+        raise ValueError(
+            "explicit_related_urls required — provide 2+ YouTube URLs via queue, "
+            "--urls-file, or --video-urls"
+        )
     if languages is None:
         languages = ["hi", "en"]
 
@@ -241,29 +245,13 @@ def run_research(
         print("[research] Seed already downloaded (use --force to redo)")
 
     existing_ids = {e.get("video_id") for e in entries}
-    existing_related = sum(1 for e in entries if e.get("role") == "related")
-    need_related = related_count if force else max(0, related_count - existing_related)
-
-    if need_related <= 0 and not force:
-        print(f"[research] Already have {existing_related} related videos")
-        return output_dir
-
-    print(f"[research] Finding up to {need_related} related videos (min {min_views:,} views)")
-    related = find_related_videos(
-        seed_id,
-        seed_title,
-        related_count=need_related + len(existing_ids),
-        search_limit=search_limit,
-        min_views=min_views,
-    )
-
-    downloaded = 0
-    for vid, title, views in related:
+    want_ids = [extract_video_id(u) for u in explicit_related_urls if u.strip()]
+    want_ids = [vid for vid in want_ids if vid and vid != seed_id]
+    print(f"[research] Downloading {len(want_ids)} provided source URL(s)")
+    for vid in want_ids:
         if vid in existing_ids and not force:
+            print(f"[research] source already present: {vid}")
             continue
-        if downloaded >= need_related:
-            break
-        print(f"[research] Related: {title} ({views:,} views)")
         entry = download_video_transcript(
             vid, output_dir, role="related", languages=languages, force=force, entries=entries
         )
@@ -271,7 +259,8 @@ def run_research(
             entries = upsert_entry(entries, entry)
             save_videos_json(videos_json, entries)
             existing_ids.add(vid)
-            downloaded += 1
+
+    source_count = len([e for e in entries if e.get("video_id")])
 
     (output_dir / "research-meta.json").write_text(
         json.dumps(
@@ -279,10 +268,8 @@ def run_research(
                 "seed_video_id": seed_id,
                 "seed_youtube_url": url,
                 "seed_title": seed_title,
-                "search_query": search_query_from_title(seed_title),
-                "related_requested": related_count,
-                "related_downloaded": downloaded,
-                "min_views": min_views,
+                "source_urls": [url, *explicit_related_urls],
+                "source_count": source_count,
                 "output_dir": str(output_dir),
             },
             ensure_ascii=False,
@@ -291,7 +278,7 @@ def run_research(
         encoding="utf-8",
     )
 
-    print(f"[research] Done: {len(entries)} videos in {output_dir}")
+    print(f"[research] Done: {source_count} videos in {output_dir}")
     return output_dir
 
 

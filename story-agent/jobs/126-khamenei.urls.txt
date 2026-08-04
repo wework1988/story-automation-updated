@@ -1,0 +1,14 @@
+# Node 126 — Khamenei tracking / assassination (4 fixed research sources)
+# First URL = seed (Hindi deep-dive). Rest = explicit related (no YouTube search).
+#
+# Run full pipeline:
+#   ./story-agent/run.sh \
+#     --urls-file story-agent/jobs/126-khamenei.urls.txt \
+#     --type general \
+#     --duration 30 \
+#     --folder 126-khamenei-research
+#
+https://www.youtube.com/watch?v=tsAimcI66bo
+https://www.youtube.com/watch?v=RiFAwUGHjxw
+https://www.youtube.com/watch?v=_SH-lINJoZQ
+https://www.youtube.com/watch?v=W-mcJrfn4hQ

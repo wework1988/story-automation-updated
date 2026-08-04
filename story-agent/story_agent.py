@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
 """
-Unified story agent: research YouTube transcripts + generate story by type.
+Unified story agent: download provided YouTube URLs → pointers → story.
+
+You provide all source URLs (3–6 typical). No automatic YouTube search.
 
 Queue file (default queue.txt):
-  URL,duration_minutes,story_type[,folder_name]
+  URL1|URL2|URL3,duration_minutes,story_type[,folder_name]
 
-Or single video:
-  --video-url URL --type crime --duration 5
+Or:
+  --urls-file story-agent/jobs/my-story.urls.txt --type general --duration 30
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import sys
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -23,6 +26,7 @@ AGENT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(REPO_ROOT))
 
 from library.fetch_youtube_transcript import extract_video_id, fetch_yt_metadata  # noqa: E402
+from library import bullet_pointers as ptr  # noqa: E402
 from library import story_generate as gen  # noqa: E402
 from library import story_research as research  # noqa: E402
 
@@ -41,6 +45,48 @@ class StoryJob:
     duration_minutes: int
     story_type: str
     folder_name: str | None = None
+    related_urls: list[str] | None = None
+
+
+def parse_urls_field(raw: str) -> tuple[str, list[str]]:
+    """First URL is seed; remaining URLs are explicit related sources."""
+    if "|" not in raw:
+        return raw.strip(), []
+    parts = [p.strip() for p in raw.split("|") if p.strip()]
+    if not parts:
+        raise ValueError("URL field is empty")
+    return parts[0], parts[1:]
+
+
+def load_urls_file(path: Path) -> list[str]:
+    if not path.is_file():
+        raise FileNotFoundError(f"URLs file not found: {path}")
+    urls: list[str] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        urls.append(stripped)
+    if not urls:
+        raise ValueError(f"No URLs in {path}")
+    return urls
+
+
+def all_urls_for_job(job: StoryJob) -> list[str]:
+    urls = [job.url]
+    if job.related_urls:
+        urls.extend(job.related_urls)
+    return urls
+
+
+def validate_job_urls(job: StoryJob, *, line_no: int | None = None) -> None:
+    urls = all_urls_for_job(job)
+    if len(urls) < 2:
+        where = f"Line {line_no}: " if line_no else ""
+        raise ValueError(
+            f"{where}provide at least 2 YouTube URLs (pipe-separated in queue, "
+            "--video-urls, or --urls-file). Auto YouTube search is disabled."
+        )
 
 
 def parse_queue_line(line: str, line_no: int) -> StoryJob | None:
@@ -55,8 +101,12 @@ def parse_queue_line(line: str, line_no: int) -> StoryJob | None:
         )
 
     url = parts[0]
-    if not url.startswith("http") and len(url) != 11:
-        raise ValueError(f"Line {line_no}: invalid YouTube URL: {url!r}")
+    seed_url, pipe_related = parse_urls_field(url)
+    if not pipe_related:
+        raise ValueError(
+            f"Line {line_no}: pipe-separated YouTube URLs required "
+            f"(URL1|URL2|URL3,...). Auto search is disabled."
+        )
 
     try:
         duration_minutes = int(parts[1])
@@ -65,13 +115,17 @@ def parse_queue_line(line: str, line_no: int) -> StoryJob | None:
     if duration_minutes < 1:
         raise ValueError(f"Line {line_no}: duration_minutes must be >= 1")
 
+    if not seed_url.startswith("http") and len(seed_url) != 11:
+        raise ValueError(f"Line {line_no}: invalid YouTube URL: {seed_url!r}")
+
     story_type = gen.normalize_story_type(parts[2])
     folder_name = parts[3] if len(parts) > 3 else None
     return StoryJob(
-        url=url,
+        url=seed_url,
         duration_minutes=duration_minutes,
         story_type=story_type,
         folder_name=folder_name,
+        related_urls=pipe_related or None,
     )
 
 
@@ -113,6 +167,15 @@ def resolve_research_dir(job: StoryJob, args, seed_title: str) -> Path:
     return research_dir
 
 
+def use_bullet_pipeline(job: StoryJob, args) -> bool:
+    if args.raw_transcripts:
+        return False
+    if args.use_bullet_pointers:
+        return True
+    # Default: Nitish v3 pointer flow for Hindi types; english stays on raw transcripts
+    return job.story_type in ("general", "crime", "god")
+
+
 def process_job(job: StoryJob, *, args, state: dict) -> None:
     video_id = extract_video_id(job.url)
     state_key = f"{video_id}:{job.story_type}"
@@ -129,66 +192,111 @@ def process_job(job: StoryJob, *, args, state: dict) -> None:
     seed_title = seed_meta.get("title") or video_id
 
     log(f"=== {seed_title}")
+    bullet_flow = use_bullet_pipeline(job, args)
     log(
         f"Type: {job.story_type} | Duration: {job.duration_minutes} min "
         f"({gen.target_chars_from_minutes(job.duration_minutes):,} chars) | "
-        f"Related videos: {args.related}"
+        f"Sources: {len(all_urls_for_job(job))} provided URL(s) | "
+        f"Research input: {'bullet pointers + v3 master' if bullet_flow else 'raw transcripts'}"
     )
 
     if args.generate_only:
         log("Generate-only — using existing research")
         research_dir = resolve_research_dir(job, args, seed_title)
     else:
-        log("Step 1/2 — downloading transcripts")
+        validate_job_urls(job)
+        log("Step 1 — downloading transcripts")
         research_dir = research.run_research(
             job.url,
             output_base=args.research_dir_base,
             folder_name=job.folder_name,
-            related_count=args.related,
-            search_limit=max(args.related * 2, 25),
-            min_views=args.min_views,
             languages=args.lang,
             force=args.force,
+            explicit_related_urls=job.related_urls or [],
         )
 
     if args.research_only:
         log(f"Research complete: {research_dir}")
         return
 
-    combined, source_chars, used_videos = research.combine_transcripts(
-        research_dir, max_related=args.related
-    )
+    videos = research.load_videos_json(research_dir / "videos.json")
+    video_count = len([v for v in videos if v.get("video_id")])
+
+    if bullet_flow:
+        log("Step 2 — extracting story pointers (DeepSeek)")
+        bullet_prompt = Path(args.bullet_prompt) if args.bullet_prompt else None
+        deepseek_config = Path(args.deepseek_config) if args.deepseek_config else None
+        ptr.run_bullet_extraction(
+            research_dir,
+            topic=seed_title,
+            bullet_prompt_path=bullet_prompt,
+            deepseek_config=deepseek_config,
+            force=args.force,
+        )
+        if args.pointers_only:
+            log(f"Pointers complete: {research_dir / ptr.COMBINED_FILENAME}")
+            return
+        source_text, source_chars = ptr.pointer_source_for_prompt(research_dir)
+        research_source = "bullet_pointers"
+    else:
+        log("Step 2 — combining raw transcripts")
+        source_text, source_chars, used_videos = research.combine_transcripts(
+            research_dir, max_related=None
+        )
+        video_count = len(used_videos)
+        research_source = "transcripts"
+
     target_chars = gen.compute_target_chars(
         job.story_type,
         source_chars,
-        len(used_videos),
+        video_count,
         duration_minutes=job.duration_minutes,
         extra_chars=args.extra_chars,
         target_override=args.target_chars,
     )
     slug = gen.story_slug(seed_title)
-    prompt_path = Path(args.prompt) if args.prompt else gen.PROMPTS[job.story_type]
+    prompt_path = (
+        Path(args.prompt)
+        if args.prompt
+        else gen.default_prompt_for_pipeline(
+            use_bullet_pointers=bullet_flow, story_type=job.story_type
+        )
+    )
 
-    log(f"Combined source: {source_chars:,} chars from {len(used_videos)} transcript(s)")
+    log(f"Source material: {source_chars:,} chars from {video_count} video(s)")
     log(f"Target story length: {job.duration_minutes} min → {target_chars:,} chars")
 
-    prompt = gen.build_prompt_for_type(
-        job.story_type,
-        prompt_path,
-        combined,
-        target_chars,
-        duration_minutes=job.duration_minutes,
-    )
+    if bullet_flow and prompt_path == gen.V3_MASTER_PROMPT:
+        prompt = gen.build_v3_prompt_from_pointers(
+            prompt_path,
+            source_text,
+            target_chars,
+            duration_minutes=job.duration_minutes,
+            topic=seed_title,
+            story_type=job.story_type,
+        )
+    else:
+        prompt = gen.build_prompt_for_type(
+            job.story_type,
+            prompt_path,
+            source_text,
+            target_chars,
+            duration_minutes=job.duration_minutes,
+        )
     story_dir = research.story_output_dir(research_dir)
 
     if args.prepare_only:
         story_dir.mkdir(parents=True, exist_ok=True)
         out = story_dir / "prompt.txt"
         out.write_text(prompt, encoding="utf-8")
+        if bullet_flow:
+            pointers_out = research_dir / ptr.COMBINED_FILENAME
+            if pointers_out.is_file():
+                shutil.copy2(pointers_out, story_dir / ptr.COMBINED_FILENAME)
         log(f"Prompt saved: {out}")
         return
 
-    log("Step 2/2 — generating story")
+    log("Step 3 — generating story")
     if args.mode == "browser":
         log("Using claude.ai in your browser (https://claude.ai/new) — not Cursor CLI")
     raw_response = gen.call_llm(
@@ -218,8 +326,10 @@ def process_job(job: StoryJob, *, args, state: dict) -> None:
         prompt=prompt,
         raw_response=raw_response,
         story_text=story_text,
-        video_count=len(used_videos),
+        video_count=video_count,
         duration_minutes=job.duration_minutes,
+        prompt_file=prompt_path,
+        research_source=research_source,
     )
 
     state["processed"][state_key] = {
@@ -229,6 +339,7 @@ def process_job(job: StoryJob, *, args, state: dict) -> None:
         "research_dir": str(research_dir),
         "output_dir": str(story_dir),
         "duration_minutes": job.duration_minutes,
+        "research_source": research_source,
         "source_characters": source_chars,
         "output_characters": len(story_text),
         "processed_at": datetime.now(timezone.utc).isoformat(),
@@ -260,19 +371,21 @@ def build_parser() -> argparse.ArgumentParser:
         description="Unified story agent: YouTube research → story by type"
     )
     parser.add_argument("--queue", default=str(DEFAULT_QUEUE), help="Queue file path")
-    parser.add_argument("--video-url", help="Single video URL (instead of queue)")
-    parser.add_argument("--type", dest="story_type", help="Story type for --video-url")
+    parser.add_argument(
+        "--video-urls",
+        nargs="+",
+        help="All YouTube URLs for one story (first=seed, rest=sources). No auto search.",
+    )
+    parser.add_argument(
+        "--urls-file",
+        help="Text file: one YouTube URL per line (first=seed, rest=sources)",
+    )
+    parser.add_argument("--type", dest="story_type", help="Story type (crime|general|english|god)")
     parser.add_argument(
         "--duration",
         type=int,
         default=12,
         help="Story duration in minutes for --video-url (default: 12)",
-    )
-    parser.add_argument(
-        "--related",
-        type=int,
-        default=5,
-        help="How many related YouTube videos to download for research (default: 5)",
     )
     parser.add_argument("--folder", help="Research folder name override")
     parser.add_argument("--research-dir-base", type=Path, default=research.DEFAULT_RESEARCH_DIR)
@@ -284,7 +397,6 @@ def build_parser() -> argparse.ArgumentParser:
                         help="Override output script length in characters")
     parser.add_argument("--prompt", help="Override master prompt file")
     parser.add_argument("--lang", nargs="+", default=["hi", "en"])
-    parser.add_argument("--min-views", type=int, default=10_000)
     parser.add_argument("--provider", choices=("claude", "chatgpt"), default="claude")
     parser.add_argument("--mode", choices=("claude-code", "browser", "api"), default="browser",
                         help="browser = claude.ai in Chrome (default); claude-code = Cursor CLI")
@@ -300,7 +412,24 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-tokens", type=int, default=64000)
     parser.add_argument("--prepare-only", action="store_true")
     parser.add_argument("--research-only", action="store_true")
+    parser.add_argument("--pointers-only", action="store_true",
+                        help="After research, extract DeepSeek bullet pointers only (no Claude)")
     parser.add_argument("--generate-only", action="store_true")
+    parser.add_argument(
+        "--raw-transcripts",
+        action="store_true",
+        help="Legacy: feed combined raw transcripts to old master prompts (skip bullet extraction)",
+    )
+    parser.add_argument(
+        "--use-bullet-pointers",
+        action="store_true",
+        help="Force bullet-pointer + v3 master flow (default for crime/general/god)",
+    )
+    parser.add_argument("--bullet-prompt", help="Override bullet-pointers.txt prompt file")
+    parser.add_argument(
+        "--deepseek-config",
+        help="DeepSeek config ini (default: documentary-engine/deepseek.config.ini)",
+    )
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--status", action="store_true")
     return parser
@@ -320,18 +449,36 @@ def main() -> int:
 
     if args.generate_only and args.research_only:
         parser.error("--generate-only and --research-only cannot be used together")
+    if args.raw_transcripts and args.use_bullet_pointers:
+        parser.error("--raw-transcripts and --use-bullet-pointers cannot be used together")
 
-    if args.video_url:
+    if args.video_urls:
         if not args.story_type:
-            parser.error("--video-url requires --type (crime|general|english|god)")
+            parser.error("--video-urls requires --type (crime|general|english|god)")
         jobs = [
             StoryJob(
-                url=args.video_url,
+                url=args.video_urls[0],
                 duration_minutes=args.duration,
                 story_type=gen.normalize_story_type(args.story_type),
                 folder_name=args.folder,
+                related_urls=args.video_urls[1:] or None,
             )
         ]
+        validate_job_urls(jobs[0])
+    elif args.urls_file:
+        if not args.story_type:
+            parser.error("--urls-file requires --type (crime|general|english|god)")
+        file_urls = load_urls_file(Path(args.urls_file))
+        jobs = [
+            StoryJob(
+                url=file_urls[0],
+                duration_minutes=args.duration,
+                story_type=gen.normalize_story_type(args.story_type),
+                folder_name=args.folder,
+                related_urls=file_urls[1:] or None,
+            )
+        ]
+        validate_job_urls(jobs[0])
     else:
         jobs = load_queue(Path(args.queue))
         if not jobs:

@@ -8,15 +8,17 @@ Supports four story types: **crime**, **general**, **english**, and **god**.
 
 For each job in your queue:
 
-1. **Research** — downloads the seed video transcript plus related high-view videos on the same topic
-2. **Combine** — merges all transcripts into one source block
-3. **Prompt** — injects the source into the correct master prompt for the story type
-4. **Generate** — sends the prompt to Claude (default: Claude Code CLI)
-5. **Save** — writes the final story and metadata to `research-storage-stories/{case}-research/outputfinal/`
+1. **Download** — your provided YouTube URLs only (3–6 typical; **no auto search**)
+2. **Pointers** *(default for crime/general/god)* — DeepSeek extracts 20–25 story pointers per transcript → `story_pointers.txt`
+3. **Prompt** — injects pointers into `master-story-prompt-v3-nitish-flow-universal` (or raw transcripts into legacy prompts)
+4. **Generate** — sends the prompt to Claude (default: claude.ai in Chrome)
+5. **Save** — writes `FULL_STORY.txt` (extracted from FULL SCRIPT section), pointers, prompt, and metadata to `outputfinal/`
 
 ```
-YouTube URL  →  research-storage-stories/{case}-research/  →  Claude  →  .../outputfinal/
+YouTube URL  →  research-storage-stories/{case}-research/  →  DeepSeek pointers  →  Claude  →  .../outputfinal/
 ```
+
+Legacy mode (`--raw-transcripts`): skips pointer extraction and uses combined raw transcripts with the older per-type master prompts.
 
 ## Setup
 
@@ -39,7 +41,7 @@ playwright install chromium
 
 Pick **Sonnet** in the claude.ai UI if prompted. The agent pastes the prompt and waits for the full response.
 
-Optional: `claude auth login` only if you use `--mode claude-code` (Cursor CLI).
+Optional: add `DEEPSEEK_API_KEY` to `.env` for bullet pointer extraction (default pipeline).
 Optional: add `ANTHROPIC_API_KEY` to `.env` for `--mode api`.
 
 ## Quick start
@@ -61,49 +63,45 @@ python3 story-agent/story_agent.py --status
 One story per line in `story-agent/queue.txt`:
 
 ```
-URL,duration_minutes,story_type[,folder_name]
+URL1|URL2|URL3|...,duration_minutes,story_type[,folder_name]
 ```
 
 | Field | Example | Description |
 |-------|---------|-------------|
-| URL | `https://www.youtube.com/watch?v=VIDEO_ID` | Seed YouTube video |
-| duration_minutes | `5` | Target story length in minutes (crime/general: 1 min = 1,000 Hindi chars) |
-| story_type | `crime` | `crime` \| `general` \| `english` \| `god` |
-| folder_name | `my-case-research` | Optional research folder name under `research-storage-stories/` |
-
-Related videos for research default to **5** (override with `--related 3` on the command line).
+| URLs | `https://...v=A\|https://...v=B\|https://...v=C` | **You provide all sources** (pipe-separated). First = seed. No auto search. |
+| duration_minutes | `30` | Target story length (1 min = 1,000 Hindi chars) |
+| story_type | `general` | `crime` \| `general` \| `english` \| `god` |
+| folder_name | `126-khamenei-research` | Optional research folder under `research-storage-stories/` |
 
 Lines starting with `#` and blank lines are ignored.
 
-**Examples:**
-
+**Node 126 example (queue line):**
 ```
-https://www.youtube.com/watch?v=_rZLnotPd5Y,5,crime
-https://www.youtube.com/watch?v=ABC123,12,general
-https://www.youtube.com/watch?v=XYZ789,15,english
-https://www.youtube.com/watch?v=GOD123,10,god,my-ekadashi-research
+https://www.youtube.com/watch?v=tsAimcI66bo|https://www.youtube.com/watch?v=RiFAwUGHjxw|https://www.youtube.com/watch?v=_SH-lINJoZQ|https://www.youtube.com/watch?v=W-mcJrfn4hQ,30,general,126-khamenei-research
 ```
 
-### Single video (no queue file)
+**Or use a URLs file** (easier for 4–6 links):
 
 ```bash
 ./story-agent/run.sh \
-  --video-url "https://www.youtube.com/watch?v=VIDEO_ID" \
-  --type crime \
-  --duration 5 \
-  --related 5
+  --urls-file story-agent/jobs/126-khamenei.urls.txt \
+  --type general \
+  --duration 30 \
+  --folder 126-khamenei-research
 ```
 
 ## Story types
 
-| Type | Master prompt | Output language |
-|------|---------------|-----------------|
-| `crime` | `story-making-prompts/crime-story-claude-19th-june-with-characters` | Hindi |
-| `general` | `story-making-prompts/v1-claude-latest-19june-with-charaacters` | Hindi |
-| `english` | `story-making-prompts/english-story-master` | English |
-| `god` | `story-making-prompts/god story` | Hindi |
+| Type | Default pipeline | Master prompt | Output language |
+|------|------------------|---------------|-----------------|
+| `crime` | bullet pointers + v3 | `story-making-prompts/master-story-prompt-v3-nitish-flow-universal` | Hindi |
+| `general` | bullet pointers + v3 | `story-making-prompts/master-story-prompt-v3-nitish-flow-universal` | Hindi |
+| `english` | raw transcripts | `story-making-prompts/english-story-master` | English |
+| `god` | bullet pointers + v3 | `story-making-prompts/master-story-prompt-v3-nitish-flow-universal` | Hindi |
 
-Target story length = combined transcript length **+ 1,000 characters** (override with `--extra-chars`).
+Target story length = `duration_minutes × 1,000` Hindi characters (override with `--target-chars` or `--extra-chars`).
+
+Pointer extraction uses `bullet-pointers.txt` and DeepSeek (`documentary-engine/deepseek.config.ini`).
 
 ## Common commands
 
@@ -111,11 +109,17 @@ Target story length = combined transcript length **+ 1,000 characters** (overrid
 # Full pipeline from queue.txt
 ./story-agent/run.sh
 
-# Download transcripts only (no Claude call)
+# Download transcripts only (no pointers, no Claude)
 ./story-agent/run.sh --research-only
+
+# Extract DeepSeek bullet pointers only (after research)
+./story-agent/run.sh --pointers-only
 
 # Build prompt only — verify before spending Claude time
 ./story-agent/run.sh --prepare-only
+
+# Legacy: raw combined transcripts + old master prompts
+./story-agent/run.sh --raw-transcripts
 
 # Generate from existing research folder
 ./story-agent/run.sh --generate-only \
@@ -125,9 +129,6 @@ Target story length = combined transcript length **+ 1,000 characters** (overrid
 
 # Re-run a job that was already processed
 ./story-agent/run.sh --force
-
-# Lower view threshold for related videos
-./story-agent/run.sh --min-views 5000
 
 # Browser mode (default — claude.ai in Chrome)
 ./story-agent/start-debug-browser.sh   # terminal 1
@@ -148,20 +149,15 @@ Target story length = combined transcript length **+ 1,000 characters** (overrid
 research-storage-stories/{topic}-research/
 ├── {Video Title}.txt       # plain transcript per video
 ├── videos.json             # metadata, sorted by views
-└── research-meta.json      # seed URL, search query, counts
-```
-
-### Generated stories (same research folder)
-
-```
-research-storage-stories/{topic}-research/
-├── {Video Title}.txt       # transcripts (step 1)
-├── videos.json
-├── research-meta.json
-└── outputfinal/            # generated story (step 2)
-    ├── FULL_STORY.txt      # final script — main file
+├── research-meta.json      # seed URL, search query, counts
+├── bullet_extract_raw/     # per-video DeepSeek pointer output
+├── story_pointers.txt      # merged pointer ledger (default pipeline input)
+├── story_pointers-meta.json
+└── outputfinal/            # generated story
+    ├── FULL_STORY.txt      # final Hindi script (FULL SCRIPT section only)
+    ├── story_pointers.txt  # copy of merged ledger
     ├── prompt.txt
-    ├── raw.md
+    ├── raw.md              # full Claude response (not the deliverable)
     └── meta.json
 ```
 
@@ -199,6 +195,8 @@ story-agent/
 library/
 ├── fetch_youtube_transcript.py   # YouTube metadata + captions
 ├── story_research.py             # seed + related video download
+├── bullet_pointers.py            # DeepSeek per-transcript pointer extraction
+├── deepseek_client.py            # DeepSeek API client
 └── story_generate.py             # prompts + Claude/API/browser calls
 ```
 
@@ -207,11 +205,12 @@ library/
 | Problem | Fix |
 |---------|-----|
 | `No module named 'library'` | Run from repo root via `./story-agent/run.sh` (sets `PYTHONPATH`). Ensure `library/` exists and is committed. |
+| `DEEPSEEK_API_KEY not set` | Add to repo-root `.env` for default bullet-pointer pipeline |
 | `Claude Code CLI not found` | Install from [claude.ai/code](https://claude.ai/code), then `claude auth login` |
 | No transcript for a video | Try `--lang hi en`; video may lack captions |
 | Already processed | Use `--force` or pick another video |
 | Long story times out | Increase `--timeout 3600` (default is 1 hour) |
-| Related videos not found | Lower `--min-views 5000` or increase `--related` |
+| `pipe-separated YouTube URLs required` | Provide 2+ URLs via `--urls-file`, `--video-urls`, or `URL1\|URL2\|URL3` in queue |
 
 ## Next steps after generation
 

@@ -1,36 +1,40 @@
 ---
 name: story-agent
 description: >-
-  Unified story agent: queue file or single URL → research YouTube transcripts
-  → generate story by type (crime/general/english/god) via Claude Code CLI.
-  Use for story-agent, queue.txt, batch stories, research + generate, or any
-  YouTube-to-story workflow.
+  Unified story agent: you provide 3–6 YouTube URLs → download transcripts
+  → DeepSeek bullet pointers → Nitish v3 master prompt → generate story
+  (crime/general/english/god) via claude.ai browser. No auto YouTube search.
 ---
 
 # Story Agent
 
-Single agent: **queue → research → generate → `story-agent/output/`**
+**You provide all YouTube URLs.** No automatic related-video search.
 
 ## Queue format
 
 Edit `story-agent/queue.txt`:
 ```
-URL,duration_minutes,story_type[,folder_name]
+URL1|URL2|URL3|...,duration_minutes,story_type[,folder_name]
 ```
 
-`duration_minutes` = target story length (crime/general: 1 min = 1,000 Hindi chars).
-Related videos for research: default 5 (`--related` flag).
+First URL = seed (title/metadata). Rest = research sources (3–6 typical).
 
 Types: `crime` | `general` | `english` | `god`
 
 ## Commands
 
 ```bash
-./story-agent/run.sh                                    # full pipeline from queue
-./story-agent/run.sh --video-url URL --type crime --duration 5 --related 5
-./story-agent/run.sh --research-only                    # transcripts only
-./story-agent/run.sh --prepare-only                     # prompt only, no LLM
-./story-agent/run.sh --generate-only --research-dir research-storage-stories/FOLDER
+# URLs file (recommended for 4–6 links)
+./story-agent/run.sh \
+  --urls-file story-agent/jobs/126-khamenei.urls.txt \
+  --type general --duration 30 --folder 126-khamenei-research
+
+# Inline URLs
+./story-agent/run.sh --video-urls URL1 URL2 URL3 URL4 --type general --duration 30
+
+./story-agent/run.sh --research-only    # download transcripts only
+./story-agent/run.sh --pointers-only    # + DeepSeek pointers
+./story-agent/run.sh --prepare-only     # prompt only
 python3 story-agent/story_agent.py --status
 ```
 
@@ -38,21 +42,14 @@ python3 story-agent/story_agent.py --status
 
 | Path | Contents |
 |------|----------|
-| `research-storage-stories/{topic}-research/` | Transcripts + videos.json |
-| `research-storage-stories/{topic}-research/outputfinal/` | FULL_STORY.txt, prompt, meta |
-
-## Prompts by type
-
-| Type | File |
-|------|------|
-| crime | `story-making-prompts/crime-story-claude-19th-june-with-characters` |
-| general | `story-making-prompts/v1-claude-latest-19june-with-charaacters` |
-| english | `story-making-prompts/english-story-master` |
-| god | `story-making-prompts/god story` |
+| `research-storage-stories/{folder}/` | Transcripts, `story_pointers.txt` |
+| `.../outputfinal/` | FULL_STORY.txt, prompt, meta |
 
 ## Setup
 
 ```bash
 pip install -r story-agent/requirements.txt
-claude auth login
+playwright install chromium
+# .env: DEEPSEEK_API_KEY
+# Browser: ./story-agent/start-debug-browser.sh then ./story-agent/run.sh
 ```

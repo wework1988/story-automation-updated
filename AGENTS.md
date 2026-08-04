@@ -2,7 +2,7 @@
 
 ## Story Agent (unified)
 
-**Purpose:** One agent for everything — research YouTube transcripts + generate stories by type.
+**Purpose:** Download your YouTube URLs → bullet pointers → generate stories by type. **No auto YouTube search.**
 
 **Skill:** `.cursor/skills/story-agent/SKILL.md`
 
@@ -13,30 +13,32 @@
 
 **Queue format** (`story-agent/queue.txt`):
 ```
-URL,duration_minutes,story_type[,folder_name]
+URL1|URL2|URL3|...,duration_minutes,story_type[,folder_name]
 ```
 
-Example:
+Example (4 sources, 30 min):
 ```
-https://www.youtube.com/watch?v=TUvVM05QXOE,12,crime
+https://www.youtube.com/watch?v=tsAimcI66bo|https://www.youtube.com/watch?v=RiFAwUGHjxw|https://www.youtube.com/watch?v=_SH-lINJoZQ|https://www.youtube.com/watch?v=W-mcJrfn4hQ,30,general,126-khamenei-research
 ```
 
 **Story types:** `crime` | `general` | `english` | `god`
 
 **Pipeline:**
-1. Download seed + related YouTube transcripts → `research-storage-stories/` (default: 5 related videos via `--related`)
-2. Combine transcripts → build type-specific prompt with duration (1 min = 1,000 chars for Hindi prompts)
-3. Generate via **claude.ai in Chrome** (default) — paste prompt into https://claude.ai/new
-4. Save to `research-storage-stories/{topic}-research/outputfinal/`
+1. Download **your** YouTube URLs (pipe-separated queue, `--urls-file`, or `--video-urls`) — **no auto search**
+2. DeepSeek bullet pointers per transcript → `story_pointers.txt`
+3. Build Nitish v3 master prompt with pointer ledger
+4. Generate via **claude.ai in Chrome** (default)
+5. Save clean `FULL_STORY.txt` to `outputfinal/`
 
 **Common flags:**
 ```bash
-./story-agent/run.sh --research-only          # transcripts only
-./story-agent/run.sh --prepare-only           # prompt only
-./story-agent/run.sh --video-url URL --type crime --duration 5 --related 5
+./story-agent/run.sh --urls-file story-agent/jobs/126-khamenei.urls.txt --type general --duration 30
+./story-agent/run.sh --research-only   # transcripts only
+./story-agent/run.sh --pointers-only   # transcripts + DeepSeek pointers
+./story-agent/run.sh --prepare-only    # prompt only
 ```
 
-**Setup:** `pip install -r story-agent/requirements.txt` and `playwright install chromium`
+**Setup:** `pip install -r story-agent/requirements.txt`, `playwright install chromium`, `DEEPSEEK_API_KEY` in `.env`
 
 **Generate (default):** claude.ai in your browser — not Cursor CLI.
 
@@ -53,5 +55,7 @@ Use `--mode claude-code` for Cursor CLI, or `--mode api` with `ANTHROPIC_API_KEY
 **Code layout:**
 - `story-agent/story_agent.py` — CLI + orchestration
 - `library/story_research.py` — transcript download
+- `library/bullet_pointers.py` — DeepSeek pointer extraction + ledger merge
+- `library/deepseek_client.py` — DeepSeek API client
 - `library/story_generate.py` — prompts + LLM calls
 

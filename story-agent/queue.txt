@@ -1,17 +1,15 @@
 # Story queue — one story per line
 # Run: ./story-agent/run.sh
 #
-# Format:  URL,duration_minutes,story_type[,folder_name]
+# Format:  URL1|URL2|URL3|...,duration_minutes,story_type[,folder_name]
 #
-#   duration_minutes — target story length (1 min = 1,000 Hindi chars in crime prompt)
+#   You provide ALL YouTube URLs (3–6 typical). No auto YouTube search.
+#   First URL = seed (title/metadata). Rest = research sources.
+#   duration_minutes — target story length (1 min = 1,000 Hindi chars)
 #   story_type: crime | general | english | god
 #
-# Related YouTube videos for research: default 5 (override with --related 3)
+# Example — node 126 (4 sources, 30 min):
+# https://www.youtube.com/watch?v=tsAimcI66bo|https://www.youtube.com/watch?v=RiFAwUGHjxw|https://www.youtube.com/watch?v=_SH-lINJoZQ|https://www.youtube.com/watch?v=W-mcJrfn4hQ,30,general,126-khamenei-research
 #
-# Examples:
-#   https://www.youtube.com/watch?v=TUvVM05QXOE,12,crime
-#   https://www.youtube.com/watch?v=ABC123,8,general
-#   https://www.youtube.com/watch?v=XYZ789,15,english
-#   https://www.youtube.com/watch?v=GOD123,10,god,my-custom-folder
-
-https://www.youtube.com/watch?v=_rZLnotPd5Y,25,crime
+# Or use a URLs file instead:
+#   ./story-agent/run.sh --urls-file story-agent/jobs/126-khamenei.urls.txt --type general --duration 30 --folder 126-khamenei-research

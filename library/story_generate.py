@@ -33,6 +33,12 @@ PROMPTS = {
     "god": REPO_ROOT / "story-making-prompts/god story",
 }
 
+# Nitish-flow v3 master prompt — used with bullet-pointer research ledger
+V3_MASTER_PROMPT = REPO_ROOT / "story-making-prompts/master-story-prompt-v3-nitish-flow-universal"
+V3_SOURCE_PLACEHOLDER = "[paste COMBINED_RESEARCH.txt content here]"
+V3_LENGTH_PLACEHOLDER = "[e.g. 12,000 characters or 12 min]"
+LENGTH_TOLERANCE = 500
+
 
 def load_prompt_template(prompt_path: Path, story_type: str) -> str:
     if not prompt_path.is_file():
@@ -137,6 +143,64 @@ def build_prompt_for_type(
     return prompt
 
 
+def build_v3_prompt_from_pointers(
+    prompt_path: Path,
+    pointers_text: str,
+    target_chars: int,
+    *,
+    duration_minutes: int | None = None,
+    topic: str = "",
+    story_type: str = "",
+    extra_notes: str = "",
+) -> str:
+    """Build master-story-prompt-v3 with combined pointer ledger as SOURCE."""
+    template = load_prompt_template(prompt_path, story_type or "general")
+    if duration_minutes is not None:
+        length_line = format_length_line("general", duration_minutes, target_chars)
+    else:
+        low = target_chars - LENGTH_TOLERANCE
+        high = target_chars + LENGTH_TOLERANCE
+        length_line = f"{target_chars:,} characters (acceptable range: {low:,} – {high:,})"
+
+    if V3_SOURCE_PLACEHOLDER not in template:
+        raise ValueError(
+            f"V3 master prompt missing placeholder {V3_SOURCE_PLACEHOLDER!r}: {prompt_path}"
+        )
+
+    prompt = template.replace(V3_SOURCE_PLACEHOLDER, pointers_text.strip(), 1)
+    prompt = prompt.replace(V3_LENGTH_PLACEHOLDER, length_line, 1)
+
+    topic_line = topic.strip() if topic else "(auto-detect from pointer ledger)"
+    prompt = prompt.replace(
+        "TOPIC / CASE NAME:\n[optional]",
+        f"TOPIC / CASE NAME:\n{topic_line}",
+        1,
+    )
+    type_line = story_type.strip() if story_type else "auto-detect"
+    prompt = prompt.replace(
+        "STORY TYPE:\n[optional — else auto-detect]",
+        f"STORY TYPE:\n{type_line}",
+        1,
+    )
+    notes_block = extra_notes.strip() or (
+        "Research input is pre-extracted story pointers (not raw transcripts). "
+        "Merge pointers across sources; write 100% original Hindi narration."
+    )
+    prompt = prompt.replace(
+        "ADDITIONAL NOTES:\n[optional — must-include events / sensitivity flags / Part 2 setup / tone]",
+        f"ADDITIONAL NOTES:\n{notes_block}",
+        1,
+    )
+
+    return prompt
+
+
+def default_prompt_for_pipeline(*, use_bullet_pointers: bool, story_type: str) -> Path:
+    if use_bullet_pointers and story_type in ("general", "crime", "god"):
+        return V3_MASTER_PROMPT
+    return PROMPTS[story_type]
+
+
 def normalize_story_type(raw: str) -> str:
     value = raw.strip().lower()
     if "/" in value:
@@ -162,7 +226,6 @@ STORY_TARGET_CHARS = {
 }
 
 CHARS_PER_MINUTE = 1000
-LENGTH_TOLERANCE = 500
 
 
 def target_chars_from_minutes(minutes: int) -> int:
@@ -452,6 +515,8 @@ def save_pipeline_outputs(
     story_text: str,
     video_count: int,
     duration_minutes: int | None = None,
+    prompt_file: Path | None = None,
+    research_source: str = "transcripts",
 ) -> Path:
     output_dir.mkdir(parents=True, exist_ok=True)
     story_path = output_dir / "FULL_STORY.txt"
@@ -469,7 +534,8 @@ def save_pipeline_outputs(
         "target_characters": target_chars,
         "output_characters": len(story_text),
         "duration_minutes": duration_minutes,
-        "prompt_file": str(PROMPTS[story_type]),
+        "research_source": research_source,
+        "prompt_file": str(prompt_file or PROMPTS[story_type]),
         "generated_at": datetime.now(timezone.utc).isoformat(),
     }
     (output_dir / "meta.json").write_text(
@@ -477,6 +543,11 @@ def save_pipeline_outputs(
     )
     (output_dir / "raw.md").write_text(raw_response, encoding="utf-8")
     (output_dir / "prompt.txt").write_text(prompt, encoding="utf-8")
+
+    pointers_src = research_dir / "story_pointers.txt"
+    if pointers_src.is_file():
+        shutil.copy2(pointers_src, output_dir / "story_pointers.txt")
+
     return story_path
 
 
