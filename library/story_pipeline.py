@@ -64,6 +64,7 @@ def run_story_pipeline(
     inp: StoryPipelineInput,
     *,
     skip_download: bool = False,
+    research_only: bool = False,
     pointers_only: bool = False,
     prepare_only: bool = False,
     skip_llm: bool = False,
@@ -100,6 +101,24 @@ def run_story_pipeline(
 
     videos = research.load_videos_json(research_dir / "videos.json")
     video_count = len([v for v in videos if v.get("video_id")])
+
+    if research_only:
+        return StoryPipelineResult(
+            seed_title=seed_title,
+            video_id=video_id,
+            slug=gen.story_slug(seed_title),
+            research_dir=research_dir,
+            story_dir=research.story_output_dir(research_dir),
+            story_text="",
+            prompt="",
+            raw_response="",
+            source_chars=0,
+            target_chars=0,
+            video_count=video_count,
+            research_source="transcripts",
+            prompt_file=gen.V3_MASTER_PROMPT,
+            bullet_flow=bullet_flow,
+        )
 
     if bullet_flow:
         ptr.run_bullet_extraction(

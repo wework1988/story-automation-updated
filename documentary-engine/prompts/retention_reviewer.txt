@@ -1,0 +1,37 @@
+TOPIC: {topic}
+TARGET DURATION: {duration_minutes} minutes
+
+FULL SCRIPT:
+{script}
+
+TASK:
+Retention review — split script into 30–60 second segments and score each.
+
+Return ONLY valid JSON:
+{{
+  "overall_retention_score": 7,
+  "segments": [
+    {{
+      "segment_number": 1,
+      "time_range": "0:00–0:45",
+      "summary": "...",
+      "retention_score": 8,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [],
+      "improvement_suggestions": []
+    }}
+  ],
+  "weak_segments": [
+    {{
+      "segment_number": 7,
+      "score": 4,
+      "reason": "Too much exposition. No new information.",
+      "improve_by": "Introduce a mystery. Move reveal earlier. End with a question."
+    }}
+  ],
+  "rewrite_recommendations": ["..."]
+}}
+
+Flag any segment scoring below 6/10.

@@ -1,0 +1,50 @@
+TOPIC: {topic}
+
+SUPPLEMENTAL INPUT (PDF/article/notes if any):
+{supplemental}
+
+YOUTUBE TRANSCRIPT RESEARCH LEADS (verify facts — do NOT copy narration or phrasing):
+{transcripts}
+
+TASK:
+Extract structured knowledge from the sources above. Every fact MUST include source attribution.
+
+Return ONLY valid JSON with this structure:
+{{
+  "topic": "...",
+  "facts": [
+    {{
+      "fact": "...",
+      "source_id": "yt_video_1",
+      "source_type": "youtube_transcript",
+      "confidence": "verified|probable|unverified|disputed",
+      "category": "event|date|character|organization|location|operation|weapon|quote|turning_point"
+    }}
+  ],
+  "events": [],
+  "dates": [],
+  "characters": [],
+  "organizations": [],
+  "countries": [],
+  "operations": [],
+  "weapons": [],
+  "locations": [],
+  "relationships": [],
+  "quotes": [],
+  "turning_points": [],
+  "unknown_questions": [
+    "Specific gap that needs web verification"
+  ],
+  "narrative_leads": {{
+    "hooks": [],
+    "cliffhangers": [],
+    "questions": [],
+    "story_flow_notes": []
+  }}
+}}
+
+Rules:
+- Treat transcripts as research leads only — extract facts in neutral language
+- Tag confidence honestly: verified only when multiple sources align or official record exists
+- List ALL unknown_questions where timeline, names, dates, or motivations are unclear
+- Do not invent evidence

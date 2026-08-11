@@ -130,6 +130,21 @@ def convert_text(
     return client.text_to_speech.convert(**kwargs)
 
 
+def speakable_text(text: str) -> str:
+    """Remove stage directions / bracket tags ElevenLabs treats as empty input."""
+    lines: list[str] = []
+    for line in text.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        if re.fullmatch(r"\[[^\]]+\]", line):
+            continue
+        line = re.sub(r"\[[^\]]*\]", "", line).strip()
+        if line:
+            lines.append(line)
+    return "\n\n".join(lines)
+
+
 def sentence_units(text: str) -> list[str]:
     """Split story text into sentence-sized units (paragraph breaks preserved as unit gaps)."""
     units: list[str] = []
@@ -386,9 +401,11 @@ def generate_full_narration(
     segment_count: int,
     play: bool,
 ) -> list[Path]:
+    text = speakable_text(text)
     chunks = split_into_equal_segments(text, num_segments=segment_count, max_chars=max_chars)
+    chunks = [c.strip() for c in chunks if c.strip()]
     if not chunks:
-        raise ValueError("no text to convert")
+        raise ValueError("no speakable text to convert (story may be only stage directions)")
 
     min_parts = max(1, (len(text.strip()) + max_chars - 1) // max_chars)
     if min_parts > segment_count:

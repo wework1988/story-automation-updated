@@ -1,0 +1,41 @@
+TOPIC: {topic}
+
+KNOWLEDGE GRAPH:
+{knowledge_graph}
+
+GAP RESEARCH:
+{gap_research}
+
+STORY OUTLINE:
+{story_outline}
+
+TASK:
+Fact verification pass before final script lock.
+
+Return ONLY valid JSON:
+{{
+  "verified_claims": [
+    {{"claim": "...", "sources": ["..."], "confidence": "verified"}}
+  ],
+  "unverified_claims": [
+    {{"claim": "...", "reason": "...", "confidence": "unverified"}}
+  ],
+  "disputed_claims": [
+    {{
+      "claim": "...",
+      "source_a": "...",
+      "source_b": "...",
+      "script_guidance": "Present as open disagreement — accounts differ on..."
+    }}
+  ],
+  "speculation_to_avoid": ["..."],
+  "sensitive_topics": ["security", "politics", "living persons"],
+  "human_review_checklist": [
+    "Framing of Indian institutions fair and evidence-backed?",
+    "Any disputed claims presented honestly?",
+    "Any dramatization clearly unsupported by evidence?"
+  ],
+  "contradiction_resolution_policy": "If unresolved, script must say accounts differ — never pick arbitrarily"
+}}
+
+Separate verified / unverified / disputed clearly.

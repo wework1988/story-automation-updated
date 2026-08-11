@@ -1,0 +1,71 @@
+{
+  "topic": "Naxalism in India Explained",
+  "input_type": "youtube",
+  "youtube_url": "https://www.youtube.com/watch?v=o7lczTDDESc",
+  "duration_minutes": 30,
+  "target_characters": 30000,
+  "research_videos": [
+    {
+      "source_id": "yt_video_1",
+      "video_id": "aAoJAOHJtqA",
+      "youtube_url": "https://www.youtube.com/watch?v=aAoJAOHJtqA",
+      "title": "Naxalite Problem and Solution | What is Naxals | Salwa Judum | Maoist Group | Insurgency in India",
+      "channel": "Khan GS Research Centre",
+      "view_count": 18806717,
+      "like_count": 480345,
+      "comment_count": 20000,
+      "engagement_rate": 0.026604590264212514,
+      "duration_seconds": 1464,
+      "role": "related",
+      "filename": "Naxalite Problem and Solution What is Naxals Salwa Judum Maoist Group Insurgency in India.txt",
+      "transcript_characters": 25608
+    },
+    {
+      "source_id": "yt_video_2",
+      "video_id": "o7lczTDDESc",
+      "youtube_url": "https://www.youtube.com/watch?v=o7lczTDDESc",
+      "title": "Naxalism in India Explained",
+      "channel": "Nitish Rajput",
+      "view_count": 7532810,
+      "like_count": 197223,
+      "comment_count": 12000,
+      "engagement_rate": 0.027774894096625296,
+      "duration_seconds": 2905,
+      "role": "seed",
+      "filename": "Naxalism in India Explained.txt",
+      "transcript_characters": 52284
+    },
+    {
+      "source_id": "yt_video_3",
+      "video_id": "hhnAYN4RWf0",
+      "youtube_url": "https://www.youtube.com/watch?v=hhnAYN4RWf0",
+      "title": "\"Naxals To Be Eradicated By March 2026\" | Amit Shah's Final Deadline For Maoists | Akash Banerjee",
+      "channel": "The Deshbhakt",
+      "view_count": 1288532,
+      "like_count": 33632,
+      "comment_count": 3300,
+      "engagement_rate": 0.028662074360590192,
+      "duration_seconds": 1654,
+      "role": "related",
+      "filename": "Naxals To Be Eradicated By March 2026 Amit Shah's Final Deadline For Maoists Akash Banerjee.txt",
+      "transcript_characters": 22455
+    },
+    {
+      "source_id": "yt_video_4",
+      "video_id": "IVdRJRdF-AU",
+      "youtube_url": "https://www.youtube.com/watch?v=IVdRJRdF-AU",
+      "title": "History of Naxalism | Red Corridor | Left-wing Extremism | Development vs Extremism Debate | UPSC",
+      "channel": "StudyIQ IAS",
+      "view_count": 673236,
+      "like_count": 15788,
+      "comment_count": 90,
+      "engagement_rate": 0.02358459737744268,
+      "duration_seconds": 1034,
+      "role": "related",
+      "filename": "History of Naxalism Red Corridor Left-wing Extremism Development vs Extremism Debate UPSC.txt",
+      "transcript_characters": 12865
+    }
+  ],
+  "generated_at": "2026-08-02T15:27:15.905253+00:00",
+  "model": "deepseek-v4-pro"
+}

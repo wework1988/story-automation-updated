@@ -1,0 +1,22 @@
+{
+  "title": "Naxalism in India Explained",
+  "video_id": "o7lczTDDESc",
+  "youtube_url": "https://www.youtube.com/watch?v=o7lczTDDESc",
+  "story_type": "crime",
+  "prompt_file": "/Users/averma/project/research-story-17thmay-automation/story-making-prompts/updated-story-master-prompt-v2-nitish-rajpoot",
+  "research_dir": "/Users/averma/project/research-story-17thmay-automation/documentary-engine/storage/o7lczTDDESc/research",
+  "transcript_sources": 4,
+  "source_characters": 113212,
+  "target_characters": 28000,
+  "output_characters": 27889,
+  "duration_minutes": 28,
+  "model": "deepseek-v4-pro",
+  "provider": "deepseek",
+  "generated_at": "2026-08-02T16:10:51.380410+00:00",
+  "expanded_at": "2026-08-02T15:51:22.794418+00:00",
+  "expansion_finish": "stop",
+  "generation_method": "deepseek-3-part-v2",
+  "trimmed_at": "2026-08-02T16:05:36.564539+00:00",
+  "combined_characters": 21613,
+  "trimmed_programmatically": true
+}

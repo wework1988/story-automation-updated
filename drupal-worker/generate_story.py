@@ -141,6 +141,7 @@ def main() -> int:
     result = run_story_pipeline(
         inp,
         skip_download=False,
+        research_only=args.research_only,
         pointers_only=args.pointers_only,
         prepare_only=args.prepare_only,
         skip_llm=args.research_only or args.pointers_only or args.prepare_only,

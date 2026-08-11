@@ -1,0 +1,13 @@
+{
+  "status": "pending",
+  "reviewer": "",
+  "reviewed_at": "",
+  "notes": "Add framing/fact-check notes here or in human_review_notes.txt",
+  "checklist": [
+    "Framing of Indian institutions fair and evidence-backed?",
+    "Disputed claims presented as open disagreement?",
+    "No unsupported dramatization presented as fact?",
+    "Sensitive topics handled appropriately?"
+  ],
+  "decision": "pending"
+}

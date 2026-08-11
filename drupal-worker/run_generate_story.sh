@@ -15,4 +15,19 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 export PYTHONPATH="$ROOT${PYTHONPATH:+:$PYTHONPATH}"
-python3 drupal-worker/generate_story.py "$@"
+
+PYTHON="${STORY_AGENT_PYTHON:-}"
+if [[ -z "$PYTHON" ]]; then
+  for candidate in \
+    "$ROOT/documentary-engine/.venv/bin/python" \
+    "$ROOT/story-agent/.venv/bin/python" \
+    "$ROOT/.venv/bin/python"; do
+    if [[ -x "$candidate" ]]; then
+      PYTHON="$candidate"
+      break
+    fi
+  done
+fi
+PYTHON="${PYTHON:-python3}"
+
+exec "$PYTHON" drupal-worker/generate_story.py "$@"

@@ -1,0 +1,54 @@
+TOPIC: {topic}
+TARGET DURATION: {duration_minutes} minutes
+
+KNOWLEDGE GRAPH:
+{knowledge_graph}
+
+TIMELINE:
+{timeline}
+
+CHARACTERS:
+{characters}
+
+GAP RESEARCH:
+{gap_research}
+
+SERIES CONTINUITY STATE (for multi-episode):
+{story_state}
+
+TASK:
+You are the Story Architect. Convert research into a thriller-like documentary structure.
+
+Return ONLY valid JSON:
+{{
+  "opening_scene": "...",
+  "hook": "...",
+  "chapters": [
+    {{
+      "chapter_number": 1,
+      "title": "...",
+      "purpose": "...",
+      "opening_beat": "...",
+      "key_reveals": ["..."],
+      "flashbacks": ["..."],
+      "suspense_devices": ["..."],
+      "chapter_end_curiosity": "...",
+      "estimated_minutes": 3
+    }}
+  ],
+  "flashback_map": [],
+  "reveal_schedule": [],
+  "episode_breakdown": null,
+  "revealed_facts": [],
+  "withheld_facts_for_later": [],
+  "character_arc_state": {{}},
+  "open_threads": [],
+  "running_timeline_position": "",
+  "retention_beats_per_chapter": ["new fact", "twist", "question"]
+}}
+
+Storytelling rules:
+- Never explain everything immediately
+- Every chapter ends with a reason to keep watching
+- Balance action and explanation
+- Apply India-centric framing fairly where relevant — credit where earned, no suppression of documented failures

@@ -50,10 +50,11 @@ aws sts get-caller-identity
 
 ### Upload
 
+Only story folders whose slug ends with `-xx` are uploaded (e.g. `115-education-minister-pralhad-joshi-xx`).
+
 ```bash
-./aws/sync-to-s3.sh
-./aws/sync-to-s3.sh crime/bank-robbery-114
-./aws/sync-to-s3.sh .
+./aws/sync-to-s3.sh                                                          # all *-xx folders
+./aws/sync-to-s3.sh general/115-education-minister-pralhad-joshi-xx          # one folder
 ./aws/sync-to-s3.sh --dry-run
 ```
 

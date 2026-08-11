@@ -1,0 +1,17 @@
+{
+  "seed_video_id": "o7lczTDDESc",
+  "seed_youtube_url": "https://www.youtube.com/watch?v=o7lczTDDESc",
+  "seed_title": "Naxalism in India Explained",
+  "search_query": "Naxalism in India Explained",
+  "priority_channels": [
+    "@NitishRajput",
+    "@TheLallantop",
+    "@Khabargaon",
+    "@mightymonkofficial",
+    "@dhruvrathee"
+  ],
+  "selected_count": 4,
+  "priority_channel_count": 4,
+  "used_channel_only": true,
+  "ordering": "seed_first_then_upload_date_asc"
+}

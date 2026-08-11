@@ -1,0 +1,27 @@
+TOPIC: {topic}
+
+STORY OUTLINE:
+{story_outline}
+
+SCRIPT (excerpt/full):
+{script}
+
+TASK:
+Suggest visuals for each major chapter/segment.
+
+Return ONLY valid JSON:
+{{
+  "visuals": [
+    {{
+      "chapter_or_segment": "...",
+      "b_roll": ["archival footage", "..."],
+      "maps": ["..."],
+      "graphics": ["timeline overlay", "..."],
+      "archival_footage": ["..."],
+      "talking_head_suggestions": ["expert on ..."],
+      "text_overlays": ["date", "location"]
+    }}
+  ]
+}}
+
+Focus on practical YouTube documentary production.

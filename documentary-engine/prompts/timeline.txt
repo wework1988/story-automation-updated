@@ -1,0 +1,39 @@
+TOPIC: {topic}
+
+KNOWLEDGE GRAPH:
+{knowledge_graph}
+
+TASK:
+Build one clean master chronological timeline for a documentary.
+
+Return ONLY valid JSON:
+{{
+  "topic": "...",
+  "timeline_phases": [
+    "Early life",
+    "Ideology",
+    "Major incidents",
+    "Turning point",
+    "Aftermath"
+  ],
+  "events": [
+    {{
+      "id": "evt_001",
+      "date": "YYYY-MM-DD or approximate",
+      "date_precision": "exact|month|year|approximate",
+      "title": "...",
+      "description": "...",
+      "location": "...",
+      "characters_involved": ["..."],
+      "source_fact_ids": ["from knowledge graph"],
+      "confidence": "verified|probable|unverified|disputed",
+      "dramatic_weight": 1
+    }}
+  ],
+  "master_narrative_arc": "One paragraph summary of the documentary arc"
+}}
+
+Rules:
+- Every event must trace back to knowledge graph facts
+- Sort events chronologically
+- Flag disputed dates/events explicitly

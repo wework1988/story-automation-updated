@@ -91,6 +91,48 @@ Structure (1:1 mirror of cms-generate-stories/):
 EOF
 }
 
+# Only story folders whose slug ends with "-xx" are synced (e.g. 115-education-minister-pralhad-joshi-xx).
+cms_s3_is_xx_story() {
+  local story_path="$1"
+  local slug="${story_path##*/}"
+  [[ "${slug}" == *-xx ]]
+}
+
+cms_s3_list_xx_story_paths() {
+  local category_dir story_dir slug story_path
+
+  for category_dir in "${CMS_S3_DIR}"/*/; do
+    [[ -d "${category_dir}" ]] || continue
+    for story_dir in "${category_dir}"*/; do
+      [[ -d "${story_dir}" ]] || continue
+      slug="$(basename "${story_dir}")"
+      [[ "${slug}" == *-xx ]] || continue
+      story_path="$(basename "${category_dir}")/${slug}"
+      printf '%s\n' "${story_path}"
+    done
+  done
+}
+
+cms_s3_upload_all_xx_stories() {
+  local dry_run="$1"
+  local story_path count=0
+
+  echo "Filter:  only *-xx story folders (e.g. general/115-education-minister-pralhad-joshi-xx)"
+  echo ""
+
+  while IFS= read -r story_path; do
+    [[ -n "${story_path}" ]] || continue
+    cms_s3_upload_story "${story_path}" "${dry_run}"
+    count=$((count + 1))
+  done < <(cms_s3_list_xx_story_paths | sort)
+
+  if [[ "${count}" -eq 0 ]]; then
+    echo "No *-xx story folders found under ${CMS_S3_DIR}/"
+  else
+    echo "Synced ${count} *-xx story folder(s)."
+  fi
+}
+
 cms_s3_upload_story() {
   local story_path="$1"
   local dry_run="$2"

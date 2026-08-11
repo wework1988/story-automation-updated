@@ -1,0 +1,40 @@
+TOPIC: {topic}
+TARGET DURATION: {duration_minutes} minutes (~{target_chars} Hindi characters)
+
+STORY OUTLINE:
+{story_outline}
+
+TIMELINE:
+{timeline}
+
+CHARACTERS:
+{characters}
+
+FACT VERIFICATION NOTES:
+{fact_verification}
+
+HUMAN REVIEW NOTES:
+{human_review_notes}
+
+TASK:
+Write the full documentary narration script in simple Hindi.
+
+Requirements:
+- Investigative, cinematic, emotionally engaging voice
+- Never overly dramatic; avoid repetition
+- Every 30–60 seconds: new fact, twist, reveal, conflict, question, or cliffhanger
+- Apply editorial framing: fair credit to India where evidence supports; no propaganda; no suppression of documented failures
+- Where sources disagree, say "official accounts say X, while some analysts argue Y"
+- Do NOT copy phrasing from YouTube source transcripts
+
+Output format:
+1. Start with the disclaimer (if provided below)
+2. Then write the full narration under heading:
+
+FULL DOCUMENTARY SCRIPT
+=======================
+
+(disclaimer to include if non-empty):
+{disclaimer}
+
+Write approximately {target_chars} characters of Hindi narration.

@@ -1,0 +1,976 @@
+TOPIC: Naxalism in India Explained
+
+KNOWLEDGE GRAPH:
+{
+  "topic": "Naxalism in India Explained",
+  "facts": [
+    {
+      "fact": "Naxalite movement originated in the late 1960s in Naxalbari village of Darjeeling district, West Bengal.",
+      "source_id": "yt_video_1",
+      "source_type": "youtube_transcript",
+      "confidence": "verified",
+      "category": "event"
+    },
+    {
+      "fact": "The movement was led by communist ideologues Charu Majumdar and Kanu Sanyal.",
+      "source_id": "yt_video_2",
+      "source_type": "youtube_transcript",
+      "confidence": "verified",
+      "category": "character"
+    },
+    {
+      "fact": "The immediate trigger of the 1967 Naxalbari uprising was a land dispute between tribal farmer Bimal Kisan and landlord Ishwar Tirkey.",
+      "source_id": "yt_video_2",
+      "source_type": "youtube_transcript",
+      "confidence": "verified",
+      "category": "event"
+    },
+    {
+      "fact": "On 24-25 May 1967, police firing on protesters killed 8 villagers, including 2 children and a young boy.",
+      "source_id": "yt_video_2",
+      "source_type": "youtube_transcript",
+      "confidence": "verified",
+      "category": "event"
+    },
+    {
+      "fact": "The Communist Party of India (Marxist-Leninist) [CPI-ML] was formed on 22 April 1969, with Charu Majumdar as its leader, advocating armed revolution.",
+      "source_id": "yt_video_2",
+      "source_type": "youtube_transcript",
+      "confidence": "verified",
+      "category": "organization"
+    },
+    {
+      "fact": "Charu Majumdar was arrested on 16 July 1972 and died in police custody on 28 July 1972.",
+      "source_id": "yt_video_2",
+      "source_type": "youtube_transcript",
+      "confidence": "verified",
+      "category": "event"
+    },
+    {
+      "fact": "Kanu Sanyal was arrested in August 1970 and later committed suicide in jail.",
+      "source_id": "yt_video_2",
+      "source_type": "youtube_transcript",
+      "confidence": "probable",
+      "category": "event"
+    },
+    {
+      "fact": "During the Emergency (1975-77), Indira Gandhi used the Maintenance of Internal Security Act (MISA) to crack down on Naxalites.",
+      "source_id": "yt_video_2",
+      "source_type": "youtube_transcript",
+      "confidence": "probable",
+      "category": "event"
+    },
+    {
+      "fact": "In 1977, Prime Minister Morarji Desai released many Naxal prisoners who renounced violence.",
+      "source_id": "yt_video_2",
+      "source_type": "youtube_transcript",
+      "confidence": "probable",
+      "category": "turning_point"
+    },
+    {
+      "fact": "Kondapalli Seetharamaiah, released from jail, regrouped Naxal factions and formed the People's War Group (PWG) in 1980.",
+      "source_id": "yt_video_2",
+      "source_type": "youtube_transcript",
+      "confidence": "verified",
+      "category": "character"
+    },
+    {
+      "fact": "The CPI (Maoist) was formed in 2004 through the merger of the People's War Group and the Maoist Communist Centre (MCC).",
+      "source_id": "yt_video_2",
+      "source_type": "youtube_transcript",
+      "confidence": "verified",
+      "category": "organization"
+    },
+    {
+      "fact": "At its peak around 2005-2010, Maoist influence extended to over 180 districts across 10 states, covering approximately 92,000 sq km.",
+      "source_id": "yt_video_2",
+      "source_type": "youtube_transcript",
+      "confidence": "probable",
+      "category": "event"
+    },
+    {
+      "fact": "The Red Corridor refers to the contiguous region affected by Naxalism spanning parts of Chhattisgarh, Jharkhand, Odisha, Bihar, West Bengal, Andhra Pradesh, Telangana, Maharashtra, Madhya Pradesh, and Karnataka.",
+      "source_id": "yt_video_2",
+      "source_type": "youtube_transcript",
+      "confidence": "verified",
+      "category": "location"
+    },
+    {
+      "fact": "Naxalites finance their operations primarily through extortion (levy) from contractors, businesses, and illegal activities like drug smuggling and money laundering.",
+      "source_id": "yt_video_1",
+      "source_type": "youtube_transcript",
+      "confidence": "verified",
+      "category": "organization"
+    },
+    {
+      "fact": "The Salwa Judum movement, launched in 2005 in Chhattisgarh by Congress leader Mahendra Karma, armed local tribal youth against Naxalites but was banned by the Supreme Court in 2011 due to human rights violations.",
+      "source_id": "yt_video_1",
+      "source_type": "youtube_transcript",
+      "confidence": "verified",
+      "category": "operation"
+    },
+    {
+      "fact": "On 6 April 2010, in Dantewada, Chhattisgarh, a CRPF convoy was ambushed, resulting in the death of 76 security personnel – the deadliest Naxal attack in India's history.",
+      "source_id": "yt_video_3",
+      "source_type": "youtube_transcript",
+      "confidence": "verified",
+      "category": "event"
+    },
+    {
+      "fact": "Naxal commander Hidma, a key PLGA (People's Liberation Guerrilla Army) leader, has a ₹40 lakh bounty and is known for orchestrating multiple major attacks; no recent photograph exists due to tight security.",
+      "source_id": "yt_video_1",
+      "source_type": "youtube_transcript",
+      "confidence": "probable",
+      "category": "character"
+    },
+    {
+      "fact": "Weaponry commonly used by Naxalites includes looted AK-47s, INSAS rifles, under-barrel grenade launchers (UBGL), RPGs, IEDs, and landmines.",
+      "source_id": "yt_video_1",
+      "source_type": "youtube_transcript",
+      "confidence": "verified",
+      "category": "weapon"
+    },
+    {
+      "fact": "In 2017, the BJP government launched the 'Samadhan' strategy, an eight-point plan focusing on smart leadership, aggressive strategy, training, surveillance, and development.",
+      "source_id": "yt_video_1",
+      "source_type": "youtube_transcript",
+      "confidence": "probable",
+      "category": "operation"
+    },
+    {
+      "fact": "Home Minister Amit Shah declared that Naxalism will be completely eradicated by 31 March 2026.",
+      "source_id": "yt_video_3",
+      "source_type": "youtube_transcript",
+      "confidence": "verified",
+      "category": "quote"
+    },
+    {
+      "fact": "Recent operations have reduced Maoist-affected districts from 126 in 2013 to 38 in 2024, and attacks declined from 2,258 in 2009 to 349 by August 2021.",
+      "source_id": "yt_video_4",
+      "source_type": "youtube_transcript",
+      "confidence": "verified",
+      "category": "event"
+    },
+    {
+      "fact": "The security forces now employ helicopters, drones, thermal imaging, and increased local intelligence to counter guerrilla tactics.",
+      "source_id": "yt_video_1",
+      "source_type": "youtube_transcript",
+      "confidence": "probable",
+      "category": "operation"
+    },
+    {
+      "fact": "Despite military setbacks, Naxalites retain social support, as evidenced by a 60-ft 'Shahid Minar' (martyrs' column) built near security camps in Bijapur district in 2022 attended by 10,000 people.",
+      "source_id": "yt_video_3",
+      "source_type": "youtube_transcript",
+      "confidence": "probable",
+      "category": "event"
+    },
+    {
+      "fact": "The 'Urban Naxal' phenomenon refers to ideological supporters within cities who provide legal, logistical, and financial help to the Maoist movement.",
+      "source_id": "yt_video_1",
+      "source_type": "youtube_transcript",
+      "confidence": "unverified",
+      "category": "organization"
+    }
+  ],
+  "events": [
+    {
+      "event": "Naxalbari uprising",
+      "date": "1967",
+      "description": "Tribal peasants led by Charu Majumdar and Jangal Santhal attacked landlords; police retaliation killed 8; sparked the Naxalite movement.",
+      "sources": [
+        "yt_video_2"
+      ]
+    },
+    {
+      "event": "Formation of CPI(ML)",
+      "date": "22 April 1969",
+      "description": "Charu Majumdar established the Communist Party of India (Marxist-Leninist) to wage armed revolution.",
+      "sources": [
+        "yt_video_2"
+      ]
+    },
+    {
+      "event": "Arrest and death of Charu Majumdar",
+      "date": "16-28 July 1972",
+      "description": "Majumdar was captured in Kolkata and died in police custody 13 days later.",
+      "sources": [
+        "yt_video_2"
+      ]
+    },
+    {
+      "event": "Emergency crackdown",
+      "date": "1975-1977",
+      "description": "Indira Gandhi used MISA to arrest thousands of Naxalites, severely weakening the movement.",
+      "sources": [
+        "yt_video_2"
+      ]
+    },
+    {
+      "event": "Release of Naxal prisoners",
+      "date": "1977",
+      "description": "Morarji Desai government freed Naxalites who promised to renounce violence; many later returned to armed struggle.",
+      "sources": [
+        "yt_video_2"
+      ]
+    },
+    {
+      "event": "Formation of PWG",
+      "date": "1980",
+      "description": "Kondapalli Seetharamaiah founded the People's War Group, reviving the Naxalite insurgency.",
+      "sources": [
+        "yt_video_2"
+      ]
+    },
+    {
+      "event": "Salwa Judum",
+      "date": "2005-2011",
+      "description": "Government-backed anti-Naxal militia in Chhattisgarh, later banned by Supreme Court for human rights abuses.",
+      "sources": [
+        "yt_video_1",
+        "yt_video_3"
+      ]
+    },
+    {
+      "event": "Dantewada ambush",
+      "date": "6 April 2010",
+      "description": "76 CRPF personnel killed in the deadliest Maoist attack in Indian history.",
+      "sources": [
+        "yt_video_3"
+      ]
+    },
+    {
+      "event": "Formation of CPI (Maoist)",
+      "date": "2004",
+      "description": "Merger of PWG and MCC created a unified Maoist party, leading to peak violence.",
+      "sources": [
+        "yt_video_2"
+      ]
+    },
+    {
+      "event": "Decline phase",
+      "date": "2010-present",
+      "description": "Security operations and development programs drastically reduced Maoist influence from 200+ districts to under 40.",
+      "sources": [
+        "yt_video_2",
+        "yt_video_4"
+      ]
+    },
+    {
+      "event": "Amit Shah's 2026 deadline",
+      "date": "2025",
+      "description": "Home Minister announced Naxalism would be eliminated by 31 March 2026.",
+      "sources": [
+        "yt_video_3"
+      ]
+    }
+  ],
+  "dates": [
+    {
+      "date": "1967",
+      "event": "Naxalbari uprising",
+      "significance": "Birth of Naxalism in India"
+    },
+    {
+      "date": "22 April 1969",
+      "event": "CPI(ML) founded",
+      "significance": "Institutionalization of armed revolution"
+    },
+    {
+      "date": "16-28 July 1972",
+      "event": "Charu Majumdar's arrest and death",
+      "significance": "Loss of original leadership"
+    },
+    {
+      "date": "1980",
+      "event": "PWG formed",
+      "significance": "Rebirth of organized Naxalism"
+    },
+    {
+      "date": "2004",
+      "event": "CPI(Maoist) formed",
+      "significance": "Unified Maoist front"
+    },
+    {
+      "date": "6 April 2010",
+      "event": "Dantewada ambush",
+      "significance": "Worst Naxal attack on security forces"
+    },
+    {
+      "date": "31 March 2026",
+      "event": "Target end of Naxalism (Amit Shah)",
+      "significance": "Government deadline"
+    }
+  ],
+  "characters": [
+    {
+      "name": "Charu Majumdar",
+      "role": "Ideologue and founder of CPI(ML)",
+      "status": "Died in police custody 1972",
+      "sources": [
+        "yt_video_1",
+        "yt_video_2"
+      ]
+    },
+    {
+      "name": "Kanu Sanyal",
+      "role": "Naxal leader, trained in China",
+      "status": "Arrested 1970, committed suicide in jail",
+      "sources": [
+        "yt_video_2"
+      ]
+    },
+    {
+      "name": "Jangal Santhal",
+      "role": "Local tribal leader in Naxalbari uprising",
+      "status": "Arrested after uprising",
+      "sources": [
+        "yt_video_2"
+      ]
+    },
+    {
+      "name": "Kondapalli Seetharamaiah",
+      "role": "Founder of PWG, architect of revival",
+      "status": "Arrested later, details unclear",
+      "sources": [
+        "yt_video_2"
+      ]
+    },
+    {
+      "name": "Hidma",
+      "role": "PLGA commander, ₹40 lakh reward, no recent photo",
+      "status": "Active",
+      "sources": [
+        "yt_video_1"
+      ]
+    },
+    {
+      "name": "Mahendra Karma",
+      "role": "Congress leader, founder of Salwa Judum",
+      "status": "Killed by Maoists in 2013 Darbha Valley ambush",
+      "sources": [
+        "yt_video_1",
+        "yt_video_3"
+      ]
+    }
+  ],
+  "organizations": [
+    {
+      "name": "Communist Party of India (Marxist-Leninist) [CPI(ML)]",
+      "type": "Maoist political party",
+      "active_period": "1969-1972 (first wave)",
+      "sources": [
+        "yt_video_2"
+      ]
+    },
+    {
+      "name": "People's War Group (PWG)",
+      "type": "Maoist insurgent group",
+      "active_period": "1980-2004 (merged into CPI(Maoist))",
+      "sources": [
+        "yt_video_2"
+      ]
+    },
+    {
+      "name": "Communist Party of India (Maoist)",
+      "type": "Banned terrorist organization",
+      "active_period": "2004-present",
+      "sources": [
+        "yt_video_2",
+        "yt_video_3"
+      ]
+    },
+    {
+      "name": "Salwa Judum",
+      "type": "Government-backed anti-Naxal militia",
+      "active_period": "2005-2011 (banned)",
+      "sources": [
+        "yt_video_1",
+        "yt_video_3"
+      ]
+    },
+    {
+      "name": "CRPF (Central Reserve Police Force)",
+      "type": "Indian central armed police force",
+      "role": "Primary counter-Naxal force",
+      "sources": [
+        "yt_video_1",
+        "yt_video_3"
+      ]
+    },
+    {
+      "name": "COBRA (Commando Battalion for Resolute Action)",
+      "type": "Special forces of CRPF",
+      "role": "Jungle warfare and anti-Naxal operations",
+      "sources": [
+        "yt_video_1"
+      ]
+    }
+  ],
+  "countries": [
+    {
+      "name": "India",
+      "role": "Affected country"
+    },
+    {
+      "name": "China",
+      "role": "Ideological inspiration, training ground for early Naxalites"
+    }
+  ],
+  "operations": [
+    {
+      "name": "Operation Steeplechase",
+      "period": "1971-1972",
+      "description": "Mass arrest of Naxalites in West Bengal; led to capture of Charu Majumdar",
+      "sources": [
+        "yt_video_2"
+      ]
+    },
+    {
+      "name": "Operation Green Hunt",
+      "period": "2009 onwards",
+      "description": "Nationwide offensive by CRPF and state police against Maoists",
+      "sources": [
+        "yt_video_3"
+      ]
+    },
+    {
+      "name": "Samadhan Strategy",
+      "period": "2017",
+      "description": "8-point holistic approach including smart leadership, aggressive strategy, modern technology, and development",
+      "sources": [
+        "yt_video_1"
+      ]
+    }
+  ],
+  "weapons": [
+    {
+      "type": "AK-47",
+      "source": "Looted from security forces or smuggled",
+      "sources": [
+        "yt_video_1"
+      ]
+    },
+    {
+      "type": "INSAS rifle",
+      "source": "Looted from security forces",
+      "sources": [
+        "yt_video_1"
+      ]
+    },
+    {
+      "type": "UBGL (Under-Barrel Grenade Launcher)",
+      "source": "Looted",
+      "sources": [
+        "yt_video_1"
+      ]
+    },
+    {
+      "type": "RPG (Rocket-Propelled Grenade)",
+      "source": "Looted or smuggled",
+      "sources": [
+        "yt_video_1"
+      ]
+    },
+    {
+      "type": "IED and landmines",
+      "source": "Locally made with external training",
+      "sources": [
+        "yt_video_2",
+        "yt_video_3"
+      ]
+    }
+  ],
+  "locations": [
+    {
+      "name": "Naxalbari",
+      "state": "West Bengal",
+      "significance": "Origin of Naxalite movement"
+    },
+    {
+      "name": "Bastar division (Sukma, Dantewada, Jagdalpur, Kanker)",
+      "state": "Chhattisgarh",
+      "significance": "Current stronghold of Maoists"
+    },
+    {
+      "name": "Dandakaranya forest",
+      "state": "Chhattisgarh, Odisha, Andhra Pradesh",
+      "significance": "Hideout and operational base"
+    },
+    {
+      "name": "Red Corridor",
+      "states": [
+        "Chhattisgarh",
+        "Jharkhand",
+        "Odisha",
+        "Bihar",
+        "West Bengal",
+        "Maharashtra",
+        "Telangana",
+        "Andhra Pradesh",
+        "Madhya Pradesh",
+        "Karnataka"
+      ],
+      "significance": "Entire Naxal-affected region"
+    },
+    {
+      "name": "Bijapur district",
+      "state": "Chhattisgarh",
+      "significance": "Recent major operations, strong Maoist presence"
+    }
+  ],
+  "relationships": [
+    {
+      "from": "Naxalites",
+      "to": "LTTE",
+      "nature": "Training and arms supply in 1990s",
+      "sources": [
+        "yt_video_2"
+      ]
+    },
+    {
+      "from": "Naxalites",
+      "to": "ULFA",
+      "nature": "Coordination and tactical exchange",
+      "sources": [
+        "yt_video_2"
+      ]
+    },
+    {
+      "from": "Maoist groups",
+      "to": "Tribal communities",
+      "nature": "Recruited from, provided parallel governance",
+      "sources": [
+        "yt_video_2",
+        "yt_video_3"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "speaker": "Amit Shah (Home Minister)",
+      "text": "Naxalism will be completely eradicated by 31 March 2026.",
+      "source_id": "yt_video_3",
+      "context": "After a successful anti-Maoist operation in Chhattisgarh"
+    },
+    {
+      "speaker": "Manmohan Singh (Former PM)",
+      "text": "Naxalism is the biggest internal security threat to India.",
+      "source_id": "yt_video_3",
+      "context": "2006 statement"
+    }
+  ],
+  "turning_points": [
+    {
+      "event": "Naxalbari uprising (1967)",
+      "why": "Marked the beginning of armed Maoist rebellion in India"
+    },
+    {
+      "event": "Death of Charu Majumdar (1972)",
+      "why": "Decapitated the first wave but ideology persisted"
+    },
+    {
+      "event": "Formation of PWG (1980)",
+      "why": "Revived Naxalism after the Emergency crackdown"
+    },
+    {
+      "event": "Merger into CPI(Maoist) (2004)",
+      "why": "Unified factions, leading to peak violence and expansion"
+    },
+    {
+      "event": "Salwa Judum ban (2011)",
+      "why": "Exposed human rights violations, turned tribal support against government"
+    },
+    {
+      "event": "Decline after 2010",
+      "why": "Sustained military pressure and development programs drastically reduced Maoist influence, though not eliminated"
+    }
+  ],
+  "unknown_questions": [
+    "Exact numbers of remaining armed Maoist cadres in 2025.",
+    "Current foreign funding sources and their scale, if any.",
+    "Precise details of alleged forced encounters and civilian casualties in recent operations.",
+    "Effectiveness of surrender and rehabilitation programs beyond anecdotal reports.",
+    "Impact of corporate mining (e.g., Adani in Hasdeo) on local tribal support for Maoists.",
+    "Full extent of 'Urban Naxal' networks and their operational role.",
+    "Contradictions between government claims of development and ground realities concerning PESA implementation."
+  ],
+  "narrative_leads": {
+    "hooks": [
+      "From a land dispute in a small Bengal village, a 50-year insurgency that held 200 districts hostage.",
+      "A 60-ft martyrs’ column built by Maoists right under the nose of security camps – a symbol of enduring support.",
+      "Amit Shah’s 2026 deadline: overconfidence or a calculated endgame for India’s longest war?"
+    ],
+    "cliffhangers": [
+      "Will the government’s military successes be enough, or will unaddressed land rights grievances fuel another revival?",
+      "As forces close in, the Maoist leadership – including the elusive Hidma – remain effective and deadly.",
+      "The real battle might not be in the jungle, but in winning the trust of tribal communities."
+    ],
+    "questions": [
+      "Why have decades of military operations failed to entirely root out a homegrown insurgency?",
+      "Is Naxalism primarily a law-and-order problem or a symptom of deeper socio-economic inequality?",
+      "What role does corporate mining play in reigniting tribal anger that Maoists exploit?",
+      "Can the state provide justice and development quickly enough to prevent the next generation from taking up arms?"
+    ],
+    "story_flow_notes": [
+      "Open with the brutal 2010 Dantewada ambush – 76 CRPF dead – to grab attention.",
+      "Interweave political ideology (Marxism, Maoism) with the visceral conflict.",
+      "Juxtapose government narratives (declining incidents, 2026 deadline) with ground realities (martyrs’ column, reporter killings).",
+      "Use personal stories: Bimal Kisan’s lost land, Mukesh Chandrakar’s murder, ex-cadres’ betrayals.",
+      "End with the unresolved question: can development defeat ideology?"
+    ]
+  }
+}
+
+TIMELINE:
+{
+  "topic": "Naxalism in India Explained",
+  "timeline_phases": [
+    "Roots of Rebellion (1967–1969)",
+    "First Wave and State Crush (1970–1977)",
+    "Hidden Embers and Reorganisation (1980–2004)",
+    "Red Corridor Unleashed (2004–2010)",
+    "Turning Tide and Strategic Decline (2010–present)",
+    "Endgame 2026?"
+  ],
+  "events": [
+    {
+      "id": "evt_001",
+      "date": "1967-05-24",
+      "date_precision": "exact",
+      "title": "Naxalbari Uprising – The Spark",
+      "description": "A land dispute between tribal farmer Bimal Kisan and landlord Ishwar Tirkey escalates. On 24–25 May, police fire on protesters, killing 8 villagers including 2 children. The uprising, led by local commanders and communist ideologues, marks the birth of the Naxalite movement.",
+      "location": "Naxalbari, Darjeeling district, West Bengal",
+      "characters_involved": [
+        "Charu Majumdar",
+        "Kanu Sanyal",
+        "Jangal Santhal"
+      ],
+      "source_fact_ids": [
+        "fact: Naxalite movement originated in the late 1960s in Naxalbari village",
+        "fact: The immediate trigger was a land dispute between Bimal Kisan and Ishwar Tirkey",
+        "fact: On 24-25 May 1967, police firing killed 8 villagers"
+      ],
+      "confidence": "verified",
+      "dramatic_weight": 10
+    },
+    {
+      "id": "evt_002",
+      "date": "1969-04-22",
+      "date_precision": "exact",
+      "title": "CPI(ML) Formation – Armed Revolution Declared",
+      "description": "Charu Majumdar founds the Communist Party of India (Marxist-Leninist) to wage an armed revolution. The party adopts the ‘annihilation of class enemies’ as its guiding principle.",
+      "location": "Nationwide, ideological base in West Bengal",
+      "characters_involved": [
+        "Charu Majumdar"
+      ],
+      "source_fact_ids": [
+        "fact: CPI-ML was formed on 22 April 1969, with Charu Majumdar as its leader, advocating armed revolution"
+      ],
+      "confidence": "verified",
+      "dramatic_weight": 9
+    },
+    {
+      "id": "evt_003",
+      "date": "1971–1972",
+      "date_precision": "approximate",
+      "title": "Operation Steeplechase – Crushing the First Wave",
+      "description": "Massive police and army operation arrests hundreds of Naxalites across West Bengal. Leader Charu Majumdar is captured on 16 July 1972 and dies in custody on 28 July, dealing a fatal blow to the movement.",
+      "location": "West Bengal, primarily Kolkata",
+      "characters_involved": [
+        "Charu Majumdar"
+      ],
+      "source_fact_ids": [
+        "fact: Charu Majumdar was arrested on 16 July 1972 and died in police custody on 28 July 1972",
+        "fact: Operation Steeplechase (1971-1972) led to capture of Charu Majumdar"
+      ],
+      "confidence": "verified",
+      "dramatic_weight": 9
+    },
+    {
+      "id": "evt_004",
+      "date": "1975–1977",
+      "date_precision": "approximate",
+      "title": "Emergency Crackdown – MISA Unleashed",
+      "description": "Prime Minister Indira Gandhi uses the Maintenance of Internal Security Act (MISA) to arrest thousands of Naxalites. The movement is virtually decapitated.",
+      "location": "Pan-India, especially West Bengal and Andhra Pradesh",
+      "characters_involved": [
+        "Indira Gandhi"
+      ],
+      "source_fact_ids": [
+        "fact: During the Emergency (1975-77), Indira Gandhi used MISA to crack down on Naxalites"
+      ],
+      "confidence": "probable",
+      "dramatic_weight": 8
+    },
+    {
+      "id": "evt_005",
+      "date": "1977",
+      "date_precision": "year",
+      "title": "Release and Betrayal – Naxalites Walk Free",
+      "description": "Prime Minister Morarji Desai releases many Naxal prisoners who renounce violence. Many later rejoin the armed struggle, setting the stage for revival.",
+      "location": "Various jails across India",
+      "characters_involved": [
+        "Morarji Desai",
+        "Kondapalli Seetharamaiah"
+      ],
+      "source_fact_ids": [
+        "fact: In 1977, PM Morarji Desai released many Naxal prisoners who renounced violence"
+      ],
+      "confidence": "probable",
+      "dramatic_weight": 7
+    },
+    {
+      "id": "evt_006",
+      "date": "1980",
+      "date_precision": "year",
+      "title": "People’s War Group (PWG) – The Resurgence",
+      "description": "Kondapalli Seetharamaiah, released from jail, regroups Naxal factions and founds the People’s War Group in Andhra Pradesh. The insurgency gets a second life.",
+      "location": "Andhra Pradesh",
+      "characters_involved": [
+        "Kondapalli Seetharamaiah"
+      ],
+      "source_fact_ids": [
+        "fact: Kondapalli Seetharamaiah, released from jail, regrouped Naxal factions and formed PWG in 1980"
+      ],
+      "confidence": "verified",
+      "dramatic_weight": 9
+    },
+    {
+      "id": "evt_007",
+      "date": "1980–2004",
+      "date_precision": "approximate",
+      "title": "Fragmented Resistance – PWG, MCC, and the Build‑up",
+      "description": "Multiple Maoist groups operate independently across the heartland. They forge links with LTTE and ULFA for training and arms, expand tribal support bases, and perfect guerrilla tactics.",
+      "location": "Andhra Pradesh, Bihar, Jharkhand, Chhattisgarh",
+      "characters_involved": [
+        "Naxalites",
+        "LTTE",
+        "ULFA"
+      ],
+      "source_fact_ids": [
+        "fact: Naxalites and LTTE had training and arms supply relations in 1990s",
+        "fact: Naxalites and ULFA had coordination and tactical exchange",
+        "fact: Weaponry commonly used includes looted AK-47s, INSAS, UBGL, RPG, IEDs"
+      ],
+      "confidence": "verified",
+      "dramatic_weight": 7
+    },
+    {
+      "id": "evt_008",
+      "date": "2004",
+      "date_precision": "year",
+      "title": "CPI (Maoist) – A Unified Front",
+      "description": "The merger of the People’s War Group and the Maoist Communist Centre gives birth to the Communist Party of India (Maoist). A unified command escalates the conflict dramatically.",
+      "location": "Nationwide, headquartered in the Red Corridor",
+      "characters_involved": [
+        "CPI (Maoist)"
+      ],
+      "source_fact_ids": [
+        "fact: The CPI (Maoist) was formed in 2004 through the merger of PWG and MCC"
+      ],
+      "confidence": "verified",
+      "dramatic_weight": 9
+    },
+    {
+      "id": "evt_009",
+      "date": "2005–2011",
+      "date_precision": "approximate",
+      "title": "Salwa Judum – State‑Sponsored Vigilanteism",
+      "description": "Congress leader Mahendra Karma launches Salwa Judum in Chhattisgarh, arming tribal youth to fight Maoists. The militia is later banned by the Supreme Court in 2011 for horrific human rights abuses, alienating locals.",
+      "location": "Chhattisgarh (Bastar region)",
+      "characters_involved": [
+        "Mahendra Karma"
+      ],
+      "source_fact_ids": [
+        "fact: Salwa Judum movement, launched in 2005 by Mahendra Karma, armed tribal youth; banned by Supreme Court in 2011 due to human rights violations"
+      ],
+      "confidence": "verified",
+      "dramatic_weight": 9
+    },
+    {
+      "id": "evt_010",
+      "date": "2005–2010",
+      "date_precision": "approximate",
+      "title": "Peak Maoist Dominance – The Red Corridor",
+      "description": "Maoist influence extends to over 180 districts across 10 states covering 92,000 sq km. The ‘Red Corridor’ becomes a zone of parallel governance.",
+      "location": "Chhattisgarh, Jharkhand, Odisha, Bihar, West Bengal, Andhra Pradesh, Telangana, Maharashtra, MP, Karnataka",
+      "characters_involved": [
+        "CPI (Maoist)"
+      ],
+      "source_fact_ids": [
+        "fact: At its peak around 2005-2010, Maoist influence extended to over 180 districts across 10 states, covering approximately 92,000 sq km",
+        "fact: The Red Corridor refers to the contiguous region affected by Naxalism"
+      ],
+      "confidence": "probable",
+      "dramatic_weight": 10
+    },
+    {
+      "id": "evt_011",
+      "date": "2010-04-06",
+      "date_precision": "exact",
+      "title": "Dantewada Ambush – India’s Darkest Day Against Naxals",
+      "description": "A CRPF convoy is ambushed in the Mukrana forest. 76 security personnel are killed in the deadliest Maoist attack in India’s history, demonstrating the insurgents’ deadly capability.",
+      "location": "Dantewada, Chhattisgarh",
+      "characters_involved": [
+        "CRPF",
+        "Naxal commander Hidma"
+      ],
+      "source_fact_ids": [
+        "fact: On 6 April 2010, in Dantewada, a CRPF convoy was ambushed, resulting in the death of 76 security personnel",
+        "fact: Naxal commander Hidma orchestrated multiple major attacks"
+      ],
+      "confidence": "verified",
+      "dramatic_weight": 10
+    },
+    {
+      "id": "evt_012",
+      "date": "2009 onwards",
+      "date_precision": "approximate",
+      "title": "Operation Green Hunt – Full‑Scale War",
+      "description": "The Indian government launches a nationwide offensive involving CRPF and state police to break the Maoist stronghold. Encounters, smart weapons, and intelligence operations intensify.",
+      "location": "Red Corridor, especially Chhattisgarh, Jharkhand, Odisha",
+      "characters_involved": [
+        "CRPF",
+        "COBRA",
+        "Maoists"
+      ],
+      "source_fact_ids": [
+        "fact: Operation Green Hunt (2009 onwards) - Nationwide offensive by CRPF and state police against Maoists",
+        "fact: The security forces now employ helicopters, drones, thermal imaging"
+      ],
+      "confidence": "verified",
+      "dramatic_weight": 8
+    },
+    {
+      "id": "evt_013",
+      "date": "2013",
+      "date_precision": "year",
+      "title": "Darbha Valley Ambush – Congress Leadership Decapitated",
+      "description": "Maoists ambush a Congress rally in Darbha Valley, killing Salwa Judum founder Mahendra Karma and several other Congress leaders. A high‑profile assassination that shocks the nation.",
+      "location": "Darbha Valley, Chhattisgarh",
+      "characters_involved": [
+        "Mahendra Karma",
+        "Maoists"
+      ],
+      "source_fact_ids": [
+        "fact: Mahendra Karma, founder of Salwa Judum, was killed by Maoists in 2013 Darbha Valley ambush"
+      ],
+      "confidence": "verified",
+      "dramatic_weight": 9
+    },
+    {
+      "id": "evt_014",
+      "date": "2017",
+      "date_precision": "year",
+      "title": "SAMADHAN – The 8‑Point Masterstroke",
+      "description": "The BJP government adopts the ‘Samadhan’ strategy: Smart leadership, Aggressive strategy, Motivation and training, Dashboard‑based monitoring, Harnessing technology, Action plan for each threat, No access to financing. It marks a coordinated, holistic push against Maoism.",
+      "location": "Nationwide policy, field implementation in LWE districts",
+      "characters_involved": [
+        "Home Minister (Amit Shah)",
+        "CRPF",
+        "State police"
+      ],
+      "source_fact_ids": [
+        "fact: In 2017, the BJP government launched the 'Samadhan' strategy, an eight-point plan"
+      ],
+      "confidence": "probable",
+      "dramatic_weight": 8
+    },
+    {
+      "id": "evt_015",
+      "date": "2013–2024",
+      "date_precision": "approximate",
+      "title": "Massive Shrinkage of the Red Corridor",
+      "description": "Maoist-affected districts plummet from 126 in 2013 to 38 in 2024. Attacks decline from 2,258 in 2009 to 349 by August 2021. Government claims steady progress.",
+      "location": "All LWE‑affected states",
+      "characters_involved": [
+        "Government forces",
+        "CPI (Maoist)"
+      ],
+      "source_fact_ids": [
+        "fact: Recent operations have reduced Maoist-affected districts from 126 in 2013 to 38 in 2024, and attacks declined"
+      ],
+      "confidence": "verified",
+      "dramatic_weight": 10
+    },
+    {
+      "id": "evt_016",
+      "date": "2022",
+      "date_precision": "year",
+      "title": "Shahid Minar in the Shadow of Camps",
+      "description": "Despite security camps, Maoists erect a 60‑ft martyrs’ column in Bijapur district; 10,000 people attend the gathering, showcasing enduring tribal support.",
+      "location": "Bijapur, Chhattisgarh",
+      "characters_involved": [
+        "CPI (Maoist)",
+        "Tribal supporters"
+      ],
+      "source_fact_ids": [
+        "fact: a 60-ft 'Shahid Minar' built near security camps in Bijapur district in 2022 attended by 10,000 people"
+      ],
+      "confidence": "probable",
+      "dramatic_weight": 9
+    },
+    {
+      "id": "evt_017",
+      "date": "2025-03-31",
+      "date_precision": "exact",
+      "title": "Amit Shah’s Deadline – Naxalism Eradicated",
+      "description": "Home Minister Amit Shah declares that Naxalism will be completely eradicated by 31 March 2026. The countdown begins.",
+      "location": "New Delhi (statement), field operations continue",
+      "characters_involved": [
+        "Amit Shah"
+      ],
+      "source_fact_ids": [
+        "fact: Home Minister Amit Shah declared that Naxalism will be completely eradicated by 31 March 2026"
+      ],
+      "confidence": "verified",
+      "dramatic_weight": 9
+    },
+    {
+      "id": "evt_018",
+      "date": "2025 (ongoing)",
+      "date_precision": "approximate",
+      "title": "Unfinished War – Ideology vs. Development",
+      "description": "While territory shrinks, the ‘Urban Naxal’ network, unaddressed tribal land rights, and corporate mining tensions keep the ideological embers glowing. The final chapter remains unwritten.",
+      "location": "Red Corridor remnants and urban centers",
+      "characters_involved": [
+        "CPI (Maoist)",
+        "Tribal communities",
+        "Corporate miners"
+      ],
+      "source_fact_ids": [
+        "fact: The 'Urban Naxal' phenomenon refers to ideological supporters within cities",
+        "unknown: Impact of corporate mining on local tribal support for Maoists",
+        "unknown: Effect of surrender and rehabilitation programs"
+      ],
+      "confidence": "unverified",
+      "dramatic_weight": 9
+    }
+  ],
+  "master_narrative_arc": "From a bullet‑riddled village in 1967 Bengal, a grass‑roots peasant uprising mutates into India’s longest‑running armed rebellion. The documentary traces how a land dispute sparked an ideology‑driven insurgency, outlasting the execution of its founders, the iron fist of the Emergency, and decades of military campaigns. After near‑extinction, a furtive rebuilding produced the People’s War Group and later the unified CPI (Maoist), which by 2010 held a ‘Red Corridor’ larger than many countries. The 2010 Dantewada ambush—76 CRPF men dead—showed the state’s ultimate vulnerability, but also triggered a ruthless, tech‑backed counter‑offensive. Salwa Judum, Green Hunt, and the SAMADHAN strategy together shrank Maoist territory to a fraction of its peak. Yet, as the government sets a 2026 finish line, a clandestine martyrs’ pillar, shadowy urban supporters, and unresolved tribal land grievances whisper that the war may end in the jungle but not in the hearts of the dispossessed. The film questions whether a purely security‑driven victory can ever extinguish a fire lit by deep socio‑economic inequality."
+}
+
+TASK:
+Create character intelligence profiles for every major character.
+
+Return ONLY valid JSON:
+{
+  "characters": [
+    {
+      "name": "...",
+      "role": "protagonist|antagonist|authority|witness|expert",
+      "biography": "...",
+      "motivation": "...",
+      "allies": ["..."],
+      "enemies": ["..."],
+      "objectives": ["..."],
+      "major_decisions": ["..."],
+      "public_image": "...",
+      "impact_on_story": "...",
+      "character_arc": "..."
+    }
+  ]
+}
+
+Focus on characters that drive the documentary narrative.

@@ -1,0 +1,315 @@
+{
+  "overall_retention_score": 8,
+  "segments": [
+    {
+      "segment_number": 1,
+      "time_range": "0:00–0:24",
+      "summary": "6 अप्रैल 2010, दंतेवाड़ा — सी.आर.पी.एफ काफिले पर भीषण घात, 76 जवान शहीद। आज़ाद भारत का सबसे बड़ा हमला।",
+      "retention_score": 9,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [],
+      "improvement_suggestions": []
+    },
+    {
+      "segment_number": 2,
+      "time_range": "0:24–0:56",
+      "summary": "पीपल्स लिबरेशन गुरिल्ला आर्मी का परिचय, नक्सलवाद की शुरुआत पश्चिम बंगाल के एक किसान की लड़ाई से, और सवाल — क्या भारत इसे ख़त्म कर पाएगा?",
+      "retention_score": 8,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [],
+      "improvement_suggestions": []
+    },
+    {
+      "segment_number": 3,
+      "time_range": "0:56–1:28",
+      "summary": "लाल गलियारे का सरकारी नक्शा — 92,000 वर्ग किमी, 180 से अधिक ज़िले। हथियार अधिकतर सुरक्षा बलों से लूटे गए।",
+      "retention_score": 7,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [
+        "आँकड़े थोड़े सूचनात्मक; दृश्य प्रभाव से बेहतर कनेक्ट करें।"
+      ],
+      "improvement_suggestions": [
+        "नक्शे को एनिमेट करके मूवमेंट दिखाएँ, लूटे गए हथियारों की ग्राफ़िक के साथ तनाव बनाए रखें।"
+      ]
+    },
+    {
+      "segment_number": 4,
+      "time_range": "1:28–2:12",
+      "summary": "कमांडर हिडमा का रहस्य — 40 लाख इनाम, कोई साफ़ तस्वीर नहीं। 1967 नक्सलबाड़ी: बिमल किसन बनाम ज़मींदार, ज़मीन की लड़ाई।",
+      "retention_score": 9,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [],
+      "improvement_suggestions": []
+    },
+    {
+      "segment_number": 5,
+      "time_range": "2:12–2:36",
+      "summary": "24-25 मई 1967 की रात पुलिस गोलीबारी, 8 गाँववाले शहीद (दो बच्चे सहित)। सवाल — एक मामूली किसान की लड़ाई सेना कैसे बनी?",
+      "retention_score": 8,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [],
+      "improvement_suggestions": []
+    },
+    {
+      "segment_number": 6,
+      "time_range": "2:36–3:12",
+      "summary": "चारू मजुमदार का उदय — “वर्ग शत्रु का सर्वनाश” का नारा, नक्सलबाड़ी की लड़ाई अब पूरे तंत्र को उखाड़ने की लड़ाई।",
+      "retention_score": 7,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [
+        "विचारधारा का विवरण कुछ धीमा पड़ता है।"
+      ],
+      "improvement_suggestions": [
+        "चारू की आवाज़ या पर्चे का क्लोज़अप दिखाकर भावनात्मक जुड़ाव बढ़ाएँ।"
+      ]
+    },
+    {
+      "segment_number": 7,
+      "time_range": "3:12–3:44",
+      "summary": "गाँववालों ने ज़मींदारों पर हमला किया, ‘हिस्टोरिक एट डॉक्यूमेंट्स’ पर्चा, 22 अप्रैल 1969 को सी.पी.आई.(एम.एल.) की स्थापना।",
+      "retention_score": 7,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [],
+      "improvement_suggestions": []
+    },
+    {
+      "segment_number": 8,
+      "time_range": "3:44–4:20",
+      "summary": "कनु सान्याल का चीन प्रशिक्षण — आंदोलन का अंतरराष्ट्रीय जुड़ाव। सवाल: कॉलेज ड्रॉपआउट की क्रांति राज्य के दमन में कब तक टिकेगी?",
+      "retention_score": 8,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [],
+      "improvement_suggestions": []
+    },
+    {
+      "segment_number": 9,
+      "time_range": "4:20–5:00",
+      "summary": "चारू मजुमदार की हिरासत में मौत, ऑपरेशन स्टीपलचेज़, पहली लहर पूरी तरह कुचली गई। सरकार ने माना कि नक्सलवाद ख़त्म हो गया।",
+      "retention_score": 8,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [],
+      "improvement_suggestions": []
+    },
+    {
+      "segment_number": 10,
+      "time_range": "5:00–5:28",
+      "summary": "1977 में मोरारजी देसाई ने नक्सली बंदियों को रिहा किया; कुछ जंगल लौट आए।",
+      "retention_score": 7,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [
+        "टर्निंग पॉइंट का भावनात्मक भार कम पड़ता है।"
+      ],
+      "improvement_suggestions": [
+        "रिलीज़ होते क़ैदियों के चेहरों पर ज़ोर दें, संगीत से संदेह का माहौल बनाएँ।"
+      ]
+    },
+    {
+      "segment_number": 11,
+      "time_range": "5:28–6:04",
+      "summary": "कोंडापल्ली सीतारामैया ने 1980 में पीपुल्स वार ग्रुप बनाकर भूमिगत पुनरुत्थान किया। सवाल: क्या रिहाई एक ग़लती थी?",
+      "retention_score": 8,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [],
+      "improvement_suggestions": []
+    },
+    {
+      "segment_number": 12,
+      "time_range": "6:04–6:36",
+      "summary": "लाल गलियारे का विस्तार, माओवादियों की अपनी अदालतें, कर प्रणाली और समानांतर सेना का वर्णन।",
+      "retention_score": 7,
+      "has_new_information": true,
+      "curiosity_increases": false,
+      "would_viewers_continue": true,
+      "issues": [
+        "बिना नई घटना के विवरणात्मक; रोमांच थोड़ा कम होता है।"
+      ],
+      "improvement_suggestions": [
+        "समानांतर सरकार का एक छोटा नाटकीय दृश्य जोड़ें।"
+      ]
+    },
+    {
+      "segment_number": 13,
+      "time_range": "6:36–7:16",
+      "summary": "2004 में सी.पी.आई.(माओवादी) का गठन, सलवा जुडूम — आदिवासियों को बंदूकें, विस्थापन और अत्याचार।",
+      "retention_score": 7,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [],
+      "improvement_suggestions": []
+    },
+    {
+      "segment_number": 14,
+      "time_range": "7:16–7:40",
+      "summary": "2011 में सुप्रीम कोर्ट ने सलवा जुडूम पर रोक लगाई; अब आदिवासी दोनों ओर से पिसते हैं, गुस्सा माओवादियों के लिए ऑक्सीजन बना।",
+      "retention_score": 7,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [
+        "छोटा खंड, संक्रमण तेज़ है।"
+      ],
+      "improvement_suggestions": [
+        "प्रभाव दिखाने के लिए एक पीड़ित की गवाही का सार जोड़ें।"
+      ]
+    },
+    {
+      "segment_number": 15,
+      "time_range": "7:40–8:32",
+      "summary": "दंतेवाड़ा 2010 की पुनरावृत्ति एक बचे कोबरा कमांडो की नज़र से, दरभा 2013 में महेंद्र कर्मा की हत्या, सवाल — क्या भारत लाल गलियारा जीत पाएगा?",
+      "retention_score": 9,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [],
+      "improvement_suggestions": []
+    },
+    {
+      "segment_number": 16,
+      "time_range": "8:32–9:28",
+      "summary": "अमित शाह का 2026 तक ख़ात्मे का वादा, ड्रोन फ़ीड में कैंप के पास 60 फ़ीट शहीद मीनार और 10,000 आदिवासियों का जमावड़ा। सवाल: क्या दिल जीते गए?",
+      "retention_score": 9,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [],
+      "improvement_suggestions": []
+    },
+    {
+      "segment_number": 17,
+      "time_range": "9:28–10:08",
+      "summary": "समाधान रणनीति के आठ सूत्र, नक्सल प्रभावित ज़िले 126 से 38, हमले 2,258 से 349 तक गिरे।",
+      "retention_score": 6,
+      "has_new_information": true,
+      "curiosity_increases": false,
+      "would_viewers_continue": true,
+      "issues": [
+        "सांख्यिकीय सूची जैसा लगता है; कहानी का प्रवाह टूटता है।"
+      ],
+      "improvement_suggestions": [
+        "आँकड़ों को ग्राफ़िक के साथ दिखाएँ और छोटी व्यक्तिगत सफलता की कहानी बुनें।"
+      ]
+    },
+    {
+      "segment_number": 18,
+      "time_range": "10:08–10:56",
+      "summary": "3,500 से अधिक सरेंडर, लेकिन 40% बेरोज़गार और असुरक्षित; पेसा क़ानून का अधूरा अमल, विकास का वादा अटका।",
+      "retention_score": 6,
+      "has_new_information": true,
+      "curiosity_increases": false,
+      "would_viewers_continue": true,
+      "issues": [
+        "नकारात्मक पहलू ज़रूरी पर बिना भावनात्मक एंकर के सपाट।"
+      ],
+      "improvement_suggestions": [
+        "एक सरेंडर किए नक्सली का उद्धरण लाएँ जो बेरोज़गारी से जूझ रहा है, ताकि जोखिम सजीव हो।"
+      ]
+    },
+    {
+      "segment_number": 19,
+      "time_range": "10:56–11:48",
+      "summary": "एन.एच.आर.सी. ने 12 कथित फ़र्ज़ी मुठभेड़ों का संज्ञान लिया, ह्यूमन राइट्स वॉच की 2024 रिपोर्ट में 15 एनकाउंटर का दावा; शहीद मीनार की याद — क्या हथियारों की जीत काफ़ी है?",
+      "retention_score": 8,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [],
+      "improvement_suggestions": []
+    },
+    {
+      "segment_number": 20,
+      "time_range": "11:48–12:16",
+      "summary": "घड़ी 2026 की ओर, अंधेरे से झाँकती आँखें; माओवादी कैडर 10,000 से घटकर 3,000-4,000, इलाका सिकुड़ा।",
+      "retention_score": 7,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [
+        "अनुमानों का प्रस्तुतीकरण सरल है।"
+      ],
+      "improvement_suggestions": [
+        "आँखों वाले शॉट के साथ ड्रोन से जंगल स्कैन का दृश्य मिलाएँ।"
+      ]
+    },
+    {
+      "segment_number": 21,
+      "time_range": "12:16–13:04",
+      "summary": "हसदेव अरण्य खनन विरोध, माओवादी पर्चे और नए रंगरूटों की भर्ती — पचास साल बाद भी वही ज़मीन की लड़ाई।",
+      "retention_score": 8,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [],
+      "improvement_suggestions": []
+    },
+    {
+      "segment_number": 22,
+      "time_range": "13:04–14:04",
+      "summary": "‘अर्बन नक्सल’ विवाद — एन.आई.ए. के आरोप बनाम नागरिक समाज; विदेशी फ़ंडिंग पर अनिश्चितता, इतिहास का खुला पन्ना।",
+      "retention_score": 7,
+      "has_new_information": true,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [
+        "कानूनी-राजनीतिक जटिलता दर्शक को भटका सकती है।"
+      ],
+      "improvement_suggestions": [
+        "विरोधी दृष्टिकोण को संक्षिप्त चार्ट या दोहराए गए वॉइस-ओवर क्लिप से स्पष्ट करें।"
+      ]
+    },
+    {
+      "segment_number": 23,
+      "time_range": "14:04–14:44",
+      "summary": "मनमोहन सिंह का 2006 का बयान, 2026 की समयसीमा — जश्न या नई शहीद मीनार? अंतिम सवाल: क्या ज़मीन उन्हें वापस मिलेगी?",
+      "retention_score": 9,
+      "has_new_information": false,
+      "curiosity_increases": true,
+      "would_viewers_continue": true,
+      "issues": [],
+      "improvement_suggestions": []
+    }
+  ],
+  "weak_segments": [
+    {
+      "segment_number": 17,
+      "score": 6,
+      "reason": "सांख्यिकीय विवरण एकतरफ़ा सूचनात्मक है; कहानी का तनाव कम होता है।",
+      "improve_by": "आँकड़ों को एक्शन ग्राफ़िक के साथ प्रस्तुत करें और किसी विशेष गाँव की केस-स्टडी जोड़ें।"
+    },
+    {
+      "segment_number": 18,
+      "score": 6,
+      "reason": "सरेंडर और बेरोज़गारी का जोखिम ज़रूरी पर बिना किसी व्यक्तिगत चेहरे के भावहीन है।",
+      "improve_by": "एक पुनर्वासित नक्सली की छोटी सी झलक दिखाएँ जो दोबारा बंदूक उठाने पर मजबूर हो।"
+    }
+  ],
+  "rewrite_recommendations": [
+    "30 मिनट के लक्ष्य को पाने के लिए हर अध्याय में कम-से-कम एक व्यक्तिगत पात्र (जवान, किसान, सरेंडर किया नक्सली) की समानांतर कहानी चलाएँ।",
+    "खंड 17-18 के आँकड़ों को कहानी में ढालें — जैसे, ‘सरेंडर करने वाला रमेश अब…’",
+    "हर खंड के अंत में एक स्पष्ट क्लिफ़हैंगर या प्रश्न रखें, भले ही अगला खंड उसी विषय पर हो।",
+    "हिडमा की अनुपस्थित उपस्थिति का उपयोग एक रहस्यमय कथासूत्र की तरह करें, बीच-बीच में उसकी परछाईं दिखाएँ।",
+    "दृश्य निर्देश जोड़ें: ड्रोन शॉट, इन्फ़्रारेड फ़ुटेज, रात के जंगल की आवाज़ें — ताकि सिनेमाई अनुभव बना रहे।"
+  ]
+}

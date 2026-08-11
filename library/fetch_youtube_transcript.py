@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -106,64 +107,152 @@ def _parse_vtt_to_plain(vtt_text: str) -> str:
     return " ".join(deduped)
 
 
-def fetch_transcript_ytdlp(video_id: str, languages: list[str] | None = None) -> tuple[list, str]:
-    """Fallback when youtube-transcript-api is IP-blocked."""
+def youtube_cookies_path() -> str | None:
+    """Optional Netscape cookies.txt exported from a logged-in browser session."""
+    raw = (os.environ.get("YOUTUBE_COOKIES_FILE") or "").strip()
+    if not raw:
+        return None
+    path = Path(raw).expanduser()
+    return str(path) if path.is_file() else None
+
+
+def youtube_cookies_browser() -> str | None:
+    """
+    Browser name for yt-dlp --cookies-from-browser (e.g. firefox, chrome, chromium).
+    Reads YOUTUBE_COOKIES_BROWSER. Use firefox when logged into YouTube in Mozilla.
+    """
+    raw = (os.environ.get("YOUTUBE_COOKIES_BROWSER") or "").strip()
+    return raw if raw else None
+
+
+def youtube_has_auth_cookies() -> bool:
+    return bool(youtube_cookies_path() or youtube_cookies_browser())
+
+
+def ytdlp_cookie_cli_args() -> list[str]:
+    """Prefer live browser profile (firefox) over a static cookies.txt file."""
+    browser = youtube_cookies_browser()
+    if browser:
+        return ["--cookies-from-browser", browser]
+    path = youtube_cookies_path()
+    if path:
+        return ["--cookies", path]
+    return []
+
+
+def ytdlp_subprocess_env() -> dict[str, str]:
+    """Ensure deno/node are on PATH for yt-dlp JS challenge solving."""
+    env = os.environ.copy()
+    extra = "/opt/homebrew/bin:/usr/local/bin"
+    env["PATH"] = extra + os.pathsep + env.get("PATH", "")
+    return env
+
+
+# Avoid web client subtitle PO-token requirement (see yt-dlp issue #13075).
+YTDLP_PLAYER_CLIENT = "default,-web"
+YTDLP_PLAYER_CLIENTS = ("default,-web", "android_vr", "ios")
+
+
+def _fetch_transcript_ytdlp_once(
+    video_id: str,
+    sub_langs: str,
+    player_client: str,
+    cookie_args: list[str],
+) -> str:
     import tempfile
 
-    langs = languages or ["hi", "en"]
-    sub_langs = ",".join([*langs, "en", "hi", "en-orig"])
     url = f"https://www.youtube.com/watch?v={video_id}"
-
     with tempfile.TemporaryDirectory(prefix="yt-subs-") as tmp:
-        out_base = str(Path(tmp) / "sub")
-        cmd = [
-            sys.executable,
-            "-m",
-            "yt_dlp",
-            "--skip-download",
-            "--write-auto-sub",
-            "--write-sub",
-            "--sub-langs",
-            sub_langs,
-            "--convert-subs",
-            "vtt",
-            "--no-playlist",
-            "-o",
-            out_base,
-            url,
-        ]
-        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+        out = str(Path(tmp) / "sub")
+        cmd = [sys.executable, "-m", "yt_dlp", *cookie_args]
+        cmd.extend(
+            [
+                "--skip-download",
+                "--ignore-no-formats-error",
+                "--sleep-subtitles",
+                "2",
+                "--extractor-args",
+                f"youtube:player_client={player_client}",
+                "--write-auto-sub",
+                "--write-sub",
+                "--sub-langs",
+                sub_langs,
+                "--convert-subs",
+                "vtt",
+                "--no-playlist",
+                "-o",
+                out,
+                url,
+            ]
+        )
+        proc = subprocess.run(
+            cmd, capture_output=True, text=True, timeout=120, env=ytdlp_subprocess_env()
+        )
         if proc.returncode != 0:
             err = (proc.stderr or proc.stdout or "").strip()
             raise RuntimeError(f"yt-dlp subtitle fetch failed: {err[:500]}")
-
         vtt_files = sorted(Path(tmp).glob("*.vtt"), key=lambda p: p.stat().st_size, reverse=True)
         if not vtt_files:
             raise RuntimeError("yt-dlp did not produce any subtitle file")
-
         plain = _parse_vtt_to_plain(vtt_files[0].read_text(encoding="utf-8", errors="replace"))
         if len(plain) < 50:
             raise RuntimeError("yt-dlp subtitle file was too short or empty")
-        return [], plain
+        return plain
+
+
+def fetch_transcript_ytdlp(video_id: str, languages: list[str] | None = None) -> tuple[list, str]:
+    """Fallback when youtube-transcript-api is IP-blocked."""
+    langs = languages or ["hi", "en"]
+    cookie_args = ytdlp_cookie_cli_args()
+    # Try English first — Hindi subtitle endpoint often 429s before en on rate-limited IPs.
+    sub_lang_batches = [
+        ",".join(dict.fromkeys([*langs, "en", "en-US", "en-GB", "en-orig"])),
+        "en,en-US,en-GB,en-orig",
+    ]
+    last_err: Exception | None = None
+    for player_client in YTDLP_PLAYER_CLIENTS:
+        for sub_langs in sub_lang_batches:
+            try:
+                plain = _fetch_transcript_ytdlp_once(
+                    video_id, sub_langs, player_client, cookie_args
+                )
+                return [], plain
+            except Exception as exc:
+                last_err = exc
+    raise RuntimeError(str(last_err or "yt-dlp subtitle fetch failed"))
 
 
 def fetch_transcript(video_id: str, languages: list[str] | None = None) -> tuple[list, str]:
     langs = languages or ["hi", "en"]
+    api_exc: Exception | None = None
     try:
         api = YouTubeTranscriptApi()
         result = api.fetch(video_id, languages=langs)
         plain = " ".join(segment.text for segment in result)
+        print(f"[transcript] api for {video_id}", file=sys.stderr)
         return result, plain
-    except Exception as api_exc:
+    except Exception as exc:
+        api_exc = exc
+    if youtube_has_auth_cookies():
         try:
             result, plain = fetch_transcript_ytdlp(video_id, langs)
-            print(f"[transcript] youtube-transcript-api blocked — used yt-dlp for {video_id}", file=sys.stderr)
+            tag = youtube_cookies_browser() or "cookies-file"
+            print(f"[transcript] yt-dlp+{tag} for {video_id}", file=sys.stderr)
             return result, plain
-        except Exception as ytdlp_exc:
-            raise RuntimeError(
-                f"Transcript fetch failed for {video_id}. "
-                f"API error: {api_exc}. yt-dlp fallback: {ytdlp_exc}"
-            ) from ytdlp_exc
+        except Exception as cookies_exc:
+            print(
+                f"[transcript] yt-dlp+cookies failed for {video_id}: {cookies_exc}",
+                file=sys.stderr,
+            )
+    try:
+        result, plain = fetch_transcript_ytdlp(video_id, langs)
+        print(f"[transcript] youtube-transcript-api blocked — used yt-dlp for {video_id}", file=sys.stderr)
+        return result, plain
+    except Exception as ytdlp_exc:
+        raise RuntimeError(
+            f"Transcript fetch failed for {video_id}. "
+            f"API error: {api_exc}. yt-dlp fallback: {ytdlp_exc}"
+        ) from ytdlp_exc
 
 
 def load_metadata(metadata_file: Path) -> list[dict]:

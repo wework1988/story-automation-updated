@@ -1,0 +1,31 @@
+TOPIC: {topic}
+
+KNOWLEDGE GRAPH:
+{knowledge_graph}
+
+TIMELINE:
+{timeline}
+
+TASK:
+Create character intelligence profiles for every major character.
+
+Return ONLY valid JSON:
+{{
+  "characters": [
+    {{
+      "name": "...",
+      "role": "protagonist|antagonist|authority|witness|expert",
+      "biography": "...",
+      "motivation": "...",
+      "allies": ["..."],
+      "enemies": ["..."],
+      "objectives": ["..."],
+      "major_decisions": ["..."],
+      "public_image": "...",
+      "impact_on_story": "...",
+      "character_arc": "..."
+    }}
+  ]
+}}
+
+Focus on characters that drive the documentary narrative.

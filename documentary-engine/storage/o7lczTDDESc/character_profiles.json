@@ -1,0 +1,296 @@
+{
+  "characters": [
+    {
+      "name": "Charu Majumdar",
+      "role": "antagonist",
+      "biography": "A firebrand communist ideologue from Bengal, Charu Majumdar crafted the doctrine of armed peasant revolution in India. After the 1967 Naxalbari uprising he co‑led, Majumdar became the architect and first general secretary of the CPI(ML) on 22 April 1969, propounding the annihilation of class enemies. His writings and secretive leadership turned a local land struggle into a nationwide insurgency. Arrested in Kolkata on 16 July 1972, he died in police custody twelve days later, becoming a martyr whose ideas outlived the bullets.",
+      "motivation": "Absolute conviction that only an armed peasantry could overthrow India’s feudal-bourgeois state and establish a classless society; personal hatred of landlordism and perceived betrayal by parliamentary communists.",
+      "allies": [
+        "Kanu Sanyal",
+        "Jangal Santhal",
+        "CPI(ML) cadres",
+        "Tribal peasants"
+      ],
+      "enemies": [
+        "Landlords",
+        "Indian state and police",
+        "CPI(M) mainstream communists",
+        "Indira Gandhi government"
+      ],
+      "objectives": [
+        "Spark a people’s war through targeted violence",
+        "Establish guerrilla zones across India",
+        "Destroy the ‘class enemy’—landlords, police, and state functionaries",
+        "Build a parallel revolutionary state"
+      ],
+      "major_decisions": [
+        "Radicalizing the Naxalbari land dispute into a call for armed uprising in 1967",
+        "Founding the CPI(ML) in 1969 and issuing the 'annihilation of class enemies' line",
+        "Choosing underground, cell-based structure that made the movement nearly invisible until it erupted"
+      ],
+      "public_image": "A feared revolutionary and cult figure among supporters; a terrorist mastermind to the state. His death in custody cemented his legend.",
+      "impact_on_story": "He is the Genesis. Without Majumdar’s ideological clarity and ruthless blueprint, Naxalism might have remained a local skirmish. His martyrdom gave the movement its first eternal flame.",
+      "character_arc": "From a communist pamphleteer in hiding to a mythical leader whose death in custody made him larger than life; his ideas would repeatedly resurrect after every military defeat."
+    },
+    {
+      "name": "Kanu Sanyal",
+      "role": "antagonist",
+      "biography": "A key Naxal commander and ideologue trained in China, Kanu Sanyal stood alongside Charu Majumdar during the 1967 uprising. He was arrested in August 1970 and, after years in prison, was reportedly released only to die by suicide in jail later—a tragic end that illustrated the movement’s internal despair. Sanyal represented the internationalist, Maoist current of the early insurgency.",
+      "motivation": "Deep belief in Maoist revolution as a global phenomenon; personal commitment to tribal emancipation and land redistribution through whatever violence necessary.",
+      "allies": [
+        "Charu Majumdar",
+        "Jangal Santhal",
+        "Chinese-trained cadres"
+      ],
+      "enemies": [
+        "Indian police and paramilitary forces",
+        "Landlords",
+        "Congress governments"
+      ],
+      "objectives": [
+        "Expand the Naxalbari model nationwide",
+        "Link Indian revolution to the global Maoist movement",
+        "Build a disciplined guerrilla army"
+      ],
+      "major_decisions": [
+        "Traveling to China for ideological and guerrilla training in the mid-1960s",
+        "Co-leading the Naxalbari uprising and urging peasants to take up arms",
+        "Arrest in 1970 which removed a charismatic field commander"
+      ],
+      "public_image": "An enigmatic, China-returned warrior of the proletariat; his suicide under mysterious circumstances made him a tragic figure.",
+      "impact_on_story": "As the movement’s international face, Sanyal gave it doctrinal legitimacy and trained early cadres. His disappearance into the prison system left the leadership void that Majumdar’s death deepened.",
+      "character_arc": "From hopeful revolutionary to broken martyr; his fate signaled that the state could crush the body but the spirit would linger in whispered memory."
+    },
+    {
+      "name": "Jangal Santhal",
+      "role": "witness",
+      "biography": "A local tribal leader in Naxalbari, Santhal embodied the raw anger of the marginalised. He led the initial attack on landlords in May 1967 that ignited the uprising. His role was less ideological than visceral—a man pushed to fight by hunger and land theft. Arrested shortly after the uprising, he faded from history, leaving behind a folk-hero myth.",
+      "motivation": "Survival, land, and dignity for his tribal community; personal vengeance against oppressor landlords.",
+      "allies": [
+        "Tribal peasants",
+        "Charu Majumdar and Kanu Sanyal",
+        "Landless sharecroppers"
+      ],
+      "enemies": [
+        "Landlords like Ishwar Tirkey",
+        "Police and state government"
+      ],
+      "objectives": [
+        "Reclaim land taken by landlords",
+        "Punish exploitative landlords",
+        "Inspire other tribal villages to rise"
+      ],
+      "major_decisions": [
+        "Leading the storming of landlords’ houses in May 1967",
+        "Aligning with communist cadres who gave his rebellion ideological shape"
+      ],
+      "public_image": "The faceless tribal rebel who turned a local dispute into a national fire; a haunting symbol of what happens when injustice is met with silence.",
+      "impact_on_story": "Santhal supplied the human face and the spark. Without his spontaneous fury, Majumdar’s theories would have lacked a tinderbox. His story proves that Naxalism was born in actual land hunger, not just dogma.",
+      "character_arc": "From an anonymous peasant to a legendary insurgent who briefly shook the state, then vanished into obscurity—his silence a reminder that the revolution’s foot soldiers often remain nameless."
+    },
+    {
+      "name": "Bimal Kisan",
+      "role": "witness",
+      "biography": "The tribal sharecropper at the centre of the clash: his dispute over land with landlord Ishwar Tirkey set the Naxalbari uprising in motion. Though not a leader, his grievance became the rallying cry. After the rebellion, he slipped back into anonymity, but his name remains etched in the foundational narrative of Indian Maoism.",
+      "motivation": "Reclaim his ancestral land and livelihood; desperation after years of feudal exploitation.",
+      "allies": [
+        "Other tribal peasants",
+        "Maoist cadres"
+      ],
+      "enemies": [
+        "Landlord Ishwar Tirkey",
+        "Local police complicit with landlords"
+      ],
+      "objectives": [
+        "Get his land back",
+        "End the unfair sharecropping system",
+        "Find justice in a state that ignored him"
+      ],
+      "major_decisions": [
+        "Refusing to bow to landlord pressure and instead resisting, which drew communist activists to his side",
+        "His case becoming the emblem of the Naxalbari struggle"
+      ],
+      "public_image": "The anonymous victim who lit the fuse; he represents the millions of landless tribals whose invisible suffering created the Red Corridor.",
+      "impact_on_story": "If Naxalism is a fire, Bimal Kisan was the first spark. His story personalises the documentary thesis that deep socio-economic wounds made India’s longest war inevitable.",
+      "character_arc": "A man whose life pivoted on a single injustice; he never aspired to be a revolutionary, yet his name is synonymous with the bloodshed that followed."
+    },
+    {
+      "name": "Kondapalli Seetharamaiah",
+      "role": "antagonist",
+      "biography": "Imprisoned during the first wave, Seetharamaiah emerged after the Emergency to find the movement shattered. He regrouped splintered cadres in Andhra Pradesh and founded the People’s War Group in 1980, breathing new life into the insurgency. His strategic mind turned a dormant ideology into a disciplined guerrilla force that would later merge into the CPI (Maoist).",
+      "motivation": "Resurrect the armed struggle after its decapitation; prove that the state could kill leaders but not the cause. Personal loss of comrades and the sight of torture during Emergency fuelled his resolve.",
+      "allies": [
+        "Former CPI(ML) cadres",
+        "Rural tribal supporters",
+        "Maoist Communist Centre"
+      ],
+      "enemies": [
+        "Indian state (especially Andhra Pradesh police)",
+        "Landlords and mining corporations",
+        "Mainstream political parties"
+      ],
+      "objectives": [
+        "Rebuild the party structure in the forests",
+        "Train a new generation of guerrillas",
+        "Expand the base into the tribal heartland",
+        "Unify various Maoist factions into a single force"
+      ],
+      "major_decisions": [
+        "Choosing to reject amnesty and return to the jungle",
+        "Founding the PWG in 1980 with a clear military hierarchy",
+        "Forging tactical alliances with other insurgent groups like LTTE"
+      ],
+      "public_image": "The silent resurrector—feared by the state, worshipped by followers as a strategist who outwitted annihilation.",
+      "impact_on_story": "He is the bridge between the first wave and the Red Corridor; without Seetharamaiah, Naxalism might have remained a historical footnote. His organisational genius set the stage for 2004 unification.",
+      "character_arc": "From a jailed foot soldier to the mastermind who rebuilt a broken dream; his legacy lies in the thousands of square kilometres the Maoists came to control."
+    },
+    {
+      "name": "Hidma",
+      "role": "antagonist",
+      "biography": "The most wanted Maoist commander in India, with a ₹40‑lakh bounty on his head. Hidma leads the People’s Liberation Guerrilla Army (PLGA) in the dense Dandakaranya forests and is credited with orchestrating the 2010 Dantewada ambush that killed 76 CRPF personnel. No recent photograph exists—he lives in total operational secrecy, a ghost hidden by tribal loyalty.",
+      "motivation": "Absolute dedication to the annihilation of state forces and the establishment of a liberated zone; personal hatred born from years of state violence against his community.",
+      "allies": [
+        "PLGA guerrillas",
+        "CPI (Maoist) politburo",
+        "Tribal villagers acting as informants"
+      ],
+      "enemies": [
+        "CRPF and COBRA commandos",
+        "Chhattisgarh police",
+        "Intelligence agencies",
+        "Corporate invaders in tribal lands"
+      ],
+      "objectives": [
+        "Inflict maximum casualties on security forces to demoralise the state",
+        "Protect the so-called liberated zones in Bastar",
+        "Inspire a new generation through spectacular attacks",
+        "Survive the government’s intensified drone and tech-driven operations"
+      ],
+      "major_decisions": [
+        "Planning and executing the 2010 Dantewada ambush",
+        "Maintaining a non-digital, face-to-face communication network to evade surveillance",
+        "Defying the state’s dominance even as Maoist territory shrank"
+      ],
+      "public_image": "A phantom to the outside world; among tribals, a Robin Hood figure; to the state, a ruthless terrorist. His invisibility makes him a mythical antagonist.",
+      "impact_on_story": "Hidma is the living denial of the government’s victory claim. As long as he fights, the 2026 deadline remains in doubt. He embodies the unbroken spine of the Maoist military capability.",
+      "character_arc": "From an unknown tribal boy radicalised by injustice to the spectre that haunts Indian security forces—a commander who may never be captured, only killed or disappeared."
+    },
+    {
+      "name": "Mahendra Karma",
+      "role": "authority",
+      "biography": "A powerful Congress leader from Chhattisgarh, Karma founded the Salwa Judum anti-Maoist militia in 2005, arming tribal youth to fight the insurgents. Though banned by the Supreme Court in 2011 for human rights abuses, his chosen path of vigilante resistance made him a hero to some and a villain to others. His story ended in 2013 when Maoists ambushed a Congress rally in Darbha Valley, killing him and several other party leaders.",
+      "motivation": "A belief that only an armed tribal response could counter Maoist terror; political ambition and the desire to retain tribal vote banks in his constituency. Personal enmity with Maoists who had killed his supporters.",
+      "allies": [
+        "Chhattisgarh state police",
+        "Congress party",
+        "Anti‑Maoist tribal vigilantes"
+      ],
+      "enemies": [
+        "CPI (Maoist) cadres",
+        "Human rights activists criticising Salwa Judum",
+        "Supreme Court judges who banned his militia"
+      ],
+      "objectives": [
+        "Drive Maoists out of Bastar using local force",
+        "Regain control over mining-rich tribal regions",
+        "Avenge the killing of Congress workers by Naxalites",
+        "Project himself as the saviour of tribals"
+      ],
+      "major_decisions": [
+        "Launching Salwa Judum in 2005, turning tribal anger into a counter-insurgency tool",
+        "Defying human rights warnings and continuing to arm civilians",
+        "Attending the Darbha Valley rally despite known threats, leading to his dramatic death"
+      ],
+      "public_image": "A controversial warlord-politician: to supporters, a brave defender of the state; to critics, the architect of a brutal militia that displaced thousands.",
+      "impact_on_story": "Karma’s story reveals the state’s desperate, dirty methods. His assassination in 2013 showed that Maoists could decapitate political leadership, raising the stakes of the conflict—and ultimately justifying even fiercer crackdowns.",
+      "character_arc": "From a seasoned politician to a warlord who believed the ends justified any means, his arc ended in a hail of Maoist bullets, turning him into a martyr for the counter-insurgency narrative."
+    },
+    {
+      "name": "Indira Gandhi",
+      "role": "authority",
+      "biography": "As Prime Minister during the first wave, Indira Gandhi wielded the Maintenance of Internal Security Act (MISA) during the 1975–77 Emergency to arrest thousands of Naxalites, effectively destroying the first generation of the movement. Her iron fist was credited with bringing order, though at tremendous human cost and democratic backsliding.",
+      "motivation": "Crush any threat to national unity and her own political power; prove that no armed rebellion could challenge the Indian state. The Naxalite uprising was one among many challenges she faced.",
+      "allies": [
+        "Indian police and intelligence agencies",
+        "Central paramilitary forces",
+        "Congress party machinery"
+      ],
+      "enemies": [
+        "CPI(ML) and all Naxal factions",
+        "Political opponents across the spectrum"
+      ],
+      "objectives": [
+        "Dismantle armed revolutionary groups using all available legal instruments",
+        "Restore state dominance in West Bengal and Andhra Pradesh",
+        "Prevent the Naxalite example from inspiring other insurgencies"
+      ],
+      "major_decisions": [
+        "Imposing Emergency in 1975 and using MISA to detain Naxalites en masse",
+        "Authorising Operation Steeplechase to break the back of the movement",
+        "Refusing any negotiation with those she termed enemies of the state"
+      ],
+      "public_image": "A decisive, often dictatorial leader; to some, the saviour who stopped a spreading cancer; to others, a tyrant who jailed dissenters without trial.",
+      "impact_on_story": "Gandhi’s crackdown scattered the Naxalites, creating a ten-year lull. But it also sowed the myth of martyrdom and hardened the survivors who later, like Seetharamaiah, rebuilt the movement stronger.",
+      "character_arc": "From a democratically elected PM to an authoritarian figure who demonstrated the state’s capacity for brute force; her methods momentarily won but could not kill the idea."
+    },
+    {
+      "name": "Morarji Desai",
+      "role": "authority",
+      "biography": "India’s first non-Congress Prime Minister, Desai came to power in 1977 after the Emergency ended. His government released many Naxal prisoners who promised to renounce violence, a goodwill gesture aimed at healing wounds. However, a significant number of these released cadres, including Kondapalli Seetharamaiah, secretly returned to the armed struggle, laying the ground for the movement’s resurgence.",
+      "motivation": "Reverse the authoritarian excesses of Indira Gandhi and rebuild civil liberties; belief that clemency could de-radicalise insurgents. Political calculation to win leftist sympathy.",
+      "allies": [
+        "Janata Party coalition",
+        "Civil rights activists",
+        "Released political prisoners"
+      ],
+      "enemies": [
+        "Indira Gandhi’s Congress",
+        "Hardliners who saw release as dangerous"
+      ],
+      "objectives": [
+        "Dismantle MISA and restore habeas corpus",
+        "Offer prisoners a peaceful path back to society",
+        "Reduce insurgency through reconciliation"
+      ],
+      "major_decisions": [
+        "Ordering mass release of Naxal prisoners in 1977 on condition of abjuring violence",
+        "Trusting that former guerrillas would respect the oath"
+      ],
+      "public_image": "A principled democrat who believed in forgiveness; retrospective view often marks him as naïve, whose leniency allowed the Hydra to regrow.",
+      "impact_on_story": "Desai’s decision is a pivotal turning point: it inadvertently granted a second life to the insurgency. His moral stance contrasts sharply with Gandhi’s iron fist, posing the documentary’s central question—can mercy defeat ideology?",
+      "character_arc": "A well-intentioned peacemaker whose act of grace became the midwife to a deadlier war; his legacy is a cautionary tale about the limits of clemency in dealing with ideological warfare."
+    },
+    {
+      "name": "Amit Shah",
+      "role": "authority",
+      "biography": "Union Home Minister since 2019, Amit Shah has overseen the sharpest decline in Maoist violence through the SAMADHAN strategy—a holistic mix of smart leadership, technology, aggressive operations, and development. He confidently declared on the floor of Parliament that Naxalism will be completely eradicated by 31 March 2026, a deadline that defines the current chapter of the war.",
+      "motivation": "Political commitment to internal security and the ruling party’s promise of a Naxal-free India; personal and ideological conviction that development and force combined can uproot terrorism.",
+      "allies": [
+        "CRPF, COBRA, state police",
+        "Intelligence agencies",
+        "Development-focused ministries",
+        "BJP governments in affected states"
+      ],
+      "enemies": [
+        "CPI (Maoist) cadres",
+        "Any ideology that challenges the Indian Constitution",
+        "Urban Naxal sympathisers"
+      ],
+      "objectives": [
+        "Meet the 31 March 2026 deadline for complete elimination",
+        "Reduce Maoist-affected districts to zero",
+        "Use drones, thermal imaging, and intelligence to neutralise top commanders like Hidma",
+        "Win tribal hearts through roads, schools, and health schemes alongside military pressure"
+      ],
+      "major_decisions": [
+        "Launching the eight-point SAMADHAN strategy in 2017",
+        "Allocating massive funding for infrastructure and police modernisation in LWE areas",
+        "Setting a public, specific deadline to hold forces accountable",
+        "Authorising aggressive operations that killed hundreds of Maoists in recent years"
+      ],
+      "public_image": "A no-nonsense tough cop of Indian politics; to supporters, the man who will finally end the 50-year war; to critics, someone who uses overly militarised narratives and might repeat past mistakes of ignoring root causes.",
+      "impact_on_story": "He is the current face of the government’s resolve. The documentary’s climax hangs on his deadline: if successful, he becomes the statesman who buried India’s longest war; if not, his words become a hollow boast. His strategy embodies the central conflict between security and justice.",
+      "character_arc": "A determined leader betting his legacy on a date; his journey from policy architect to deadline-setter frames the documentary’s suspense—will the jungle finally fall silent, or will the unresolved questions reignite the embers?"
+    }
+  ]
+}

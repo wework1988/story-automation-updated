@@ -1,0 +1,35 @@
+TOPIC: {topic}
+
+KNOWLEDGE GRAPH (includes unknown_questions):
+{knowledge_graph}
+
+TASK:
+Progressive research — fill ONLY the gaps listed in unknown_questions.
+Use web search to find missing facts. Do NOT re-research what is already verified.
+
+Return ONLY valid JSON:
+{{
+  "gaps_identified": ["..."],
+  "searches_performed": ["search query 1", "..."],
+  "new_facts": [
+    {{
+      "fact": "...",
+      "source_id": "web_search_1",
+      "source_type": "news_article|official_report|book|research_paper",
+      "confidence": "verified|probable|unverified|disputed",
+      "fills_gap": "which unknown question this answers"
+    }}
+  ],
+  "remaining_gaps": ["..."],
+  "contradictions_found": [
+    {{
+      "claim_a": "...",
+      "source_a": "...",
+      "claim_b": "...",
+      "source_b": "...",
+      "resolution": "unresolved|resolved"
+    }}
+  ]
+}}
+
+Priority: official reports > reputed news > books > research papers.

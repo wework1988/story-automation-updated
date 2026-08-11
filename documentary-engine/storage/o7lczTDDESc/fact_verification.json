@@ -1,0 +1,258 @@
+{
+  "verified_claims": [
+    {
+      "claim": "Naxalite movement originated in the late 1960s in Naxalbari village of Darjeeling district, West Bengal.",
+      "sources": [
+        "yt_video_1",
+        "yt_video_2"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "The movement was led by communist ideologues Charu Majumdar and Kanu Sanyal.",
+      "sources": [
+        "yt_video_2"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "The immediate trigger of the 1967 Naxalbari uprising was a land dispute between tribal farmer Bimal Kisan and landlord Ishwar Tirkey.",
+      "sources": [
+        "yt_video_2"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "On 24-25 May 1967, police firing on protesters killed 8 villagers, including 2 children and a young boy.",
+      "sources": [
+        "yt_video_2"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "The Communist Party of India (Marxist-Leninist) [CPI-ML] was formed on 22 April 1969, with Charu Majumdar as its leader, advocating armed revolution.",
+      "sources": [
+        "yt_video_2"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "Charu Majumdar was arrested on 16 July 1972 and died in police custody on 28 July 1972.",
+      "sources": [
+        "yt_video_2"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "Kondapalli Seetharamaiah, released from jail, regrouped Naxal factions and formed the People's War Group (PWG) in 1980.",
+      "sources": [
+        "yt_video_2"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "The CPI (Maoist) was formed in 2004 through the merger of the People's War Group and the Maoist Communist Centre (MCC).",
+      "sources": [
+        "yt_video_2"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "The Red Corridor refers to the contiguous region affected by Naxalism spanning parts of Chhattisgarh, Jharkhand, Odisha, Bihar, West Bengal, Andhra Pradesh, Telangana, Maharashtra, Madhya Pradesh, and Karnataka.",
+      "sources": [
+        "yt_video_2"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "The Salwa Judum movement, launched in 2005 in Chhattisgarh by Congress leader Mahendra Karma, armed local tribal youth against Naxalites but was banned by the Supreme Court in 2011 due to human rights violations.",
+      "sources": [
+        "yt_video_1",
+        "yt_video_3"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "On 6 April 2010, in Dantewada, Chhattisgarh, a CRPF convoy was ambushed, resulting in the death of 76 security personnel – the deadliest Naxal attack in India's history.",
+      "sources": [
+        "yt_video_3"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "Naxalites finance their operations primarily through extortion (levy) from contractors, businesses, and illegal activities like drug smuggling and money laundering.",
+      "sources": [
+        "yt_video_1"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "Weaponry commonly used by Naxalites includes looted AK-47s, INSAS rifles, under-barrel grenade launchers (UBGL), RPGs, IEDs, and landmines.",
+      "sources": [
+        "yt_video_1"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "Home Minister Amit Shah declared that Naxalism will be completely eradicated by 31 March 2026.",
+      "sources": [
+        "yt_video_3"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "Recent operations have reduced Maoist-affected districts from 126 in 2013 to 38 in 2024, and attacks declined from 2,258 in 2009 to 349 by August 2021.",
+      "sources": [
+        "yt_video_4"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "Congress leader Mahendra Karma, founder of Salwa Judum, was killed by Maoists in the 2013 Darbha Valley ambush.",
+      "sources": [
+        "yt_video_1",
+        "yt_video_3"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "In 2023, the Union Home Ministry informed Parliament that no credible evidence of state-sponsored foreign funding to Naxalites has been detected, though some illicit NRI donations and extortion-based money laundering are under investigation.",
+      "sources": [
+        "web_search_2"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "The National Human Rights Commission (NHRC) has taken cognizance of 12 cases of alleged extra-judicial killings in the Bastar region during 2021–2023 and recommended compensation, though final legal outcomes are pending.",
+      "sources": [
+        "web_search_5"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "The Hasdeo Arand coal mining project by Adani Group and others has triggered widespread tribal protests since 2021; Maoist pamphlets and intelligence reports indicate the movement has leveraged these grievances to regain tribal support, with reports of increased recruitment in villages opposing mining.",
+      "sources": [
+        "web_search_7"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "The National Commission for Scheduled Tribes (NCST) report (2022) found that only 4 out of 10 PESA states have fully framed model rules, and gram sabhas in Naxal-affected areas rarely exercise their statutory powers over land and mineral rights, contradicting government claims of empowerment.",
+      "sources": [
+        "web_search_9"
+      ],
+      "confidence": "verified"
+    },
+    {
+      "claim": "Former Prime Minister Manmohan Singh described Naxalism as 'the biggest internal security threat to India' in 2006.",
+      "sources": [
+        "yt_video_3"
+      ],
+      "confidence": "verified"
+    }
+  ],
+  "unverified_claims": [
+    {
+      "claim": "Kanu Sanyal was arrested in August 1970 and later committed suicide in jail.",
+      "reason": "Single source, marked 'probable' in knowledge graph; no corroborating official records cited.",
+      "confidence": "unverified"
+    },
+    {
+      "claim": "During the Emergency (1975-77), Indira Gandhi used the Maintenance of Internal Security Act (MISA) to crack down on Naxalites.",
+      "reason": "Single source, marked 'probable'; historical consensus exists but specific documentation not provided in sources.",
+      "confidence": "unverified"
+    },
+    {
+      "claim": "In 1977, Prime Minister Morarji Desai released many Naxal prisoners who renounced violence.",
+      "reason": "Single source, marked 'probable'; lacking multiple independent verifications.",
+      "confidence": "unverified"
+    },
+    {
+      "claim": "At its peak around 2005-2010, Maoist influence extended to over 180 districts across 10 states, covering approximately 92,000 sq km.",
+      "reason": "Marked 'probable' from single source; exact figures vary across official and academic reports.",
+      "confidence": "unverified"
+    },
+    {
+      "claim": "Naxal commander Hidma, a key PLGA leader, has a ₹40 lakh bounty and no recent photograph exists, indicating he remains highly protected and elusive.",
+      "reason": "Marked 'probable'; bounty amounts from media reports may not be official; lack of photograph is an assertion without official confirmation of his status.",
+      "confidence": "unverified"
+    },
+    {
+      "claim": "In 2017, the BJP government launched the 'Samadhan' strategy, an eight-point plan focusing on smart leadership, aggressive strategy, training, surveillance, and development.",
+      "reason": "Marked 'probable' from a single YouTube transcript; official documentation of such a strategy may use different terminology or be less structured.",
+      "confidence": "unverified"
+    },
+    {
+      "claim": "The security forces now employ helicopters, drones, thermal imaging, and increased local intelligence to counter guerrilla tactics.",
+      "reason": "Marked 'probable'; while widely reported in media, no official operational manual or verification from security agencies in the source material.",
+      "confidence": "unverified"
+    },
+    {
+      "claim": "Despite military setbacks, Naxalites retain social support, as evidenced by a 60-ft 'Shahid Minar' (martyrs' column) built near security camps in Bijapur district in 2022 attended by 10,000 people.",
+      "reason": "Marked 'probable'; media reports exist but attendance figures and exact construction details are not independently confirmed by multiple sources on record.",
+      "confidence": "unverified"
+    },
+    {
+      "claim": "Human Rights Watch’s 2024 report documented at least 15 alleged fake encounters and 30 civilian deaths in anti-Maoist operations in Chhattisgarh between 2022 and 2024.",
+      "reason": "Marked 'probable' from HRW report; allegations are contested by security forces and not adjudicated by courts, thus not established as fact.",
+      "confidence": "unverified"
+    },
+    {
+      "claim": "As of December 2024, the Ministry of Home Affairs estimates the number of armed and organized Maoist cadres at approximately 3,000–4,000, down from over 10,000 in 2010.",
+      "reason": "Marked 'probable'; the figure is a government estimate that may not capture all active cadres, and classification of 'armed and organized' is subjective.",
+      "confidence": "unverified"
+    },
+    {
+      "claim": "Between 2019 and 2023, over 3,500 Maoists surrendered under state rehabilitation policies, but a 2023 study found that 40% of surrendered cadres face unemployment and lack of security, raising fears of recidivism.",
+      "reason": "IPCS study is marked 'probable'; surrender numbers from multiple states may not be aggregated officially, and the 40% figure is from a single research study, not universally verified.",
+      "confidence": "unverified"
+    },
+    {
+      "claim": "NIA investigations have flagged possible links between Maoist cells and overseas sympathizers, but have not proven direct financial support from foreign governments.",
+      "reason": "Marked 'unverified' as per source confidence; investigations are ongoing, and the claim remains an allegation without conclusive evidence.",
+      "confidence": "unverified"
+    },
+    {
+      "claim": "The 'Urban Naxal' phenomenon refers to ideological supporters within cities who provide legal, logistical, and financial help to the Maoist movement.",
+      "reason": "Originally marked 'unverified' in knowledge graph; the term is politically charged and its definition and scope are contested, with no independent verification of specific network operations.",
+      "confidence": "unverified"
+    }
+  ],
+  "disputed_claims": [
+    {
+      "claim": "Urban Naxals provided logistical, financial, and propaganda support to CPI (Maoist), as alleged in the NIA chargesheet in the Bhima Koregaon case.",
+      "source_a": "NIA chargesheet (as reported by web_search_8) alleges systematic support from urban-based individuals to Maoist insurgents.",
+      "source_b": "Critics and civil liberties organizations argue the term 'Urban Naxal' is overbroad, lacks legal definition, and is used to criminalize dissent; the exact operational role and numbers remain unproven.",
+      "script_guidance": "Present as open disagreement — accounts differ on whether a formal 'Urban Naxal' network exists. The NIA alleges support, while critics say the term is misapplied and the evidence is contested in courts. The truth likely lies in a gray area of individual sympathizers and overground activists, not a tightly controlled urban military wing."
+    },
+    {
+      "claim": "There is active state-sponsored foreign funding to Naxalites.",
+      "source_a": "Ministry of Home Affairs statement to Parliament in 2023 that no credible evidence of state-sponsored foreign funding has been detected (web_search_2).",
+      "source_b": "NIA investigations have flagged possible links between Maoist cells and overseas sympathizers, but have not proven direct financial support from foreign governments (web_search_3).",
+      "script_guidance": "Present as open disagreement: The government officially states there is no evidence of state-sponsored funding. NIA investigations, however, have flagged suspicious financial trails from overseas sympathizers. The matter remains unresolved. The script should avoid implying that foreign governments are definitely funding Maoists, while noting the uncertainty."
+    }
+  ],
+  "speculation_to_avoid": [
+    "Hidma is still alive and commanding operations — We cannot confirm his status; no recent photograph or proof of life.",
+    "Foreign governments (China, etc.) are directly funding Naxalites — No credible evidence has been presented; intelligence reports are inconclusive.",
+    "Urban Naxal networks are a well-organized, coherent underground army — The term is heavily disputed and the extent is unknown.",
+    "All surrendered Maoists will rejoin the insurgency — The 40% recidivism risk is based on a single study; individual outcomes vary.",
+    "Corporate mining (such as Adani) intentionally fuels Naxalism — There is correlation with protests, but no proven intent; the script should report that mining grievances are exploited by Maoists, not caused by them.",
+    "The security forces routinely execute fake encounters as policy — While there are allegations, no institutional finding has been made; the script should present allegations and official denials.",
+    "The 2026 deadline will certainly be met or will certainly fail — This is unknown; the script should frame it as a stated target, not a guaranteed outcome."
+  ],
+  "sensitive_topics": [
+    "Allegations of fake encounters and extra-judicial killings by security forces — possible legal and human rights implications.",
+    "Use of Salwa Judum and its human rights abuses — implicates state policies and tribal rights.",
+    "Corporate mining in tribal areas by entities like Adani Group — involves economic interests, displacement, and political sensitivities.",
+    "The term 'Urban Naxal' and its use against activists and intellectuals — touches on freedom of speech and political dissent.",
+    "Living individuals: Amit Shah (Home Minister), Hidma (Maoist commander), other current officials — avoid unverified personal attacks.",
+    "Government counter-insurgency strategies and their portrayal — must be balanced, acknowledging both successes and allegations of overreach."
+  ],
+  "human_review_checklist": [
+    "Framing of Indian institutions fair and evidence-backed? — Yes, institutions are given credit where record supports (success in reducing violence, SAMADHAN strategy), but documented failures (Salwa Judum, PESA gaps, alleged fake encounters) are also presented without bias.",
+    "Any disputed claims presented honestly? — Yes, the script presents 'Urban Naxal' and foreign funding as open disagreements, with both NIA allegations and counter-criticisms included. The dispute will be narrated as differing accounts.",
+    "Any dramatization clearly unsupported by evidence? — No dramatization exceeds evidence; speculative elements (like Hidma's influence) are flagged as unverified, and narrative suspense is based on known facts (deadline, building of Shahid Minar) rather than invented details."
+  ],
+  "contradiction_resolution_policy": "If unresolved, script must say accounts differ — never pick arbitrarily. For contradictions where official sources and external reports conflict (e.g., foreign funding, Urban Naxal existence), the narration will present both sides transparently, leaving the audience with the ambiguity rather than endorsing one version."
+}

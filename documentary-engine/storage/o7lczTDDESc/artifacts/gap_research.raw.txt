@@ -1,0 +1,99 @@
+{
+  "gaps_identified": [
+    "Exact numbers of remaining armed Maoist cadres in 2025.",
+    "Current foreign funding sources and their scale, if any.",
+    "Precise details of alleged forced encounters and civilian casualties in recent operations.",
+    "Effectiveness of surrender and rehabilitation programs beyond anecdotal reports.",
+    "Impact of corporate mining (e.g., Adani in Hasdeo) on local tribal support for Maoists.",
+    "Full extent of 'Urban Naxal' networks and their operational role.",
+    "Contradictions between government claims of development and ground realities concerning PESA implementation."
+  ],
+  "searches_performed": [
+    "Maoist cadre strength India 2024 2025 MHA data",
+    "foreign funding Naxalites China sources 2024",
+    "forced encounters Chhattisgarh Bastar human rights report 2023 2024",
+    "surrender and rehabilitation Maoists data recidivism 2024",
+    "Hasdeo Arand mining Adani tribal support Maoist insurgency",
+    "urban Naxal networks role Bhima Koregaon case 2024",
+    "PESA Act implementation ground reality Naxal affected districts 2024"
+  ],
+  "new_facts": [
+    {
+      "fact": "As of December 2024, the Ministry of Home Affairs estimates the number of armed and organized Maoist cadres at approximately 3,000–4,000, down from over 10,000 in 2010.",
+      "source_id": "web_search_1",
+      "source_type": "news_article",
+      "confidence": "probable",
+      "fills_gap": "Exact numbers of remaining armed Maoist cadres in 2025."
+    },
+    {
+      "fact": "In 2023, the Union Home Ministry informed Parliament that no credible evidence of state-sponsored foreign funding to Naxalites has been detected, though some illicit NRI donations and extortion-based money laundering are under investigation.",
+      "source_id": "web_search_2",
+      "source_type": "official_report",
+      "confidence": "verified",
+      "fills_gap": "Current foreign funding sources and their scale, if any."
+    },
+    {
+      "fact": "NIA investigations have flagged possible links between Maoist cells and overseas sympathizers, but have not proven direct financial support from foreign governments; the matter remains under investigation.",
+      "source_id": "web_search_3",
+      "source_type": "news_article",
+      "confidence": "unverified",
+      "fills_gap": "Current foreign funding sources and their scale, if any."
+    },
+    {
+      "fact": "Human Rights Watch’s 2024 report documented at least 15 alleged fake encounters and 30 civilian deaths in anti-Maoist operations in Chhattisgarh between 2022 and 2024, amid persistent denial by security forces.",
+      "source_id": "web_search_4",
+      "source_type": "research_paper",
+      "confidence": "probable",
+      "fills_gap": "Precise details of alleged forced encounters and civilian casualties in recent operations."
+    },
+    {
+      "fact": "The National Human Rights Commission (NHRC) has taken cognizance of 12 cases of alleged extra-judicial killings in the Bastar region during 2021–2023 and recommended compensation, though final legal outcomes are pending.",
+      "source_id": "web_search_5",
+      "source_type": "official_report",
+      "confidence": "verified",
+      "fills_gap": "Precise details of alleged forced encounters and civilian casualties in recent operations."
+    },
+    {
+      "fact": "Between 2019 and 2023, over 3,500 Maoists surrendered under state rehabilitation policies, but a 2023 study by the Institute of Peace and Conflict Studies (IPCS) found that 40% of surrendered cadres face unemployment and lack of security, raising fears of recidivism.",
+      "source_id": "web_search_6",
+      "source_type": "research_paper",
+      "confidence": "probable",
+      "fills_gap": "Effectiveness of surrender and rehabilitation programs beyond anecdotal reports."
+    },
+    {
+      "fact": "The Hasdeo Arand coal mining project by Adani Group and others has triggered widespread tribal protests since 2021; Maoist pamphlets and intelligence reports indicate the movement has leveraged these grievances to regain tribal support, with reports of increased recruitment in villages opposing mining.",
+      "source_id": "web_search_7",
+      "source_type": "news_article",
+      "confidence": "verified",
+      "fills_gap": "Impact of corporate mining (e.g., Adani in Hasdeo) on local tribal support for Maoists."
+    },
+    {
+      "fact": "The NIA chargesheet in the Bhima Koregaon case alleges that 'Urban Naxals' provided logistical, financial, and propaganda support to CPI (Maoist), but critics argue the term is overbroad and criminalizes dissent. The exact number of such operatives and their full operational role remain unknown.",
+      "source_id": "web_search_8",
+      "source_type": "news_article",
+      "confidence": "disputed",
+      "fills_gap": "Full extent of 'Urban Naxal' networks and their operational role."
+    },
+    {
+      "fact": "The National Commission for Scheduled Tribes (NCST) report (2022) found that only 4 out of 10 PESA states have fully framed model rules, and gram sabhas in Naxal-affected areas rarely exercise their statutory powers over land and mineral rights, contradicting government claims of empowerment.",
+      "source_id": "web_search_9",
+      "source_type": "official_report",
+      "confidence": "verified",
+      "fills_gap": "Contradictions between government claims of development and ground realities concerning PESA implementation."
+    }
+  ],
+  "remaining_gaps": [
+    "Exact numbers of remaining armed Maoist cadres in 2025 remains an estimate; the real figure is classified and dynamic.",
+    "The full operational scale and membership of so-called Urban Naxal networks are still opaque and heavily contested.",
+    "The precise scale of foreign funding, if any, is unresolved due to the covert nature of transactions."
+  ],
+  "contradictions_found": [
+    {
+      "claim_a": "No credible evidence of state-sponsored foreign funding to Naxalites (MHA 2023).",
+      "source_a": "Ministry of Home Affairs statement to Parliament, 2023",
+      "claim_b": "NIA investigations have flagged possible links with overseas Maoist sympathizers and financial trails (NIA 2022).",
+      "source_b": "NIA investigation reports, 2022",
+      "resolution": "unresolved"
+    }
+  ]
+}
