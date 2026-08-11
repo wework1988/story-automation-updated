@@ -102,11 +102,52 @@ STAGE_B_SCENE_HEADING_LINE = re.compile(
     r"(?m)^\s*--- Scene [^\n]+ ---\s*$",
 )
 
+# Catches malformed headings missing the "~M" total placeholder, e.g. "--- Scene 143 / ~---"
+# (no space before the closing dashes). Long single Stage B completions sometimes drop the
+# total near the end of the response; without normalization these lines silently fail to match
+# STAGE_B_SCENE_HEADING_LINE and their content gets swallowed into the previous scene's block.
+STAGE_B_SCENE_HEADING_MALFORMED_RE = re.compile(
+    r"(?m)^(\s*--- Scene\s+\d+[a-zA-Z]?\s*/\s*~)-{2,}\s*$",
+)
+
+
+def normalize_stage_b_headings(text: str) -> str:
+    """Repair malformed '~---' (missing total) Stage B headings into '~0 ---' so they are
+    recognized as real scene boundaries by STAGE_B_SCENE_HEADING_LINE."""
+    return STAGE_B_SCENE_HEADING_MALFORMED_RE.sub(lambda m: f"{m.group(1)}0 ---", text)
+
 PART3_MARKER = "PART 3 — INPUT SLOTS"
 
 
 def log(msg: str) -> None:
     print(f"[deepseek-pipeline] {msg}", flush=True)
+
+
+# region agent log
+_DEBUG_LOG_PATH = pathlib.Path(
+    "/Users/averma/project/research-story-17thmay-automation/.cursor/debug-6fae5e.log"
+)
+
+
+def _debug_log(hypothesis_id: str, location: str, message: str, data: dict) -> None:
+    import json as _json
+    import time as _time
+
+    entry = {
+        "sessionId": "6fae5e",
+        "hypothesisId": hypothesis_id,
+        "location": location,
+        "message": message,
+        "data": data,
+        "timestamp": int(_time.time() * 1000),
+    }
+    try:
+        _DEBUG_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with _DEBUG_LOG_PATH.open("a", encoding="utf-8") as f:
+            f.write(_json.dumps(entry, ensure_ascii=False) + "\n")
+    except OSError:
+        pass
+# endregion agent log
 
 
 @dataclasses.dataclass(frozen=True)
@@ -346,6 +387,7 @@ def split_stage_b_by_scene_headings(text: str) -> Optional[tuple[str, list[str]]
     Scene sections start at line-start ``Scene N`` (optional ``###`` / ``---`` prefix).
     Returns None if no headings found (caller prints the whole reply normally).
     """
+    text = normalize_stage_b_headings(text)
     ms = list(STAGE_B_SCENE_HEADING_LINE.finditer(text))
     if not ms:
         return None
@@ -1788,6 +1830,19 @@ def run_stage_b_deepseek(
 
         def run_slice(idx: int, slice_text: str) -> tuple[int, str, Optional[str]]:
             banner = stage_b_pipeline_split_banner(idx, seg_total, 0)
+            # region agent log
+            _debug_log(
+                "H6",
+                "deepseek_pipeline.py:run_stage_b_deepseek:run_slice:banner",
+                "scenes_locked_through hardcoded to 0 for every parallel slice",
+                {
+                    "idx": idx,
+                    "seg_total": seg_total,
+                    "scenes_locked_through_passed": 0,
+                    "banner_says_start_at_1": "Number scenes starting at Scene 1" in banner,
+                },
+            )
+            # endregion agent log
             story_payload = slice_text.strip() + "\n\n" + banner
             body = build_body(story_payload)
             label = f"stage-b slice {idx + 1}/{seg_total}"
@@ -1824,6 +1879,22 @@ def run_stage_b_deepseek(
                     scaffold_total += scaffold_dropped
                 queued_chunks[idx] = chunk
 
+                # region agent log
+                _first_scene_nums = [int(m.group(1)) for m in re.finditer(r'^--- Scene (\d+)', chunk, re.M)]
+                _debug_log(
+                    "H7",
+                    "deepseek_pipeline.py:run_stage_b_deepseek:parallel:slice-result",
+                    "actual scene numbers a parallel slice returned (does model literally start at 1?)",
+                    {
+                        "idx": idx,
+                        "scene_numbers_in_chunk": _first_scene_nums[:5] + (["..."] if len(_first_scene_nums) > 5 else []),
+                        "first_scene_num": _first_scene_nums[0] if _first_scene_nums else None,
+                        "last_scene_num": _first_scene_nums[-1] if _first_scene_nums else None,
+                        "count": len(_first_scene_nums),
+                    },
+                )
+                # endregion agent log
+
                 while next_to_append in queued_chunks:
                     append_slice_chunk(next_to_append, queued_chunks.pop(next_to_append))
                     next_to_append += 1
@@ -1832,6 +1903,31 @@ def run_stage_b_deepseek(
     merged, final_drop = strip_stage_b_slice_scaffolding(merged_flat)
     scaffold_total += final_drop
     merged = merged.strip() + "\n"
+
+    # region agent log
+    _all_nums = [int(m.group(1)) for m in re.finditer(r'^--- Scene (\d+)', merged, re.M)]
+    _restarts = [
+        {"index": i, "prev": _all_nums[i - 1], "next": _all_nums[i]}
+        for i in range(1, len(_all_nums))
+        if _all_nums[i] < _all_nums[i - 1]
+    ]
+    from collections import Counter as _Counter
+    _dupe_counts = _Counter(_all_nums)
+    _dupes = sorted(n for n, v in _dupe_counts.items() if v > 1)
+    _debug_log(
+        "H8",
+        "deepseek_pipeline.py:run_stage_b_deepseek:merged-scene-sequence",
+        "merged scene-number sequence before renumber (looking for restart/overlap matching parallel-slice bug)",
+        {
+            "parallel_workers": parallel_workers,
+            "seg_total": seg_total,
+            "total_headings": len(_all_nums),
+            "unique_headings": len(_dupe_counts),
+            "duplicate_numbers": _dupes,
+            "restart_points": _restarts,
+        },
+    )
+    # endregion agent log
 
     if scaffold_total:
         log(f"Stage B merge cleanup removed {scaffold_total} scaffolding line(s)")
@@ -1975,6 +2071,24 @@ def _fetch_stage_c_scene_blocks(
             else f"{label} ({scene_range})"
         )
 
+        # region agent log
+        _debug_log(
+            "H4",
+            "deepseek_pipeline.py:_fetch_stage_c_scene_blocks:pre-call",
+            "window/attempt math before API call",
+            {
+                "range_start": range_start,
+                "range_end": range_end,
+                "attempt": attempt,
+                "needed_sorted": sorted(needed),
+                "req_start": req_start,
+                "req_end": req_end,
+                "scene_range": scene_range,
+                "cached_context_len": len(cached_context),
+            },
+        )
+        # endregion agent log
+
         text, finish_c = call_deepseek(
             system_prompt=static_prefix,
             user_prompt=combined_user,
@@ -1985,8 +2099,42 @@ def _fetch_stage_c_scene_blocks(
             **client_kwargs,
         )
         abort_if_truncated(finish_c, attempt_label, "DEEPSEEK_MAX_TOKENS_C")
+
+        # region agent log
+        _debug_log(
+            "H2",
+            "deepseek_pipeline.py:_fetch_stage_c_scene_blocks:raw-response",
+            "raw model text before parsing/stripping",
+            {
+                "attempt": attempt,
+                "req_start": req_start,
+                "req_end": req_end,
+                "finish_reason": finish_c,
+                "raw_len": len(text),
+                "raw_head": text[:400],
+                "raw_tail": text[-400:],
+            },
+        )
+        # endregion agent log
+
         clean = strip_trailing_next_range(text).rstrip() + "\n\n"
         min_chars = _stage_c_min_chars_for_range(req_start, req_end)
+
+        # region agent log
+        _debug_log(
+            "H5",
+            "deepseek_pipeline.py:_fetch_stage_c_scene_blocks:length-check",
+            "clean length vs min_chars threshold",
+            {
+                "attempt": attempt,
+                "clean_len": len(clean),
+                "min_chars": min_chars,
+                "threshold_035": min_chars * 0.35,
+                "below_threshold": len(clean) < min_chars * 0.35,
+            },
+        )
+        # endregion agent log
+
         if len(clean) < min_chars * 0.35:
             log(
                 f"WARN: [{attempt_label}] reply very short ({len(clean)} chars; "
@@ -1994,6 +2142,52 @@ def _fetch_stage_c_scene_blocks(
             )
 
         blocks = split_stage_c_prompt_blocks(clean)
+
+        # region agent log
+        _debug_log(
+            "H2",
+            "deepseek_pipeline.py:_fetch_stage_c_scene_blocks:parsed-vs-breakdown",
+            "per-scene parsed Hindi vs Stage B breakdown Hindi (match check)",
+            {
+                "attempt": attempt,
+                "parsed_scene_numbers": sorted(blocks.keys()),
+                "compare": [
+                    {
+                        "scene": n,
+                        "breakdown_hindi_head": (
+                            (
+                                re.search(
+                                    r"Hindi line:\s*\n(.+?)(?=\n\n|\Z)",
+                                    _extract_stage_b_scene_block_by_index(breakdown, n),
+                                    re.DOTALL,
+                                ).group(1).strip()[:90]
+                                if re.search(
+                                    r"Hindi line:\s*\n(.+?)(?=\n\n|\Z)",
+                                    _extract_stage_b_scene_block_by_index(breakdown, n),
+                                    re.DOTALL,
+                                )
+                                else None
+                            )
+                        ),
+                        "parsed_hindi_head": (
+                            (
+                                m2.group(1).strip()[:90]
+                                if (
+                                    m2 := re.search(
+                                        r"Hindi line:\s*\n(.+?)(?=\n\n|\Z)", blocks[n], re.DOTALL
+                                    )
+                                )
+                                else None
+                            )
+                        ),
+                    }
+                    for n in sorted(blocks.keys())
+                    if n in needed
+                ],
+            },
+        )
+        # endregion agent log
+
         for n, block in blocks.items():
             if n in needed:
                 collected[n] = block
@@ -2284,6 +2478,31 @@ def run_stage_c_fill_prompt_gaps(
         scene_range_example=f"Scenes {missing[0]}-{missing[-1]}",
     )
     max_c = int(os.environ.get("DEEPSEEK_MAX_TOKENS_C", "65536"))
+
+    # region agent log
+    _probe_scenes = [n for n in (62, 64, 71, 74, 75) if n in set(missing)]
+    _probe_results = {}
+    for _n in _probe_scenes:
+        _blk = _extract_stage_b_scene_block_by_index(breakdown, _n)
+        _hm = re.search(r"Hindi line:\s*\n(.+?)(?=\n\n|\Z)", _blk, re.DOTALL)
+        _hindi = _hm.group(1).strip() if _hm else ""
+        _probe_results[_n] = {
+            "breakdown_hindi_head": _hindi[:90],
+            "hindi_found_in_cached_context": bool(_hindi) and _hindi[:40] in cached_context,
+        }
+    _debug_log(
+        "H1",
+        "deepseek_pipeline.py:run_stage_c_fill_prompt_gaps:cached-context-check",
+        "does cached_context sent to Stage C contain the correct breakdown Hindi for target scenes",
+        {
+            "missing_scenes": missing,
+            "ranges": ranges,
+            "cached_context_len": len(cached_context),
+            "breakdown_len": len(breakdown),
+            "probe": _probe_results,
+        },
+    )
+    # endregion agent log
 
     for gap_i, (g0, g1) in enumerate(ranges, start=1):
         sub = g0
@@ -2645,7 +2864,7 @@ def main() -> int:
         action=argparse.BooleanOptionalAction,
         default=getenv_bool("DEEPSEEK_TERMINAL_PROGRESS_BAR", default=True),
         help=(
-            "Show coarse overall % plus stage/API captions on the terminal (INI terminal.show_progress_bar). "
+            "Show coarse overall %% plus stage/API captions on the terminal (INI terminal.show_progress_bar). "
             "Turn off alongside --hide-api-output for a nearly silent run."
         ),
     )
