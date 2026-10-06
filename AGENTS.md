@@ -55,3 +55,20 @@ Use `--mode claude-code` for Cursor CLI, or `--mode api` with `ANTHROPIC_API_KEY
 - `library/story_research.py` — transcript download
 - `library/story_generate.py` — prompts + LLM calls
 
+## Copy to Playwright
+
+**Purpose:** Copy a finished CMS story into playright-automation for image generation.
+
+**Skill:** `.cursor/skills/copy-to-playwright/SKILL.md`
+
+**Entry point:**
+```bash
+./cms-generate-stories/prepare-playwright.sh /path/to/cms-generate-stories/general/154-balochistan-s-independence-movement
+```
+
+**Outputs:**
+- `playright-automation/prompt/<slug>.txt` — from `prompts/prompt.txt`
+- `playright-automation/images/<slug>/` — empty folder for generated images
+
+Say *copy to playwright* (or *copy in playwrite*) with a folder path or slug.
+

@@ -1,0 +1,2 @@
+# Drupal worker — no extra deps beyond story-agent
+# Uses repo-root story-agent/requirements.txt

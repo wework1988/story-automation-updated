@@ -246,7 +246,7 @@ DANGER ZONE 1 — THE FIRST 15 SECONDS
   Test: If line 1 could open a textbook chapter, rewrite it.
 
 DANGER ZONE 2 — THE 90-SECOND CONTEXT SWAMP
-  Problem: Too much genealogy/scripture-background before momentum resumes.
+  Problem: Too much geneaalogy/scripture-background before momentum resumes.
   Fix: Backstory maximum = 4 consecutive sentences before returning
        to forward momentum. Use "लेकिन ठीक उसी समय..." to escape.
   Test: Count backstory sentences. If >4 in a row → interrupt with

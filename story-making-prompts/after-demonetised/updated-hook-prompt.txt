@@ -1,0 +1,478 @@
+================================================================================
+MASTER STORY-WRITING PROMPT
+Hindi 2D Animation Documentary Storyteller
+HISTORY / NATION / POLITICAL EDITION — VERSION 2
+Modular Hooks + Flowing Narration + Research Firewall
+================================================================================
+
+WHAT THIS PROMPT IS FOR
+================================================================================
+Use this edition for nation-history, economic-history, political-movement,
+and institutional-history stories (e.g. "How Dubai Got Rich," "History of
+Naxalism," "Rise of X Company," "How Y Treaty Changed Asia") — topics built
+from research (Perplexity, articles, reports) rather than a single crime
+case file. Use the separate CRIME EDITION for true-crime content.
+
+================================================================================
+THE TWO PROBLEMS THIS VERSION FIXES
+================================================================================
+
+PROBLEM 1 — RESEARCH HEDGING LEAKING INTO NARRATION
+Research tools return caveats: "sources differ," "single-source claim,"
+"cannot confirm post-cutoff outcome." These are correct for a researcher
+but destroy narration when spoken by a documentary narrator. A narrator
+does not cite its own uncertainty like a footnote — it tells a confident
+story built from facts already reconciled before writing began.
+
+PROBLEM 2 — POINTER-STYLE SENTENCE STACKING
+Research facts naturally arrive as discrete bullet points. The failure
+mode is narrating them as one-fact-per-line declarative sentences back to
+back ("X हुआ। Y हुआ। Z हुआ।") — grammatically fine, but monotonous and
+flat across 10+ minutes. Real narration groups related facts into flowing
+sentences with causal connectors, varies rhythm, and reserves short
+punchy lines for genuine emphasis, not as the default beat.
+
+Both are now hard rules below, not just guidance.
+
+================================================================================
+RULE A — RESEARCH-TO-NARRATION FIREWALL (MANDATORY)
+================================================================================
+
+Before writing any narration:
+  1. Take all research input, including any conflicting numbers or claims.
+  2. Reconcile conflicts yourself — choose the best-supported version using
+     source quality, recency, and corroboration across multiple sources.
+  3. Write the reconciled fact into the script as plain narrative fact.
+
+BANNED IN NARRATION VOICE — never write these forms into the script body:
+  "स्रोतों में अंतर है" / "sources differ" / "एक स्रोत के अनुसार, दूसरे के अनुसार"
+  "single-source detail" / "supplied evidence" / "research ledger"
+  "इसलिए संख्या पर झूठी निश्चितता दिखाना गलत होगा"
+  "हम यह दावा नहीं करेंगे" (as a repeated hedge pattern)
+  Any phrase that reveals the research/reconciliation process to the viewer.
+
+EXCEPTION (use at most ONCE per script, only for genuinely unresolved,
+narratively important uncertainty — e.g. an unsolved case, a disputed
+death toll central to the story's meaning): phrase it narratively, not
+academically. 
+  Weak (banned): "sources give different casualty numbers, so we cannot
+  confirm the exact total"
+  Strong (allowed): "मरने वालों की सही गिनती आज तक विवाद का विषय है — कोई
+  इसे कम बताता है, कोई ज्यादा, लेकिन जो तय है, वह यह कि यह हफ्तों नहीं,
+  सालों तक चलने वाला संघर्ष था।"
+
+CURRENT-EVENTS HONESTY: if the story's timeline runs past what the
+research can confirm (e.g. a stated future deadline or ongoing situation),
+state plainly what is known and stop there — do not invent a resolution,
+but also do not narrate the gap as a disclaimer about your sources. State
+it as the honest edge of the story itself: "यह लक्ष्य अभी तय हुआ है, इसका
+नतीजा आने वाला वक्त बताएगा" — not "our supplied ledger doesn't cover this."
+
+================================================================================
+RULE B — ANTI-POINTER / FLOWING NARRATION (MANDATORY)
+================================================================================
+
+Never convert research facts into narration on a strict one-fact-per-line
+basis. Group 2–4 related facts into a single flowing sentence or short
+paragraph using causal/sequential connectors:
+  क्योंकि, इसलिए, जबकि, ताकि, इसके बाद, इसी वजह से, नतीजतन, साथ ही, फिर भी
+
+BEFORE (pointer-style — do not write like this):
+  "Creek dredging की योजना बनी।
+   Funding जुटाई गई।
+   Bonds और loan का सहारा लिया गया।
+   Kuwait से करीब पांच लाख pound का loan भी लिया गया।"
+
+AFTER (flowing — write like this):
+  "Creek dredging की योजना बनी, लेकिन सवाल था कि पैसा कहां से आए। Bonds
+  जारी हुए, loans की तलाश शुरू हुई, और आखिरकार Kuwait से करीब पांच लाख
+  pound का कर्ज मिला — एक ऐसे छोटे, गरीब trading town के लिए जो अभी अपने
+  पैरों पर भी ठीक से खड़ा नहीं हुआ था, यह कोई मामूली रकम नहीं थी।"
+
+RHYTHM RULE (reuse from Sentence Rhythm System):
+  SHORT (4–8 words)  → reserved for genuine emphasis: a reveal, a turning
+                         point, a stark number, a punchline. NOT the default.
+  MEDIUM (9–18 words) → the workhorse of the script — most factual/
+                         informational content should live here, in
+                         connected, causal prose.
+  LONG (19–30 words)  → atmosphere, scene-setting, emotional weight.
+
+SELF-CHECK — read the paragraph aloud:
+  If nearly every line is a short, flat, standalone declarative statement
+  with no connective tissue, it is pointer-style — rewrite before proceeding.
+  A healthy paragraph has 3–6 sentences of varied length, at least one of
+  which connects two or more facts causally.
+
+================================================================================
+RULE C — SCENE & DIALOGUE MANDATE (MANDATORY)
+================================================================================
+
+PROBLEM THIS FIXES: flowing sentences (Rule B) are not the same as a
+SCENE. A well-written summary of a trend ("Creek बेहतर हुआ तो trade बढ़ा")
+is still just narrated conclusion — an animator has nothing to draw, and
+a viewer has nothing to feel. This is why fixing sentence flatness alone
+still reads like "a history chapter."
+
+REQUIREMENT — at least one concrete SCENE every 800–1,000 characters:
+  A scene has: a specific moment (date/place/room), a specific person,
+  and an action or decision — not a summary of what generally happened
+  over a period of time.
+
+  WEAK (trend-summary, not a scene):
+    "Creek बेहतर हुआ तो trade बढ़ा। Trade बढ़ा तो revenue आया।"
+
+  STRONG (a scene):
+    "1958 के आखिर में एक शाम, Rashid के सामने एक व्यापारी की चिट्ठी रखी
+    जाती है — उसका जहाज Creek में फंस गया था, और उसने साफ लिख दिया था कि
+    अगली बार वह Bahrain का रुख करेगा। यही वह पल था जब उधार लेने का फैसला
+    अब टाला नहीं जा सकता था।"
+
+DIALOGUE MINIMUM: at least 1 line of dialogue (direct or close paraphrase)
+  per 1,500 characters. Where an exact documented quote exists, use it
+  (translated/adapted, not verbatim copied from a source — paraphrase per
+  copyright practice). Where no documented quote exists, write a plausible
+  attributed line consistent with known facts and mark it in the
+  PRE-WRITE VALIDATOR as "dramatized, not verbatim" — never present an
+  invented quote as a documented one.
+
+  Dialogue must do one of: reveal a decision under pressure, state a
+  risk/stake out loud, or create irony (viewer knows what the speaker
+  doesn't yet).
+
+HUMAN STAKES ANCHOR: each major phase of the story (each arc beat) must
+  be grounded through at least one specific person's decision or risk —
+  not just "the government did X" or "the city grew." If the only
+  available research is institutional/statistical, invent a plausible,
+  clearly-typical composite figure (a merchant, an official, a worker) to
+  carry the human stake, and note this as "composite/illustrative" in the
+  validator — do not present a composite as a specifically named real person.
+
+SHOW-THEN-TELL: any narrator conclusion ("यह Dubai का सबसे बड़ा दांव था")
+  must follow a scene that already demonstrates it — never lead with the
+  conclusion and use the scene only as decoration afterward.
+
+================================================================================
+RULE D — RHETORICAL CRUTCH LIMIT (MANDATORY)
+================================================================================
+
+PROBLEM THIS FIXES: repeated narrator-steps-outside-the-story phrases
+("यहीं इस कहानी का सबसे बड़ा मोड़ आता है," "सोचिए," "यही इस कहानी का twist
+है") used more than 2x each read as a formula, and they substitute for
+actual dramatic weight rather than earning it through scene and stakes.
+
+HARD LIMIT: any single "significance-announcing" phrase or its close
+  variants may be used MAX 2 TIMES in a full script. This includes:
+  "यहीं इस कहानी का..." / "सोचिए" / "यही असली सवाल था" / "और यहीं..."
+  (as a sentence-opening device) and similar constructions.
+
+FIX: let scene, stakes, and specific consequence carry the significance.
+  If a moment is genuinely a turning point, the scene itself (a decision,
+  a number, a consequence) should make that obvious without the narrator
+  announcing it.
+
+================================================================================
+RULE F — PHYSICAL VISUAL ANCHOR PER SCENE (MANDATORY)
+================================================================================
+
+PROBLEM THIS FIXES: dialogue-driven scenes (Rule C) give an animator two
+people talking, but nothing concrete to draw beyond faces and a room. Every
+scene needs at least one physical object or visual detail an animator can
+actually render and hold on screen.
+
+REQUIREMENT: every scene (per Rule C's 800-1,000 char cadence) must
+  include at least one concrete, drawable physical anchor:
+  a map with marked depths/routes, a ledger or account book, a telex or
+  letter, a loan document, a ship's manifest, a specific building under
+  construction, a sukuk certificate, a newspaper headline, a model of a
+  project on a table, coins/currency of the era, a specific tool or vessel.
+
+  WEAK (two people talking, nothing to draw):
+    "कोई सलाहकार पूछता है — 'अगर हमने इतना कर्ज लिया और व्यापार नहीं बढ़ा तो?'"
+
+  STRONG (same dialogue, now anchored):
+    "मेज पर Halcrow की रिपोर्ट खुली पड़ी है, Creek की गहराई वाले नंबरों पर
+    लाल घेरा बना है। कोई सलाहकार उस रिपोर्ट पर उंगली रखते हुए पूछता है —
+    'अगर हमने इतना कर्ज लिया और व्यापार नहीं बढ़ा तो?'"
+
+CHECK: for each scene in the SCENE LIST (validator), name the specific
+  physical anchor before writing — do not leave this to be added later.
+
+================================================================================
+CTA_TYPE MENU — VARY THE ENDING, DON'T REPEAT THE SAME CLOSE EVERY TIME
+================================================================================
+
+PROBLEM THIS FIXES: closing every single video with the identical
+"comment kijiye, subscribe kijiye, dhanyavad" sequence is the same
+"interchangeable" pattern as repeated hooks — just at the end instead of
+the start. Rotate CTA_TYPE the same way as HOOK_TYPE (avoid repeating the
+previous video's type).
+
+  CTA 1 — OPEN QUESTION TO COMMENTS
+    Pose the story's central tension as a genuine question, invite a
+    one-line answer. (Current default — cap at 1 in 4-5 videos.)
+    e.g. "आपके हिसाब से सबसे बड़ी वजह क्या थी — X, Y या Z? Comment में बताइए."
+
+  CTA 2 — PREDICTION FOR NEXT VIDEO
+    Tease the next story/topic and ask viewers to guess the connection or
+    outcome before it's posted.
+    e.g. "अगली कहानी में हम देखेंगे कि यही model कहां fail हुआ — अंदाजा
+    लगाइए किस शहर की बात हो रही है, comment में लिखिए."
+
+  CTA 3 — PERSONAL TAKEAWAY PROMPT
+    Ask viewers to relate the theme to their own decisions/life, not just
+    rate the historical actors.
+    e.g. "क्या आप भी कभी ऐसा risk लेंगे जिसका फायदा सालों बाद दिखे? बताइए."
+
+  CTA 4 — CORRECTION/DEBATE INVITE
+    Invite viewers who know more (local history, insider knowledge) to
+    add detail — works well for topics with real ambiguity.
+    e.g. "अगर आप वहां से हैं या इस बारे में और जानते हैं, हमें comment में
+    जरूर बताइए — हम अगली video में उसे शामिल करने की कोशिश करेंगे."
+
+  CTA 5 — SIMPLE DIRECT ASK (NO QUESTION)
+    Skip the question entirely — just a warm, brief close tied to the
+    story's theme, then subscribe/like ask. Good when the ending line
+    already lands hard and a question would undercut it.
+    e.g. "यह कहानी बताती है कि बड़े फैसले अक्सर छोटे, अनिश्चित पलों से शुरू
+    होते हैं। अगर पसंद आई हो, channel subscribe कीजिए."
+
+  CTA 6 — CALLBACK CTA
+    Close by returning literally to the cold open's opening image/line,
+    then transition to like/subscribe — reinforces the loop-back device
+    already required by the arc.
+
+RULE: whichever CTA_TYPE is used, keep the actual like/subscribe/
+  धन्यवाद/जय हिंद close brief (1-2 lines) — the variation should live in
+  the THEMATIC PROMPT before it, not in the mechanical subscribe line
+  itself, which can stay consistent for channel branding.
+
+================================================================================
+HOOK_TYPE MENU — CHOOSE ONE PER SCRIPT (same system as Crime Edition)
+================================================================================
+Pass HOOK_TYPE 1–10. Rotate — never repeat the previous video's type, cap
+HOOK 9 (direct-question / shock-montage) at roughly 1 in 8–10 videos.
+
+  1. First-person immersion — open inside a moment before naming anything
+  2. Countdown/timeline — dated chapter structure throughout
+  3. Myth vs. fact — open by contradicting the popular version
+  4. Object/artifact cold open — unexplained glimpse, meaning paid off later
+  5. Two-timeline cut — open on the outcome, cut backward to origin
+  6. Numbers-first — open with a stark statistic before names
+  7. Witness/insider framing — narrator voice brackets whole script
+  8. Contrast opening — two opposing images/facts side by side
+  9. Direct-address shock-montage — RARE, max 1 in 8–10 videos
+  10. Location-anchored open — geography as tension, revisited as a callback
+
+If HOOK_TYPE not specified, apply rotation logic based on the last 3
+uploads' hook types, and state which type was auto-selected and why.
+
+================================================================================
+NARRATIVE ARC — 15-BEAT STRUCTURE (HISTORY/NATION EDITION)
+No headings in script output
+================================================================================
+
+ 1.  COLD OPEN — per selected HOOK_TYPE (montage, scene, contrast, etc.)
+ 2.  PIVOT / GROUNDING LINE — shifts from hook energy into the real story
+ 3.  STORY PROMISE (MANDATORY, DISTINCT BEAT) — a short, explicit line
+     telling the viewer the SHAPE of the journey ahead, without revealing
+     the ending's specifics. Names the arc (e.g. "loss → risky bet → rise
+     → near-collapse → twist"), teases the payoff/twist enough to create
+     curiosity, but does not state it outright.
+       WEAK (too vague, no curiosity): "आज हम दुबई की कहानी जानेंगे।"
+       WEAK (gives away the twist immediately): "आज हम जानेंगे कि दुबई
+       की दौलत तेल से नहीं आती।"
+       STRONG (shape + teased payoff, curiosity intact): "इस वीडियो में
+       हम देखेंगे — कैसे एक शासक के फैसलों ने रेत को सोना बनाया, कैसे
+       2009 में यह सब लगभग ढह गया था, और आखिर में क्यों आज दुबई की सबसे
+       बड़ी दौलत तेल है ही नहीं।"
+     Keep to 2-4 sentences. Must come immediately after the pivot line and
+     before any deep content begins (before Beat 4 in the arc below).
+ 4.  CONTEXT & STAKES — what world/situation this begins in, why it matters
+ 5.  ORIGIN CONDITION — the "before" state (poverty, obscurity, crisis,
+     old order) that the story will transform or challenge
+ 6.  THE FIRST BET / FIRST SPARK — the earliest decisive choice or event
+     that sets the trajectory in motion. MUST be written as a scene per
+     Rule C — a specific person, moment, and decision, not a summary.
+ 7.  BUILDING MOMENTUM — sequential developments, each flowing from the
+     last (Rule B: group, don't stack) AND periodically grounded in scenes
+     with a human stakes anchor (Rule C) — do not let this beat drift into
+     pure trend-summary for more than 800-1000 characters at a stretch.
+ 8.  FIRST OBSTACLE / RESISTANCE — the story's first real setback or doubt
+ 9.  DEEPENING — the idea/movement/institution grows more complex, more
+     entrenched, more consequential
+10.  PEAK MOMENTUM — things appear to be succeeding strongly
+11.  THE CRISIS / TURNING POINT — the story's biggest risk, failure, or
+     confrontation (financial crisis, violent event, political rupture)
+12.  THE RESPONSE — how the crisis was managed, survived, or not
+13.  CONSEQUENCE & RECALIBRATION — what changed permanently as a result
+14.  PRESENT-DAY STATE — where things stand now, backed by current data
+     (respect CURRENT-EVENTS HONESTY rule if timeline runs past known facts)
+15.  THEMATIC PAYOFF — the single idea the whole story was really about;
+     callback to the cold open; then close per selected CTA_TYPE
+     (max one comment-prompt style per script — see Rule D and CTA menu)
+     + like/subscribe CTA + धन्यवाद / जय हिंद
+
+================================================================================
+RETENTION ENGINE (reused from Crime Edition — unchanged)
+================================================================================
+5 reasons viewers stay, checked every 300–350 characters (~30 sec):
+  1. UNANSWERED QUESTION   2. REVEALED INFORMATION
+  3. EMOTIONAL INVESTMENT  4. PROCEDURAL/NARRATIVE MOMENTUM
+  5. FEAR OF MISSING OUT
+
+Rules: no same type 3x in a row; first 5 blocks each a different type;
+full emotional/pacing reset every 6 blocks.
+
+================================================================================
+DANGER ZONES — HISTORY/NATION EDITION
+================================================================================
+
+ZONE 1 — GENERIC OPENING: avoid textbook-style openers ("X is a country
+  known for..."). Use the chosen HOOK_TYPE properly.
+
+ZONE 2 — THE LECTURE MIDDLE: long stretches of pure fact delivery with no
+  tension, stakes, or human stake read as a lecture. Every 3-4 paragraphs,
+  reconnect to WHY this fact mattered to real outcomes/real people.
+
+ZONE 3 — THE POINTER TRAP: see Rule B. This is the most common failure
+  mode in this edition specifically — check for it explicitly before output.
+
+ZONE 4 — THE HEDGE LEAK: see Rule A. Check every paragraph for research-
+  voice language before finalizing.
+
+ZONE 5 — THE COMMENT-BAIT REPEAT: asking "comment your view" more than
+  once, or in near-identical phrasing, reads as formulaic. Use once, at
+  the single moment it's earned most (usually beat 10 or 14, not both).
+
+ZONE 6 — THE FLAT MAP: presenting scale (districts, casualties, money)
+  without a human-scale anchor makes numbers meaningless. Pair big
+  statistics with one concrete, specific human or local detail.
+
+ZONE 7 — THE COLD LANDING: ending on a data point instead of thematic
+  meaning. Beat 14 must land on the STORY's idea, not just the latest stat.
+
+================================================================================
+SPECIFICITY & SENSITIVITY RULES (reused, adapted)
+================================================================================
+  • Exact dates, figures, named institutions/policies — mandatory
+  • Reconcile conflicting numbers before writing (Rule A) — never present
+    the conflict itself as content
+  • Political/insurgency/conflict topics: state documented facts and
+    documented consequences; avoid editorializing a verdict the sources
+    don't support; where the story poses a genuine open question (e.g.
+    "was force or development the real solution"), it is fine to leave
+    it as a reflective question — but only once, not as a running device
+  • No communal/religious generalization beyond what sources document
+  • Treat casualties/victims with dignity — state facts, not spectacle
+
+================================================================================
+OUTPUT FORMAT
+================================================================================
+
+==================================================
+TITLE OPTIONS (5) — Hinglish, max 65 chars, "| 2D Animation" or
+"| Documentary" suffix
+==================================================
+
+==================================================
+THUMBNAIL TEXT (5) — Devanagari, 4–10 words, question or two-part
+Setup/Turn structure
+==================================================
+
+==================================================
+HOOK / OPENING LINE — single line, matches chosen HOOK_TYPE
+==================================================
+
+==================================================
+FULL SCRIPT
+==================================================
+Continuous Hindi narrative. No headings, no bullets, no scene numbers.
+No research-voice language (Rule A). No pointer-style stacking (Rule B).
+Length within confirmed character range (1 min ≈ 1,000 chars, ±500 band).
+
+POST-WRITE CHARACTER COUNT box immediately after script (same format as
+Crime Edition — counted chars / target range / status).
+
+==================================================
+YOUTUBE DESCRIPTION (optional) — 150–250 words
+==================================================
+
+==================================================
+SHORTS IDEAS (3) — 30–60 sec each, different angle per short
+==================================================
+
+==================================================
+META INFO
+==================================================
+  • Final character count, estimated duration
+  • HOOK_TYPE used (for variety tracking across uploads)
+  • Retention map — 30-sec blocks and types
+  • Rule A check — confirm zero hedge-language found in final script
+  • Rule B check — confirm no pointer-stacking sections remain
+  • Rule C check — confirm scene appears at least every 800-1,000 chars,
+    dialogue density meets minimum, human stakes anchor present per beat
+  • Rule D check — confirm no significance-announcing phrase used >2x
+  • Rule F check — confirm each scene has a named physical visual anchor
+  • CTA_TYPE used (for variety tracking across uploads, alongside HOOK_TYPE)
+  • Key visual moments for animator — 6–8 bullets (should map closely to
+    the Rule C/F scene + anchor list, since scenes ARE the visual moments)
+  • Sensitivity flags
+
+================================================================================
+PRE-WRITE VALIDATOR (run before writing)
+================================================================================
+  REQUESTED LENGTH / TARGET CHARS / RANGE
+  HOOK_TYPE SELECTED + justification
+  TOPIC / SUB-GENRE (nation history / political movement / economic /
+    institutional / other)
+  ORIGIN CONDITION identified (Beat 4)
+  FIRST BET / SPARK identified (Beat 5)
+  CRISIS / TURNING POINT identified (Beat 10)
+  RESEARCH RECONCILED — confirm all conflicting facts resolved BEFORE
+    writing, per Rule A
+  SCENE LIST — list the 8-12 concrete scenes planned across the script
+    (moment, person, decision/action), per Rule C
+  DIALOGUE PLAN — list planned dialogue moments; mark each as
+    "documented quote (adapted)" or "dramatized, not verbatim"
+  HUMAN STAKES ANCHORS — confirm which person (named or composite,
+    marked accordingly) carries the stakes for each arc beat
+  VISUAL ANCHOR LIST — name the specific physical anchor object for each
+    scene in the SCENE LIST, per Rule F
+  CTA_TYPE SELECTED — [1-6] + brief reason it fits this story; confirm
+    it differs from the previous video's CTA_TYPE
+  RETENTION GRID planned for full length
+  STATUS: READY TO WRITE / BLOCKED
+
+================================================================================
+INPUT BLOCK
+================================================================================
+
+SOURCE / RESEARCH NOTES:
+[paste compiled, cleaned research here — strip citation brackets,
+ reconcile conflicts yourself before pasting where possible]
+
+REQUESTED LENGTH:
+[e.g. 15,000 characters or 15–18 min]
+
+HOOK_TYPE:
+[1–10, or "auto"]
+
+TOPIC NAME:
+[optional]
+
+ADDITIONAL NOTES:
+[optional — tone, must-include facts, sensitivity flags]
+
+================================================================================
+NOW
+================================================================================
+STEP 1 — Confirm/select HOOK_TYPE.
+STEP 2 — Run PRE-WRITE VALIDATOR. Reconcile all research conflicts here,
+          not in the script.
+STEP 3 — Write script per 14-beat arc, applying Rule A and Rule B
+          throughout — check every paragraph against both before moving on.
+STEP 4 — Output POST-WRITE CHARACTER COUNT box.
+STEP 5 — Run Rule A / Rule B checks explicitly in Meta Info.
+STEP 6 — Output Shorts Ideas, then Meta Info.
+
+================================================================================

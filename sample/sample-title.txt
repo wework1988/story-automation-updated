@@ -1,0 +1,49 @@
+# Sample video titles
+
+| # | Thumbnail Text | Video Title | Views | Uploaded |
+| --- | --- | --- | --- | --- |
+| 1 | कैसे पाकिस्तान की जेल से 3 भारतीय पायलट भागे | Kaise Pakistan Ki Jail Se Bhage 3 Indian Pilots \| 2D Animation | 3.7M | 8mo ago |
+| 2 | धुरंधर के बड़े साहब की असली कहानी | Dhurandhar ke Bade Sahab ki Asli Kahani \| Dawood Ibrahim \| 2D Animation | 3.7M | 5mo ago |
+| 3 | कैसे भारत 26/11 के मास्टरमाइंड के घर मे घुसा | Kaise Bharat Hafiz Saeed Ke Ghar Ghusa \| 2D Animation \| Operation Alvida | 3.3M | 8mo ago |
+| 4 | अतीक अहमद की हत्या / कैसे योगी ने यूपी में माफिया खत्म किया | Atiq Ahmed ka Ant: Yogi ka Operation Clean \| 2D Animation | 2.7M | 5mo ago |
+| 5 | अजीत डोभाल का मास्टरस्ट्रोक / कैसे मोदी पर हमला नाकाम हुआ | Ajit Doval ka Masterstroke: Kaise Modi par Hamla Naakaam Hua \| 2D Animation \| Operation Octopus | 2.7M | 7mo ago |
+| 6 | कैसे अजीत डोवल ने दाऊद इब्राहिम को लगभग मार दिया था | Kaise Ajit Doval ne Dawood Ibrahim ko lagbhag maar hi diya tha \| 2D Animation | 2.4M | 8mo ago |
+| 7 | मोदी पर हमला / कैसे पुतिन ने मोदी की जान बचाई | Attack on Modi: How Putin Saved His Life \| 2D Animation | 2.1M | 6mo ago |
+| 8 | ऑपरेशन सिंदूर | How did Operation Sindoor happen? 2D Animation | 1.6M | 9mo ago |
+| 9 | RAW का सबसे खतरनाक सीक्रेट मिशन | Kaise RAW ne Pakistan mein ghuskar ISI agent ko maara \| 2D Animation \| Operation Hornet | 1.5M | 8mo ago |
+| 10 | कैसे और क्यू मारी गई इन्दिरा गांधी | Kaise aur Kyu Maara gaya Indira Gandhi ko \| 2D Animation | 1.3M | 7mo ago |
+| 11 | ऑपरेशन बंदर / जब भारत ने घर में घुसकर मारा | Operation Bandar: The Air Strike That Shocked Pakistan \| 2D Animation | 1.2M | 7mo ago |
+| 12 | असली धुरंधर की कहानी | Kaise ek Bhartiya ne Atankvadiyo me ghuskar unhe Maara \| 2D Animation \| Major Mohit Sharma | 1M | 8mo ago |
+| 13 | असली मेजर इकबाल कैसे मारा गया | Dhurandhar's Major Iqbal's Real Story \| Ilyas Kashmiri \| 2D Animation | 1M | 5mo ago |
+| 14 | भारत का सबसे सीक्रिट अंडरकवर ऑपरेशन | The Most Secret Undercover Operation of IB \| Yasin Bhatkal \| 2D Animation | 996K | 5mo ago |
+| 15 | कैसे अजीत डोभाल ने / जहूर मिस्त्री को पाकिस्तान मे मारा | Kaise Ajit Doval ne Zahoor Mistry ko Pakistan me Ghuskar Maara\| 2D Animation | 752K | 7mo ago |
+| 16 | RAW का सबसे स्मार्ट ऑपरेशन / कैसे एक स्टूडेंट ने दिल्ली में बम ब्लास्ट रोका | Raw ka Sabse Smart Operation: Kaise ek Student ne Delhi mein Bomb Blast Roka \| 2D Animation | (not visible) | (not visible) |
+| 17 | कैसे नोटबंदी से मारा गया खनानी | How Demonetization Destroyed Khanani Brother's Empire \| 2D Animation | (not visible) | (not visible) |
+| 18 | कैसे एक मुस्लिम लड़की पाकिस्तान में रहकर / RAW एजेंट बन गई | Kaise Ye Ladki Pakistani Officer se Shaadi Karke RAW Agent Bani \| 2D Animation | (not visible) | (not visible) |
+| 19 | कैसे भारत ने पाकिस्तान में घुसकर / पठानकोट मास्टरमाइंड को मारा | Kaise Bharat ne Pakistan me Ghuskar Shahid Latif ko Maara \| 2D Animation | 517K | 8mo ago |
+| 20 | कैसे 2 कूली बने मुंबई के पहले डॉन | How a Police Station Gave Birth to Mumbai's Underworld \| Haji Mastan & Varadarajan Mudaliar | 445K | 4mo ago |
+| 21 | धुरंधर के जसकिरत सिंह की असली कहानी | Kaise ek Indian Pakistan Military mein Major ban gaya \| 2D Animation \| Ravindra Kaushik | 431K | 8mo ago |
+| 22 | असली सिंघम की कहानी / TUKARAM MUNDHE | Tukaram Mundhe: The IAS Officer Who Crushed a ₹250 Crore Food Mafia! \| 2D Animation | 426K | 1mo ago |
+| 23 | कैसे एक ट्रेन चोरी ने / भारत का इतिहास बदला | Kaise ek Train Chori ne Bharat ka Itihaas Badal Diya \| 2D Anmation \| Kakori Train Action | 377K | 8mo ago |
+| 24 | कैसे NSG ने सिर्फ 3 मिनट में खत्म / किया IC 427 हाइजैक | Kaise NSG ne sirf 3 minute mein khatam kiya IC-427 Hijack \| 2D Animation \| Operation Ashwamedh | 358K | 7mo ago |
+| 25 | कैसे पाकिस्तान से भागा ये पायलट | Kaise 24 Ghante Mein Pakistan Se Paidal India Lauta Ye Pilot \| 2D Animation \| Dara Phiroze Chinoy | 344K | 7mo ago |
+| 26 | कैसे दाऊद ने संजय दत्त को फसाया? / SANJAY DUTT FULL STORY | The Dark Truth of Sanjay Dutt \| Underworld, Drugs & 308 Girlfriends \| 2D Animation | 335K | 1mo ago |
+| 27 | ऑपरेशन सनराइस / जब कमांडो दूसरे देश के जंगलों में घुस गए | Operation Sunrise: India's Secret Mission Inside Myanmar \| 2D Animation | 273K | 6mo ago |
+| 28 | ऑपरेशन ब्लैक टॉर्नेडो / कैसे 26/11 अटैक को खत्म किया गया | Operation Black Tornado: Kaise 26/11 Attack ko NSG ne Khatm kiya\| 2D Animation | 208K | 7mo ago |
+| 29 | कैसे BJP ने दीदी को हराया | How BJP Defeated Mamata Banerjee in Bengal Election 2026 \| 2D Animation | 205K | 4mo ago |
+| 30 | ऑपरेशन विजय / कैसे एक जवान ने पाकिस्तान को हिला दिया | Operation Vijay: Kaise ek Jawaan ne Pakistan ko Hila Diya \| 2D Animation | 196K | 7mo ago |
+| 31 | "AI से 2D Animation Video कैसे बनाते है?" / FULL COURSE | How I Create 2D Animation Documentary Videos (Full Course) | 133K | 5mo ago |
+| 32 | जब पाकिस्तान मे पकड़े गए अजीत डोभाल | Jab Pakistan Mein Pakde Gaye Ajit Doval \| 2D Animation | 131K | 3mo ago |
+| 33 | कैसे और क्यों मारा गया / सिद्धू मूसे वाला / SIDHU MOOSE WALA STORY | The Assassination of Sidhu Moose Wala \| How Lawrence Bishnoi & Goldy Brar Planned it \| 2D ... (truncated) | 127K | 3w ago |
+| 34 | भारत का मास्टरप्लान / कैसे पाकिस्तान की सबसे खतरनाक सबमरीन डुबोई | Kaise Bharat ne Pakistan ki Sabse Khatarnak Submarine Duboyi \| 2D Animation | 117K | 6mo ago |
+| 35 | कैसे आतंकियों के बीच / अकेले फँस गए अजीत डोभाल | Jab Aatankiyon ke Beech Akele Fas Gaye Ajit Doval \| 2D Animation | 110K | 6mo ago |
+| 36 | कैसे भारत ने डाऊद को ज़हर दिया / RAW का सबसे बड़ा सीक्रेट मिशन | How RAW Poisoned Dawood Ibrahim \| India's Most Secret Operation \| 2D Animation | 104K | 3mo ago |
+| 37 | धुरंधर की सफलता लेकिन / डोभाल पर हमला? / पांच कदम दूर था BOMB | Ajit Doval se 5 Kadam Door Tha Bomb: Dhurandhar Movie Ka Kya Hai Connection \| 2D Animation | 4.5M | 6mo ago |
+| 38 | धुरंधर फिल्म में दिखाया गया / ऑपरेशन ग्रीन लीफ / नोटबंदी का असली कारण | Green Leaf Operation ki Poori Kahani \| Dhurandhar Movie Connection \| 2D Animation | 2.3M | 6mo ago |
+| 39 | दीदी LOST / BENGAL DOCUMENTARY / 21+ LAKH VIEWS | Why Mamata Banerjee Lost Bengal \| How Bengal Fell Behind \| 2D Animation | 2.3M | 4mo ago |
+| 40 | कैसे आया 48 घंटे में / 40000 करोड़ का काला धन / ऑपरेशन ग्रीन लीफ 2 | Kaise Ajit Doval 48 Ghante Mein ₹40,000 Crore India Wapas Laye \| Operation Green Leaf Part 2 | 1.8M | 2mo ago |
+| 41 | धुरंधर 2 के बाद दाऊद ने क्यों कराया / डोभाल पर नया हमला! / एक नहीं, 4 ATTACK PLAN! | Ajit Doval Ke Khilaf 4 Khatarnak Plan \| Dawood Aur URDUWOOD Balo Ki Saazish \| 2D Animation | 1.2M | 2mo ago |
+| 42 | वर्ल्ड कप मैच पर था हमले का प्लान / डोभाल की मास्टरमाइंड चाल से / बचा हमला | Kaise Doval ne World Cup Match Par Hone Wala Hamla Roka \| 2D animation | 1.2M | 6mo ago |
+| 43 | FCRA पर अमेरिका-चीन की टेंशन और / आसिम मुनीर का खेल खत्म / डोभाल-शाह का मास्टरस्ट्रोक | (title cut off in screenshot) | (not visible) | (not visible) |
+| 44 | ऑपरेशन ALPHA / RAW की सबसे खतरनाक एजेंट की कहानी | (title cut off in screenshot) | (not visible) | (not visible) |
+| 45 | धुरंधर कैसे बनी / भारत के लिए ये फिल्म क्यों जरूरी थी / बरसों का प्रोपेगेंडा कैसे एक फिल्म ने खत्म किया | (title cut off in screenshot) | (not visible) | (not visible) |

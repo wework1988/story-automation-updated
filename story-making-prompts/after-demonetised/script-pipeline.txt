@@ -1,0 +1,103 @@
+# Generic Video Production Pipeline (Research → Script → Video)
+
+A repeatable 6-stage workflow for any explainer/news-style video topic, designed to reduce copyright/reused-content and demonetization risk.
+
+---
+
+## STAGE 1 — Topic Framing (before any research)
+
+Before searching anything, write down:
+- **The core question** the video answers (e.g., "How did Dubai become rich?" not "Dubai is rich, discuss")
+- **The angle/hook** that makes it *your* video, not a rehash (e.g., timeline-focused, myth-busting, data-focused, personal-story-focused)
+- **Who might be biased** on this topic and why (governments, companies, advocacy groups) — this tells you where to double-check claims later
+
+This step prevents you from unconsciously copying the structure of whatever video you watched that gave you the idea.
+
+---
+
+## STAGE 2 — Primary-Source Research
+
+**Rule: gather facts from original sources, not from other creators' videos.**
+
+| Topic type | Go-to primary sources |
+|---|---|
+| Government policy/bills | Official ministry press releases, parliament bulletins, PIB, gov.in sites |
+| Economic/country stats | World Bank, IMF, national statistics offices, central bank reports |
+| Science/space | ISRO/NASA/ESA official releases, peer-reviewed papers |
+| Business/companies | Company annual reports, SEC/regulatory filings, earnings calls |
+| Current events | Wire services (Reuters, AP, PTI) over opinion channels |
+
+**Tools:**
+- **Perplexity** — fast, cited, good for scattered fact-checking
+- **ChatGPT/Claude with web search** — good for pulling and organizing many facts into structured notes in one pass (I can do this directly here — give me a topic and I'll build a sourced pointer sheet)
+- Go to the primary link yourself for any number/quote you plan to use as a centerpiece fact
+
+**Output of this stage:** a raw notes doc — facts, numbers, dates, quotes, each tagged with its source link.
+
+---
+
+## STAGE 3 — Build the Pointer Sheet (your format)
+
+Convert raw notes into pointers, same structure you already use — but with two changes:
+
+1. Each pointer cites **where the fact came from** (source name/link), not "video transcript."
+2. Contested/opinionated claims get labeled as **opinion/allegation**, not stated as fact:
+   - ✅ "Government officials argue the amendment prevents X"
+   - ❌ "The amendment stops X" (stated as settled fact when it's disputed)
+
+This is the single biggest lever for avoiding both content-ID-style flags (you're not echoing someone else's framing) and demonetization (you're not adopting one side's rhetoric as your own narration).
+
+---
+
+## STAGE 4 — Master Prompt / Script Generation
+
+Feed your pointer sheet into your script-writing prompt, but add these standing instructions to the master prompt itself:
+
+- "Write factual/statistical sections in neutral, encyclopedic tone."
+- "For any disputed or political claim, attribute it explicitly to who holds that view."
+- "Avoid inflammatory, civilizational, or emotionally loaded framing (e.g., 'war,' 'invasion,' 'enemy') unless directly quoting a named figure, and even then, flag it as a quote."
+- "Do not mirror the structure of any single source — organize the narrative around [your chosen angle from Stage 1]."
+- "Add at least one original framing device not found in typical coverage: a timeline, comparison, or explainer analogy."
+
+**Structure that works well and reads as original + advertiser-safe:**
+1. Hook (10–15 sec)
+2. Background/context (neutral, factual)
+3. The core mechanism/numbers (your original angle)
+4. The debate/controversy, if any — presented as "side A says / side B says"
+5. Wrap-up / why it matters
+
+---
+
+## STAGE 5 — Self-Check Before Production
+
+Quick checklist before you record:
+- [ ] Does any sentence closely mirror the wording/structure of a specific existing video? → rewrite
+- [ ] Is any claim about a religion, ethnicity, or political group stated as fact rather than attributed? → attribute or cut
+- [ ] Have I used at least one visual/structural element not seen in competing videos (chart, timeline, map)? → add one
+- [ ] Would this script read as "reporting" or as "taking a side"? → aim for the former
+- [ ] Skim YouTube's advertiser-friendly guidelines page for the "sensitive topics" section if the subject touches religion/politics/conflict
+
+---
+
+## STAGE 6 — Production
+
+- **B-roll/stock**: Pexels, Pixabay (free), Storyblocks/Envato (paid)
+- **Graphics/timelines**: Canva, or ask an LLM to generate data for a chart you build in Canva/After Effects
+- **Voiceover**: ElevenLabs (AI) or your own recording
+- **Editing**: CapCut (fast, free, auto-captions) or DaVinci Resolve (more control, free)
+- **Final pass**: watch back and check pacing matches the neutral-tone script — delivery/music choices can reintroduce bias even with a clean script (e.g., ominous music under "government says" vs "critics say")
+
+---
+
+## Quick Reference Loop
+
+```
+Topic + angle
+   → Primary-source research (Perplexity/Claude/ChatGPT + official sources)
+   → Sourced pointer sheet (fact | source | opinion-flag)
+   → Master prompt with neutrality + attribution + originality rules
+   → Self-check against checklist
+   → Production
+```
+
+Reuse this same loop for Dubai's economy, India's moon missions, or any policy/news topic — only Stage 2's source list changes per topic.

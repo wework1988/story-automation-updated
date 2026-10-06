@@ -1,0 +1,42 @@
+Stage 1 — Automated Topic Discovery
+
+Tools:
+
+Google Trends API / TrendingTopics.io — pulls trending searches by category/country automatically
+Exploding Topics — surfaces rising topics before they peak
+Perplexity API / Tavily API — can be called with a prompt like "list 10 trending explainer-worthy topics in [economics/space/history] this week" and returns live results
+RSS feeds from Reuters/AP/PIB piped into a tool like Make.com or n8n (both have free tiers) — auto-pulls headlines daily
+
+Automation flow: Trends API → filter by keyword category → LLM call ("pick the most video-worthy topic + one-line angle") → output saved to a sheet.
+
+Stage 2 — Automated Research
+
+This is where you chain an LLM with web search via API, fully scripted:
+
+Option A — Perplexity API
+Call it with a strict prompt template:
+
+Research [TOPIC]. Return ONLY verified facts with source name + link for each. 
+Flag any claim that is disputed/opinion as "OPINION:" prefix. 
+Do not editorialize. Output as numbered pointers.
+
+Perplexity's API returns citations natively, so this is the easiest to automate reliably.
+
+Option B — Claude/ChatGPT API with web search tool
+Same prompt template, called via API instead of chat UI. You'd need to enable the web-search tool in the API call.
+
+Option C — n8n/Make.com workflow (no-code automation, glues everything together)
+
+Trigger (new topic in sheet) 
+  → Perplexity API call (research) 
+  → GPT/Claude API call (structure into pointer sheet using your master prompt) 
+  → Save to Google Doc/Notion 
+  → Trigger script-writing prompt automatically
+
+This is the closest to zero manual intervention — you drop a topic in a spreadsheet row and a doc comes out the other end with pointers.
+
+The one thing I'd still hard-code in, not skip
+
+Bake the neutrality/attribution rules directly into your Stage 2 API prompt template (the same rules from Stage 3/4 earlier) so the research output itself is already safe, rather than relying on a later manual cleanup pass you're trying to eliminate. Since you're going fully automated, the guardrails have to live in the prompt, because there's no human checking it before Stage 3.
+
+Want me to write out the exact Perplexity API prompt + n8n workflow steps so you can build this pipeline this week?
